@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.clubank.weihang.manage.systemSettings.dao.BaseDepartmentMapper">
+  <resultMap id="BaseResultMap" type="cn.com.clubank.weihang.manage.systemSettings.pojo.BaseDepartment">
+    <id column="d_id" jdbcType="VARCHAR" property="dId" />
+    <result column="parent_id" jdbcType="VARCHAR" property="parentId" />
+    <result column="d_name" jdbcType="VARCHAR" property="dName" />
+    <result column="short_name" jdbcType="VARCHAR" property="shortName" />
+    <result column="manager_Id" jdbcType="VARCHAR" property="managerId" />
+    <result column="manager" jdbcType="VARCHAR" property="manager" />
+    <result column="outer_phone" jdbcType="VARCHAR" property="outerPhone" />
+    <result column="inner_phone" jdbcType="VARCHAR" property="innerPhone" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="fax" jdbcType="VARCHAR" property="fax" />
+    <result column="sort" jdbcType="INTEGER" property="sort" />
+    <result column="founded_time" jdbcType="TIMESTAMP" property="foundedTime" />
+    <result column="business_scope" jdbcType="VARCHAR" property="businessScope" />
+    <result column="province_Id" jdbcType="VARCHAR" property="provinceId" />
+    <result column="city_Id" jdbcType="VARCHAR" property="cityId" />
+    <result column="county_Id" jdbcType="VARCHAR" property="countyId" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="webaddress" jdbcType="VARCHAR" property="webaddress" />
+    <result column="delete_mark" jdbcType="INTEGER" property="deleteMark" />
+    <result column="enabled_mark" jdbcType="INTEGER" property="enabledMark" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="create_user_Id" jdbcType="VARCHAR" property="createUserId" />
+    <result column="create_user_name" jdbcType="VARCHAR" property="createUserName" />
+    <result column="modify_date" jdbcType="TIMESTAMP" property="modifyDate" />
+    <result column="modify_user_Id" jdbcType="VARCHAR" property="modifyUserId" />
+    <result column="modify_user_name" jdbcType="VARCHAR" property="modifyUserName" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from base_department
+    where d_id = #{dId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.com.clubank.weihang.manage.systemSettings.pojo.BaseDepartment">
+    insert into base_department (d_id, parent_id, d_name, 
+      short_name, manager_Id, manager, 
+      outer_phone, inner_phone, email, 
+      fax, sort, founded_time, 
+      business_scope, province_Id, city_Id, 
+      county_Id, address, webaddress, 
+      delete_mark, enabled_mark, description, 
+      create_date, create_user_Id, create_user_name, 
+      modify_date, modify_user_Id, modify_user_name
+      )
+    values (#{dId,jdbcType=VARCHAR}, #{parentId,jdbcType=VARCHAR}, #{dName,jdbcType=VARCHAR}, 
+      #{shortName,jdbcType=VARCHAR}, #{managerId,jdbcType=VARCHAR}, #{manager,jdbcType=VARCHAR}, 
+      #{outerPhone,jdbcType=VARCHAR}, #{innerPhone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+      #{fax,jdbcType=VARCHAR}, #{sort,jdbcType=INTEGER}, #{foundedTime,jdbcType=TIMESTAMP}, 
+      #{businessScope,jdbcType=VARCHAR}, #{provinceId,jdbcType=VARCHAR}, #{cityId,jdbcType=VARCHAR}, 
+      #{countyId,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{webaddress,jdbcType=VARCHAR}, 
+      #{deleteMark,jdbcType=INTEGER}, #{enabledMark,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{createUserId,jdbcType=VARCHAR}, #{createUserName,jdbcType=VARCHAR}, 
+      #{modifyDate,jdbcType=TIMESTAMP}, #{modifyUserId,jdbcType=VARCHAR}, #{modifyUserName,jdbcType=VARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.com.clubank.weihang.manage.systemSettings.pojo.BaseDepartment">
+    update base_department
+    set parent_id = #{parentId,jdbcType=VARCHAR},
+      d_name = #{dName,jdbcType=VARCHAR},
+      short_name = #{shortName,jdbcType=VARCHAR},
+      manager_Id = #{managerId,jdbcType=VARCHAR},
+      manager = #{manager,jdbcType=VARCHAR},
+      outer_phone = #{outerPhone,jdbcType=VARCHAR},
+      inner_phone = #{innerPhone,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      fax = #{fax,jdbcType=VARCHAR},
+      sort = #{sort,jdbcType=INTEGER},
+      founded_time = #{foundedTime,jdbcType=TIMESTAMP},
+      business_scope = #{businessScope,jdbcType=VARCHAR},
+      province_Id = #{provinceId,jdbcType=VARCHAR},
+      city_Id = #{cityId,jdbcType=VARCHAR},
+      county_Id = #{countyId,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      webaddress = #{webaddress,jdbcType=VARCHAR},
+      delete_mark = #{deleteMark,jdbcType=INTEGER},
+      enabled_mark = #{enabledMark,jdbcType=INTEGER},
+      description = #{description,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      create_user_Id = #{createUserId,jdbcType=VARCHAR},
+      create_user_name = #{createUserName,jdbcType=VARCHAR},
+      modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+      modify_user_Id = #{modifyUserId,jdbcType=VARCHAR},
+      modify_user_name = #{modifyUserName,jdbcType=VARCHAR}
+    where d_id = #{dId,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select d_id, parent_id, d_name, short_name, manager_Id, manager, outer_phone, inner_phone, 
+    email, fax, sort, founded_time, business_scope, province_Id, city_Id, county_Id, 
+    address, webaddress, delete_mark, enabled_mark, description, create_date, create_user_Id, 
+    create_user_name, modify_date, modify_user_Id, modify_user_name
+    from base_department
+    where d_id = #{dId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select d_id, parent_id, d_name, short_name, manager_Id, manager, outer_phone, inner_phone, 
+    email, fax, sort, founded_time, business_scope, province_Id, city_Id, county_Id, 
+    address, webaddress, delete_mark, enabled_mark, description, create_date, create_user_Id, 
+    create_user_name, modify_date, modify_user_Id, modify_user_name
+    from base_department
+  </select>
+</mapper>

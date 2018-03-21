@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.clubank.weihang.manage.news.dao.BaseNewsMapper">
+  <resultMap id="BaseResultMap" type="cn.com.clubank.weihang.manage.news.pojo.BaseNews">
+    <id column="n_id" jdbcType="VARCHAR" property="nId" />
+    <result column="type_id" jdbcType="INTEGER" property="typeId" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="pv" jdbcType="INTEGER" property="pv" />
+    <result column="release_time" jdbcType="TIMESTAMP" property="releaseTime" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="create_user_Id" jdbcType="VARCHAR" property="createUserId" />
+    <result column="create_user_name" jdbcType="VARCHAR" property="createUserName" />
+    <result column="big_img" jdbcType="VARCHAR" property="bigImg" />
+    <result column="small_img" jdbcType="VARCHAR" property="smallImg" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="cn.com.clubank.weihang.manage.news.pojo.BaseNews">
+    <result column="content" jdbcType="LONGVARCHAR" property="content" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    n_id, type_id, title, pv, release_time, create_date, create_user_Id, create_user_name, 
+    big_img, small_img
+  </sql>
+  <sql id="Blob_Column_List">
+    content
+  </sql>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from base_news
+    where n_id = #{nId,jdbcType=VARCHAR}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from base_news
+    where n_id = #{nId,jdbcType=VARCHAR}
+  </delete>
+
+  <insert id="insert" parameterType="cn.com.clubank.weihang.manage.news.pojo.BaseNews">
+    insert into base_news (n_id, type_id, title, 
+      pv, release_time, create_date, 
+      create_user_Id, create_user_name, big_img, 
+      small_img, content)
+    values (#{nId,jdbcType=VARCHAR}, #{typeId,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, 
+      #{pv,jdbcType=INTEGER}, #{releaseTime,jdbcType=TIMESTAMP}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{createUserId,jdbcType=VARCHAR}, #{createUserName,jdbcType=VARCHAR}, #{bigImg,jdbcType=VARCHAR}, 
+      #{smallImg,jdbcType=VARCHAR}, #{content,jdbcType=LONGVARCHAR})
+  </insert>
+  
+  <insert id="insertSelective" parameterType="cn.com.clubank.weihang.manage.news.pojo.BaseNews">
+    insert into base_news
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="nId != null">
+        n_id,
+      </if>
+      <if test="typeId != null">
+        type_id,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="pv != null">
+        pv,
+      </if>
+      <if test="releaseTime != null">
+        release_time,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="createUserId != null">
+        create_user_Id,
+      </if>
+      <if test="createUserName != null">
+        create_user_name,
+      </if>
+      <if test="bigImg != null">
+        big_img,
+      </if>
+      <if test="smallImg != null">
+        small_img,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="nId != null">
+        #{nId,jdbcType=VARCHAR},
+      </if>
+      <if test="typeId != null">
+        #{typeId,jdbcType=INTEGER},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="pv != null">
+        #{pv,jdbcType=INTEGER},
+      </if>
+      <if test="releaseTime != null">
+        #{releaseTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUserId != null">
+        #{createUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="createUserName != null">
+        #{createUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="bigImg != null">
+        #{bigImg,jdbcType=VARCHAR},
+      </if>
+      <if test="smallImg != null">
+        #{smallImg,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="cn.com.clubank.weihang.manage.news.pojo.BaseNews">
+    update base_news
+    <set>
+      <if test="typeId != null">
+        type_id = #{typeId,jdbcType=INTEGER},
+      </if>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="pv != null">
+        pv = #{pv,jdbcType=INTEGER},
+      </if>
+      <if test="releaseTime != null">
+        release_time = #{releaseTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUserId != null">
+        create_user_Id = #{createUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="createUserName != null">
+        create_user_name = #{createUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="bigImg != null">
+        big_img = #{bigImg,jdbcType=VARCHAR},
+      </if>
+      <if test="smallImg != null">
+        small_img = #{smallImg,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where n_id = #{nId,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="updateByPrimaryKey" parameterType="cn.com.clubank.weihang.manage.news.pojo.BaseNews">
+    update base_news
+    set type_id = #{typeId,jdbcType=INTEGER},
+      title = #{title,jdbcType=VARCHAR},
+      pv = #{pv,jdbcType=INTEGER},
+      release_time = #{releaseTime,jdbcType=TIMESTAMP},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      create_user_Id = #{createUserId,jdbcType=VARCHAR},
+      create_user_name = #{createUserName,jdbcType=VARCHAR},
+      big_img = #{bigImg,jdbcType=VARCHAR},
+      small_img = #{smallImg,jdbcType=VARCHAR},
+      content = #{content,jdbcType=LONGVARCHAR}
+    where n_id = #{nId,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 分页查询获得新闻图片、标题和主键 -->
+  <select id="selectNewsPaged" resultMap="ResultMapWithBLOBs">
+  	select n_id, title, big_img, small_img
+  	from base_news 
+  	order by release_time desc
+    <if test="start &gt;= 0">
+    limit #{start,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+    </if> 
+  </select>
+  
+  <!-- 通过新闻标题模糊查询,类型查询到的总条数 -->
+  <select id="selectByNewsTitleSum" resultType="Integer">
+  	select count(0)
+  	from base_news
+  	where 1=1
+  	<if test="title != null">
+  		and title like CONCAT('%', #{title,jdbcType=VARCHAR}, '%')
+  	</if>
+  	<if test="typeId != null">
+  		and type_id = #{typeId,jdbcType=INTEGER}
+  	</if>
+  </select>
+  
+  <!-- 通过新闻标题模糊查询,类型查询并分页 -->
+  <select id="selectByNewsTitlePaged" resultMap="ResultMapWithBLOBs">
+  	select
+  	<include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+  	from base_news
+  	where 1=1
+  	<if test="title != null">
+  		and title like CONCAT('%', #{title,jdbcType=VARCHAR}, '%')
+  	</if>
+  	<if test="typeId != null">
+  		and type_id = #{typeId,jdbcType=INTEGER}
+  	</if>
+  	order by release_time desc
+  	<if test="startIndex &gt; -1">
+  		limit #{startIndex,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
+  	</if>
+  </select>
+</mapper>

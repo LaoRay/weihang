@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>注册</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="${request.contextPath}/static/recommend/css/mui.min.css">
+    <link rel="stylesheet" href="${request.contextPath}/static/recommend/css/physical.css"/>
+</head>
+
+<body>
+<div class="mui-content">
+    <h1>注册</h1>
+    <form id="regedit-form" class="mui-input-group regedit" method="post">
+        <div class="mui-input-row info">
+            <label>
+                <i class="reg-phone"></i>
+            </label>
+            <input name="mobile" id="telInput" type="text" class="mui-input-clear mui-input" placeholder="请输入您的手机号">
+        </div>
+        <div class="mui-input-row info ">
+            <label>
+                <i class="reg-password"></i>
+            </label>
+            <input name="password" id="" type="password" class="mui-input-clear mui-input" placeholder="请输入密码">
+        </div>
+        <div class="mui-input-row info ">
+            <label>
+                <i class="reg-repassword"></i>
+            </label>
+            <input name="rePassword" id="" type="password" class="mui-input-clear mui-input" placeholder="请再次输入密码">
+        </div>
+        <div class="mui-input-row info">
+            <label>
+                <i class="reg-tjm"></i>
+            </label>
+            <input name="recommendCode" id="" type="text" value="${recommendCode!''}" class="mui-input-clear mui-input" placeholder="请输入推荐码">
+        </div>
+        <div class="mui-input-row info">
+            <label>
+                <i class="reg-yzm"></i>
+            </label>
+            <input name="randomCode" type="text" placeholder="请输入验证码" style="width: 45%;">
+            <a id="yzm" class="mui-btn yanzm yanzm-disable">获取验证码</a>
+        </div>
+    </form>
+
+    <div class="mui-input-row xieyi">
+        <i class="gray">通过手机号注册代表已阅读并同意</i>
+        <a href="${request.contextPath}/webUserRegistration" class="blue" target="_blank">《威航用户协议》</a>
+    </div>
+    <div class="mui-content-padded">
+        <button id="regedit-ok" class="mui-btn mui-btn-success">确定</button>
+    </div>
+
+</div>
+
+</body>
+<script type="text/javascript" src="${request.contextPath}/static/recommend/js/mui.min.js"></script>
+<script type="text/javascript" src="${request.contextPath}/static/recommend/js/jquery-1.8.2.min.js"></script>
+<script type="text/javascript" src="${request.contextPath}/static/recommend/js/physical.js"></script>
+<script type="text/javascript" src="${request.contextPath}/static/recommend/js/jquery.customize.plugin.js"></script>
+<script type="text/javascript">
+$(function() {
+	//获取验证码
+	$('#yzm').click(function() {
+		if (!$(this).hasClass('yanzm-disable')) {
+			$.ajax({
+				url: "${request.contextPath}/sendValidate",
+				type: 'post',
+				data: JSON.stringify({'mobile':$.trim($('input[name=mobile]').val()),'type':0}),
+		    	dataType: 'json',
+		    	contentType: "application/json",
+		    	success: function(data) {
+		    		if (data.apiStatus == 1) {
+		    			time();
+		    		} else {
+		    			alert(data.msg);
+		    		}
+		    	}
+			});
+		}
+	});
+	
+	//初始化：判断如果电话号码正确则显示获取验证码按钮
+	if (/^1[3-9]{1}[0-9]{9}$/.test($.trim($('input[name=mobile]').val()))) {
+		$("#yzm").addClass('yanzm-usable').removeClass('yanzm-disable');
+    }
+	
+	//保存
+	$('#regedit-ok').click(function(){
+		if ($.trim($('input[name=mobile]').val()) == '') {
+			alert("请输入手机号");
+			return;
+		}
+		if ($.trim($('input[name=password]').val()) == '') {
+			alert("请输入密码");
+			return;
+		}
+		if ($('input[name=password]').val() != $('input[name=rePassword]').val()) {
+			alert("两次密码输入不一致，请重新输入");
+			return;
+		}
+		if ($.trim($('input[name=randomCode]').val()) == '') {
+			alert("请输入验证码");
+			return;
+		}
+		$.ajax({
+			url: "${request.contextPath}/clientMemberRegister",
+			type: 'post',
+			data: $("#regedit-form").serializeJsonStr(),
+	    	dataType: 'json',
+	    	contentType: "application/json",
+	    	success: function(data) {
+	    		if (data.apiStatus == 1) {
+	    			location.href = "${request.contextPath}/webRegeditSucess";
+	    		} else {
+	    			alert(data.msg);
+	    		}
+	    	}
+		});
+	});
+})
+
+var wait = 89;
+function time() {
+	if(wait == 0) {
+		$("#yzm").attr("disabled", false); 
+        $("#yzm").addClass('yanzm-usable').removeClass('yanzm-disable');
+		$("#yzm").html("获取验证码");
+		wait = 89;
+	} else {
+		$("#yzm").addClass('yanzm-disable').removeClass('yanzm-usable');
+        $("#yzm").attr("disabled", true); 
+		$("#yzm").html("重新发送(" + wait + ")");
+		wait--;
+		setTimeout(function() {
+				time()
+			},
+			1000)
+	}
+}
+</script>
+</html>

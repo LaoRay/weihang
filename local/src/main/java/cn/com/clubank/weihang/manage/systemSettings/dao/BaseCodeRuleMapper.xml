@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.clubank.weihang.manage.systemSettings.dao.BaseCodeRuleMapper">
+  <resultMap id="BaseResultMap" type="cn.com.clubank.weihang.manage.systemSettings.pojo.BaseCodeRule">
+    <id column="rule_id" jdbcType="VARCHAR" property="ruleId" />
+    <result column="item_code" jdbcType="VARCHAR" property="itemCode" />
+    <result column="item" jdbcType="VARCHAR" property="item" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="current_uumber" jdbcType="VARCHAR" property="currentUumber" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="create_user_Id" jdbcType="VARCHAR" property="createUserId" />
+    <result column="create_user_name" jdbcType="VARCHAR" property="createUserName" />
+    <result column="modify_date" jdbcType="TIMESTAMP" property="modifyDate" />
+    <result column="modify_user_Id" jdbcType="VARCHAR" property="modifyUserId" />
+    <result column="modify_user_name" jdbcType="VARCHAR" property="modifyUserName" />
+    <result column="rule_formatJson" jdbcType="LONGVARCHAR" property="ruleFormatjson" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from base_code_rule
+    where rule_id = #{ruleId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.com.clubank.weihang.manage.systemSettings.pojo.BaseCodeRule">
+    insert into base_code_rule (rule_id, item_code, item, 
+      name, current_uumber, description, 
+      create_date, create_user_Id, create_user_name, 
+      modify_date, modify_user_Id, modify_user_name, 
+      rule_formatJson)
+    values (#{ruleId,jdbcType=VARCHAR}, #{itemCode,jdbcType=VARCHAR}, #{item,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{currentUumber,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{createUserId,jdbcType=VARCHAR}, #{createUserName,jdbcType=VARCHAR}, 
+      #{modifyDate,jdbcType=TIMESTAMP}, #{modifyUserId,jdbcType=VARCHAR}, #{modifyUserName,jdbcType=VARCHAR}, 
+      #{ruleFormatjson,jdbcType=LONGVARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.com.clubank.weihang.manage.systemSettings.pojo.BaseCodeRule">
+    update base_code_rule
+    set item_code = #{itemCode,jdbcType=VARCHAR},
+      item = #{item,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      current_uumber = #{currentUumber,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      create_user_Id = #{createUserId,jdbcType=VARCHAR},
+      create_user_name = #{createUserName,jdbcType=VARCHAR},
+      modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+      modify_user_Id = #{modifyUserId,jdbcType=VARCHAR},
+      modify_user_name = #{modifyUserName,jdbcType=VARCHAR},
+      rule_formatJson = #{ruleFormatjson,jdbcType=LONGVARCHAR}
+    where rule_id = #{ruleId,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select rule_id, item_code, item, name, current_uumber, description, create_date, 
+    create_user_Id, create_user_name, modify_date, modify_user_Id, modify_user_name, 
+    rule_formatJson
+    from base_code_rule
+    where rule_id = #{ruleId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select rule_id, item_code, item, name, current_uumber, description, create_date, 
+    create_user_Id, create_user_name, modify_date, modify_user_Id, modify_user_name, 
+    rule_formatJson
+    from base_code_rule
+  </select>
+  
+  <select id="selectByItemCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select rule_id, item_code, item, name, current_uumber, description, create_date, 
+    create_user_Id, create_user_name, modify_date, modify_user_Id, modify_user_name, 
+    rule_formatJson
+    from base_code_rule
+    where item_code = #{itemCode,jdbcType=VARCHAR}
+  </select>
+</mapper>

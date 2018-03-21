@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.clubank.weihang.manage.product.dao.OrderDetailMapper">
+  <resultMap id="BaseResultMap" type="cn.com.clubank.weihang.manage.product.pojo.OrderDetail">
+    <id column="odi_id" jdbcType="VARCHAR" property="odiId" />
+    <result column="order_id" jdbcType="VARCHAR" property="orderId" />
+    <result column="sku_id" jdbcType="VARCHAR" property="skuId" />
+    <result column="quantity" jdbcType="INTEGER" property="quantity" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="is_comment" jdbcType="BIT" property="isComment" />
+    <result column="is_sale_service" jdbcType="BIT" property="isSaleService" />
+    <result column="product_id" jdbcType="VARCHAR" property="productId" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from order_detail
+    where odi_id = #{odiId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByOrderId" parameterType="java.lang.String">
+    delete from order_detail
+    where order_id = #{orderId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.com.clubank.weihang.manage.product.pojo.OrderDetail">
+    insert into order_detail (odi_id, order_id, sku_id, status,
+      quantity, price, is_comment, is_sale_service,
+      product_id)
+    values (#{odiId,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR}, #{skuId,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER},
+      #{quantity,jdbcType=INTEGER}, #{price,jdbcType=DECIMAL}, #{isComment,jdbcType=BIT}, #{isSaleService,jdbcType=BIT}, 
+      #{productId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertBatch" parameterType="list">
+    insert into 
+    	order_detail (
+    	odi_id, order_id, sku_id, quantity, status, price, is_comment, is_sale_service, product_id)
+    values 
+    <foreach collection="list" item="item" index="index" separator="," >
+    (
+      #{item.odiId,jdbcType=VARCHAR}, 
+      #{item.orderId,jdbcType=VARCHAR}, 
+      #{item.skuId,jdbcType=VARCHAR}, 
+      #{item.quantity,jdbcType=INTEGER}, 
+      #{item.status,jdbcType=INTEGER}, 
+      #{item.price,jdbcType=DECIMAL}, 
+      #{item.isComment,jdbcType=BIT}, 
+      #{item.isSaleService,jdbcType=BIT}, 
+      #{item.productId,jdbcType=VARCHAR}
+    )
+    </foreach>
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.com.clubank.weihang.manage.product.pojo.OrderDetail">
+    update order_detail
+    set order_id = #{orderId,jdbcType=VARCHAR},
+      sku_id = #{skuId,jdbcType=VARCHAR},
+      quantity = #{quantity,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      price = #{price,jdbcType=DECIMAL},
+      is_comment = #{isComment,jdbcType=BIT},
+      is_sale_service = #{isSaleService,jdbcType=BIT},
+      product_id = #{productId,jdbcType=VARCHAR}
+    where odi_id = #{odiId,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select odi_id, order_id, sku_id, quantity, status, price, is_comment, is_sale_service, product_id
+    from order_detail
+    where odi_id = #{odiId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectListByOrderId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select odi_id, order_id, sku_id, quantity, status, price, is_comment, is_sale_service, product_id
+    from order_detail
+    where order_id = #{orderId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectOrderDetailsByOrderId" parameterType="java.lang.String" resultType="hashMap">
+	SELECT
+		od.odi_id AS odiId,
+		od.order_id AS orderId,
+		CAST(od.quantity AS CHAR) AS quantity,
+		od.status AS status,
+		od.price AS price,
+		od.is_comment AS isComment,
+		od.is_sale_service AS isSaleService,
+		od.product_id AS productId,
+		p.product_type AS productType,
+		ord.order_no AS orderNo,
+		ps.sku_id AS skuId,
+		ps.sku_name AS skuName,
+		ps.attributes AS attributes,
+		pp.pic_small AS picSmall,
+		pp.pic_big AS picBig
+	FROM
+		order_detail od
+	LEFT JOIN product_info p ON od.product_id = p.product_id
+	LEFT JOIN order_list ord ON ord.order_id = od.order_id
+	LEFT JOIN product_sku ps ON od.sku_id = ps.sku_id
+	LEFT JOIN product_pic pp ON ps.product_pic_id = pp.product_pic_id
+	WHERE
+		od.order_id = #{orderId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select odi_id, order_id, sku_id, quantity, status, price, is_comment, is_sale_service, product_id
+    from order_detail
+  </select>
+  
+  <!-- 定时任务：查询超过7天未评价订单信息 -->
+  <select id="selectNotCommentOrder" resultType="hashMap">
+	SELECT
+		od.odi_id AS orderDetailId,
+		ol.customer_id AS customerId,
+		od.product_id AS productId
+	FROM
+		order_detail od
+	LEFT JOIN order_list ol ON od.order_id = ol.order_id
+	WHERE
+		od.is_comment = FALSE
+	AND od.is_sale_service = FALSE
+	AND TO_DAYS(NOW()) - TO_DAYS(ol.create_date) > 7
+  </select>
+  
+  <!-- 查询客户未完成的服务类商品和汽车类实体商品列表 -->
+  <select id="selectWaitReceiveServiceOrder" parameterType="java.lang.String" resultType="hashMap">
+	SELECT
+		od.odi_id AS orderDetailId,
+		od.product_id AS productId,
+		od.quantity,
+		od.price,
+		
+		pro.product_type AS productType,
+		sku.sku_id AS skuId,
+		sku.sku_name AS skuName,
+		sku.attributes AS attributes,
+		sku.attributes_id AS attributesId,
+		sku.product_price AS productPrice,
+		sku.product_price1 AS productPrice1,
+		sku.product_price2 AS productPrice2,
+		sku.product_price3 AS productPrice3,
+		pic.pic_small AS picSmall,
+		pic.pic_big AS picBig,
+		ol.order_no AS orderNo
+		
+	FROM order_detail od LEFT JOIN order_list ol ON od.order_id = ol.order_id
+	LEFT JOIN product_info pro ON pro.product_id = od.product_id
+	LEFT JOIN product_sku sku ON sku.sku_id = od.sku_id
+	LEFT JOIN product_pic pic ON pic.product_pic_id = sku.product_pic_id
+	
+	WHERE ol.customer_id = #{customerId,jdbcType=VARCHAR} and ol.order_status = 2
+	and (pro.product_type = 1 or pro.product_type = 2)
+  </select>
+  
+  <!-- 根据ids查询详情列表 -->
+  <select id="selectByIds" resultType="hashMap">
+	SELECT
+		od.odi_id AS orderDetailId,
+		od.product_id AS productId,
+		od.status,
+		od.quantity,
+		od.price,
+		
+		pro.product_type AS productType,
+		sku.sku_id AS skuId,
+		sku.sku_name AS skuName,
+		sku.attributes AS attributes,
+		sku.attributes_id AS attributesId,
+		sku.product_quantity AS productQuantity,
+		sku.product_sale_quantity AS productSaleQuantity,
+		sku.product_price AS productPrice,
+		sku.product_price1 AS productPrice1,
+		sku.product_price2 AS productPrice2,
+		sku.product_price3 AS productPrice3,
+		pic.pic_small AS picSmall,
+		pic.pic_big AS picBig,
+		ol.order_no AS orderNo
+		
+	FROM order_detail od LEFT JOIN order_list ol ON od.order_id = ol.order_id
+	LEFT JOIN product_info pro ON pro.product_id = od.product_id
+	LEFT JOIN product_sku sku ON sku.sku_id = od.sku_id
+	LEFT JOIN product_pic pic ON pic.product_pic_id = sku.product_pic_id
+	
+	WHERE 1=1 
+	<foreach collection="odiIds" item="odiId" index="index" open="and ( " separator=" or " close=" )">
+    	od.odi_id = #{odiId,jdbcType=VARCHAR}
+    </foreach>
+  </select>
+</mapper>

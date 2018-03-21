@@ -1,0 +1,482 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.clubank.weihang.manage.special.dao.SpecialOrderMapper">
+  <resultMap id="BaseResultMap" type="cn.com.clubank.weihang.manage.special.pojo.SpecialOrder">
+    <id column="special_id" jdbcType="VARCHAR" property="specialId" />
+    <result column="order_no" jdbcType="VARCHAR" property="orderNo" />
+    <result column="customer_id" jdbcType="VARCHAR" property="customerId" />
+    <result column="customer_name" jdbcType="VARCHAR" property="customerName" />
+    <result column="product_name" jdbcType="VARCHAR" property="productName" />
+    <result column="product_attr" jdbcType="VARCHAR" property="productAttr" />
+    <result column="product_desc" jdbcType="VARCHAR" property="productDesc" />
+    <result column="factory_type" jdbcType="INTEGER" property="factoryType" />
+    <result column="factory_name" jdbcType="VARCHAR" property="factoryName" />
+    <result column="expect_totime" jdbcType="TIMESTAMP" property="expectTotime" />
+    <result column="estimate_totime" jdbcType="TIMESTAMP" property="estimateTotime" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="delivery_time" jdbcType="TIMESTAMP" property="deliveryTime" />
+    <result column="delivery_address" jdbcType="VARCHAR" property="deliveryAddress" />
+    <result column="delivery_type" jdbcType="INTEGER" property="deliveryType" />
+    <result column="delivery_status" jdbcType="INTEGER" property="deliveryStatus" />
+    <result column="order_pay_amount" jdbcType="DECIMAL" property="orderPayAmount" />
+    <result column="order_amount" jdbcType="DECIMAL" property="orderAmount" />
+    <result column="pay_time" jdbcType="TIMESTAMP" property="payTime" />
+    <result column="pay_type" jdbcType="INTEGER" property="payType" />
+    <result column="turn_down_desc" jdbcType="VARCHAR" property="turnDownDesc" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="create_user_Id" jdbcType="VARCHAR" property="createUserId" />
+    <result column="create_user_name" jdbcType="VARCHAR" property="createUserName" />
+    <result column="modify_date" jdbcType="TIMESTAMP" property="modifyDate" />
+    <result column="modify_user_Id" jdbcType="VARCHAR" property="modifyUserId" />
+    <result column="modify_user_name" jdbcType="VARCHAR" property="modifyUserName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    special_id, order_no, customer_id, customer_name, product_name, product_attr, product_desc, 
+    factory_type, factory_name, expect_totime, estimate_totime, status, delivery_time, 
+    delivery_address, delivery_type, delivery_status, order_pay_amount, order_amount, 
+    pay_time, pay_type, turn_down_desc, description, create_date, create_user_Id, create_user_name, 
+    modify_date, modify_user_Id, modify_user_name
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from special_order
+    where special_id = #{specialId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByOrderNo"  parameterType="java.lang.String" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from special_order
+    where order_no = #{orderNo,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectSpecialOrderCount" resultType="Integer">
+  	select count(0)
+  	from special_order
+  	where 1=1
+  	<if test="customerId != null and customerId != ''">
+  		and customer_id = #{customerId}
+  	</if>
+  	<if test="status != null">
+  		and status = #{status}
+  	</if>
+  </select>
+  
+  <select id="selectSpecialOrderList" resultMap="BaseResultMap">
+  	select
+  	<include refid="Base_Column_List" /> 
+  	from special_order
+  	where 1=1
+  	<if test="customerId != null and customerId != ''">
+  		and customer_id = #{customerId}
+  	</if>
+  	<if test="status != null">
+  		and status = #{status}
+  	</if>
+  	order by create_date DESC
+    <if test="start &gt;= 0">
+    	limit #{start,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+    </if>
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from special_order
+    where special_id = #{specialId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.com.clubank.weihang.manage.special.pojo.SpecialOrder">
+    insert into special_order (special_id, order_no, customer_id, 
+      customer_name, product_name, product_attr, 
+      product_desc, factory_type, factory_name, 
+      expect_totime, estimate_totime, status, 
+      delivery_time, delivery_address, delivery_type, 
+      delivery_status, order_pay_amount, order_amount, 
+      pay_time, pay_type, turn_down_desc, 
+      description, create_date, create_user_Id, 
+      create_user_name, modify_date, modify_user_Id, 
+      modify_user_name)
+    values (#{specialId,jdbcType=VARCHAR}, #{orderNo,jdbcType=VARCHAR}, #{customerId,jdbcType=VARCHAR}, 
+      #{customerName,jdbcType=VARCHAR}, #{productName,jdbcType=VARCHAR}, #{productAttr,jdbcType=VARCHAR}, 
+      #{productDesc,jdbcType=VARCHAR}, #{factoryType,jdbcType=INTEGER}, #{factoryName,jdbcType=VARCHAR}, 
+      #{expectTotime,jdbcType=TIMESTAMP}, #{estimateTotime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}, 
+      #{deliveryTime,jdbcType=TIMESTAMP}, #{deliveryAddress,jdbcType=VARCHAR}, #{deliveryType,jdbcType=INTEGER}, 
+      #{deliveryStatus,jdbcType=INTEGER}, #{orderPayAmount,jdbcType=DECIMAL}, #{orderAmount,jdbcType=DECIMAL}, 
+      #{payTime,jdbcType=TIMESTAMP}, #{payType,jdbcType=INTEGER}, #{turnDownDesc,jdbcType=VARCHAR}, 
+      #{description,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{createUserId,jdbcType=VARCHAR}, 
+      #{createUserName,jdbcType=VARCHAR}, #{modifyDate,jdbcType=TIMESTAMP}, #{modifyUserId,jdbcType=VARCHAR}, 
+      #{modifyUserName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.com.clubank.weihang.manage.special.pojo.SpecialOrder">
+    insert into special_order
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="specialId != null">
+        special_id,
+      </if>
+      <if test="orderNo != null">
+        order_no,
+      </if>
+      <if test="customerId != null">
+        customer_id,
+      </if>
+      <if test="customerName != null">
+        customer_name,
+      </if>
+      <if test="productName != null">
+        product_name,
+      </if>
+      <if test="productAttr != null">
+        product_attr,
+      </if>
+      <if test="productDesc != null">
+        product_desc,
+      </if>
+      <if test="factoryType != null">
+        factory_type,
+      </if>
+      <if test="factoryName != null">
+        factory_name,
+      </if>
+      <if test="expectTotime != null">
+        expect_totime,
+      </if>
+      <if test="estimateTotime != null">
+        estimate_totime,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="deliveryTime != null">
+        delivery_time,
+      </if>
+      <if test="deliveryAddress != null">
+        delivery_address,
+      </if>
+      <if test="deliveryType != null">
+        delivery_type,
+      </if>
+      <if test="deliveryStatus != null">
+        delivery_status,
+      </if>
+      <if test="orderPayAmount != null">
+        order_pay_amount,
+      </if>
+      <if test="orderAmount != null">
+        order_amount,
+      </if>
+      <if test="payTime != null">
+        pay_time,
+      </if>
+      <if test="payType != null">
+        pay_type,
+      </if>
+      <if test="turnDownDesc != null">
+        turn_down_desc,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="createUserId != null">
+        create_user_Id,
+      </if>
+      <if test="createUserName != null">
+        create_user_name,
+      </if>
+      <if test="modifyDate != null">
+        modify_date,
+      </if>
+      <if test="modifyUserId != null">
+        modify_user_Id,
+      </if>
+      <if test="modifyUserName != null">
+        modify_user_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="specialId != null">
+        #{specialId,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNo != null">
+        #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="customerId != null">
+        #{customerId,jdbcType=VARCHAR},
+      </if>
+      <if test="customerName != null">
+        #{customerName,jdbcType=VARCHAR},
+      </if>
+      <if test="productName != null">
+        #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="productAttr != null">
+        #{productAttr,jdbcType=VARCHAR},
+      </if>
+      <if test="productDesc != null">
+        #{productDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="factoryType != null">
+        #{factoryType,jdbcType=INTEGER},
+      </if>
+      <if test="factoryName != null">
+        #{factoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="expectTotime != null">
+        #{expectTotime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="estimateTotime != null">
+        #{estimateTotime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="deliveryTime != null">
+        #{deliveryTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deliveryAddress != null">
+        #{deliveryAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="deliveryType != null">
+        #{deliveryType,jdbcType=INTEGER},
+      </if>
+      <if test="deliveryStatus != null">
+        #{deliveryStatus,jdbcType=INTEGER},
+      </if>
+      <if test="orderPayAmount != null">
+        #{orderPayAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="orderAmount != null">
+        #{orderAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="payTime != null">
+        #{payTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payType != null">
+        #{payType,jdbcType=INTEGER},
+      </if>
+      <if test="turnDownDesc != null">
+        #{turnDownDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUserId != null">
+        #{createUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="createUserName != null">
+        #{createUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyDate != null">
+        #{modifyDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyUserId != null">
+        #{modifyUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyUserName != null">
+        #{modifyUserName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.com.clubank.weihang.manage.special.pojo.SpecialOrder">
+    update special_order
+    <set>
+      <if test="orderNo != null">
+        order_no = #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="customerId != null">
+        customer_id = #{customerId,jdbcType=VARCHAR},
+      </if>
+      <if test="customerName != null">
+        customer_name = #{customerName,jdbcType=VARCHAR},
+      </if>
+      <if test="productName != null">
+        product_name = #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="productAttr != null">
+        product_attr = #{productAttr,jdbcType=VARCHAR},
+      </if>
+      <if test="productDesc != null">
+        product_desc = #{productDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="factoryType != null">
+        factory_type = #{factoryType,jdbcType=INTEGER},
+      </if>
+      <if test="factoryName != null">
+        factory_name = #{factoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="expectTotime != null">
+        expect_totime = #{expectTotime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="estimateTotime != null">
+        estimate_totime = #{estimateTotime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="deliveryTime != null">
+        delivery_time = #{deliveryTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deliveryAddress != null">
+        delivery_address = #{deliveryAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="deliveryType != null">
+        delivery_type = #{deliveryType,jdbcType=INTEGER},
+      </if>
+      <if test="deliveryStatus != null">
+        delivery_status = #{deliveryStatus,jdbcType=INTEGER},
+      </if>
+      <if test="orderPayAmount != null">
+        order_pay_amount = #{orderPayAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="orderAmount != null">
+        order_amount = #{orderAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="payTime != null">
+        pay_time = #{payTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payType != null">
+        pay_type = #{payType,jdbcType=INTEGER},
+      </if>
+      <if test="turnDownDesc != null">
+        turn_down_desc = #{turnDownDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUserId != null">
+        create_user_Id = #{createUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="createUserName != null">
+        create_user_name = #{createUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyDate != null">
+        modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyUserId != null">
+        modify_user_Id = #{modifyUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyUserName != null">
+        modify_user_name = #{modifyUserName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where special_id = #{specialId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.com.clubank.weihang.manage.special.pojo.SpecialOrder">
+    update special_order
+    set order_no = #{orderNo,jdbcType=VARCHAR},
+      customer_id = #{customerId,jdbcType=VARCHAR},
+      customer_name = #{customerName,jdbcType=VARCHAR},
+      product_name = #{productName,jdbcType=VARCHAR},
+      product_attr = #{productAttr,jdbcType=VARCHAR},
+      product_desc = #{productDesc,jdbcType=VARCHAR},
+      factory_type = #{factoryType,jdbcType=INTEGER},
+      factory_name = #{factoryName,jdbcType=VARCHAR},
+      expect_totime = #{expectTotime,jdbcType=TIMESTAMP},
+      estimate_totime = #{estimateTotime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=INTEGER},
+      delivery_time = #{deliveryTime,jdbcType=TIMESTAMP},
+      delivery_address = #{deliveryAddress,jdbcType=VARCHAR},
+      delivery_type = #{deliveryType,jdbcType=INTEGER},
+      delivery_status = #{deliveryStatus,jdbcType=INTEGER},
+      order_pay_amount = #{orderPayAmount,jdbcType=DECIMAL},
+      order_amount = #{orderAmount,jdbcType=DECIMAL},
+      pay_time = #{payTime,jdbcType=TIMESTAMP},
+      pay_type = #{payType,jdbcType=INTEGER},
+      turn_down_desc = #{turnDownDesc,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      create_user_Id = #{createUserId,jdbcType=VARCHAR},
+      create_user_name = #{createUserName,jdbcType=VARCHAR},
+      modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+      modify_user_Id = #{modifyUserId,jdbcType=VARCHAR},
+      modify_user_name = #{modifyUserName,jdbcType=VARCHAR}
+    where special_id = #{specialId,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 后台：通过客户名称模糊查询，订单状态、下单时间查询到特殊订单的条数 -->
+  <select id="clientSelectSpecialOrderCount" resultType="Integer">
+  	select count(0)
+  	from special_order
+  	where 1=1
+  	<if test="orderTimeStart != null and orderTimeStart != ''">
+  		and create_date <![CDATA[>=]]> CONCAT(#{orderTimeStart}, ' 0:0:0')
+  	</if>
+  	<if test="orderTimeEnd != null and orderTimeEnd != ''">
+  		and create_date <![CDATA[<=]]> CONCAT(#{orderTimeEnd}, ' 23:59:59')
+  	</if>
+  	<if test="status != null">
+  		and status = #{status,jdbcType=INTEGER}
+  	</if>
+  	<if test="customerName != null and customerName != ''">
+  		and customer_name like CONCAT('%',#{customerName,jdbcType=VARCHAR},'%')
+  	</if>
+  </select>
+  
+  <!-- 后台：通过客户名称模糊查询，订单状态、下单时间查询到特殊订单并分页 -->
+  <select id="clientSelectSpecialOrderList" resultMap="BaseResultMap">
+  	select
+  	<include refid="Base_Column_List" /> 
+  	from special_order
+  	where 1=1
+  	<if test="orderTimeStart != null and orderTimeStart != ''">
+  		and create_date <![CDATA[>=]]> CONCAT(#{orderTimeStart}, ' 0:0:0')
+  	</if>
+  	<if test="orderTimeEnd != null and orderTimeEnd != ''">
+  		and create_date <![CDATA[<=]]> CONCAT(#{orderTimeEnd}, ' 23:59:59')
+  	</if>
+  	<if test="status != null">
+  		and status = #{status,jdbcType=INTEGER}
+  	</if>
+  	<if test="customerName != null and customerName != ''">
+  		and customer_name like CONCAT('%',#{customerName,jdbcType=VARCHAR},'%')
+  	</if>
+  	order by create_date DESC
+    <if test="start &gt;= 0">
+    	limit #{start,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+    </if>
+  </select>
+  
+  <!-- 待付款状态三天内未支付，订单状态修改为已取消 -->
+  <update id="handleDelayedPayOrderStatus">
+  	update special_order
+  	set status = 6
+  	where status = 2
+  	and TIMESTAMPDIFF(HOUR, modify_date, NOW()) > 72
+  </update>
+  <!-- 已发货保单十天内未确认收货，订单状态变更为已完成 -->
+  <update id="handleUnconfirmedReceiptOrderStatus">
+  	update special_order
+  	set status = 4
+  	where delivery_status = 2
+  	and status = 3
+  	and TIMESTAMPDIFF(HOUR, delivery_time, NOW()) > 240
+  </update>
+  
+  <!-- 后台：按查询条件导出特殊订单 -->
+  <select id="exportSpecialOrder" resultMap="BaseResultMap">
+  	select
+  	<include refid="Base_Column_List" /> 
+  	from special_order
+  	where 1=1
+  	<if test="orderTimeStart != null and orderTimeStart != ''">
+  		and create_date <![CDATA[>=]]> CONCAT(#{orderTimeStart}, ' 0:0:0')
+  	</if>
+  	<if test="orderTimeEnd != null and orderTimeEnd != ''">
+  		and create_date <![CDATA[<=]]> CONCAT(#{orderTimeEnd}, ' 23:59:59')
+  	</if>
+  	<if test="status != null">
+  		and status = #{status,jdbcType=INTEGER}
+  	</if>
+  	<if test="customerName != null and customerName != ''">
+  		and customer_name like CONCAT('%',#{customerName,jdbcType=VARCHAR},'%')
+  	</if>
+  	order by create_date DESC
+  </select>
+</mapper>

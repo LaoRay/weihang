@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"    
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns:p="http://www.springframework.org/schema/p"    
+    xmlns:context="http://www.springframework.org/schema/context"    
+    xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xmlns:aop="http://www.springframework.org/schema/aop" 
+    xmlns:tx="http://www.springframework.org/schema/tx"   
+    xsi:schemaLocation="http://www.springframework.org/schema/beans      
+                        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd      
+                        http://www.springframework.org/schema/context      
+                        http://www.springframework.org/schema/context/spring-context-4.0.xsd      
+                        http://www.springframework.org/schema/mvc      
+                        http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+                        http://www.springframework.org/schema/aop
+	              		http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+	              		http://www.springframework.org/schema/tx
+	              		http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+        
+    <!-- 自动扫描 -->
+    <!-- 会自动扫描cn.com.clubank.weihang下的所有包，包括子包下除了@Controller的类。 -->    
+    <context:component-scan base-package="cn.com.clubank.weihang">
+    	<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+                 
+    <!-- 加载配置文件 -->
+	<context:property-placeholder location="classpath:config/*.properties" />   
+	
+    <!--数据库设置-->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <bean id="masterdataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">      
+    	<property name="driverClassName" value="${jdbc.driver}" />
+        <property name="url" value="${jdbc_url_m}"/>
+        <property name="username" value="${jdbc_username}"/>
+        <property name="password" value="${jdbc_password}"/>
+    </bean>
+    <bean id="slavedataSource_1" class="org.apache.commons.dbcp.BasicDataSource"
+          destroy-method="close">
+        <property name="driverClassName" value="${jdbc.driver}" />
+        <property name="url" value="${jdbc_url_s_1}"/>
+        <property name="username" value="${jdbc_username}"/>
+        <property name="password" value="${jdbc_password}"/>
+    </bean>
+    <bean id="slavedataSource_2" class="org.apache.commons.dbcp.BasicDataSource"
+          destroy-method="close">
+        <property name="driverClassName" value="${jdbc.driver}" />
+        <property name="url" value="${jdbc_url_s_2}"/>
+        <property name="username" value="${jdbc_username}"/>
+        <property name="password" value="${jdbc_password}"/>
+    </bean>
+    <bean id="dataSource" class="cn.com.clubank.weihang.common.dataSource.DynamicDataSource">
+        <property name="targetDataSources">
+            <map>
+                <entry key="master" value-ref="masterdataSource"/>
+                <entry key="slave_1" value-ref="slavedataSource_1"/>
+                <entry key="slave_2" value-ref="slavedataSource_2"/>
+            </map>
+        </property>
+        <property name="defaultTargetDataSource" ref="masterdataSource"/>
+    </bean>
+    
+    <!-- spring和MyBatis完美整合，不需要mybatis的配置映射文件 -->    
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">    
+        <property name="dataSource" ref="dataSource" />    
+        <!-- 自动扫描mapping.xml文件 -->    
+        <property name="mapperLocations" value="cn.com.clubank.weihang.**.dao/*.xml"></property>    
+    </bean>
+    
+    <!-- DAO接口所在包名，Spring会自动查找其下的类 -->    
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">    
+        <!--basePackage指定要扫描的包，在此包之下的映射器都会被搜索到。可指定多个包，包与包之间用逗号或分号分隔-->    
+        <property name="basePackage" value="cn.com.clubank.weihang.**.dao" />
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>    
+    </bean>    
+    
+    <!--通过标签定义事务增强，并制定事务管理器  -->
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+	
+    <!--定义属性，声明事务规则 -->
+    	<tx:attributes>
+	        <tx:method name="*" propagation="REQUIRED" isolation="DEFAULT" rollback-for="Exception"/>
+		</tx:attributes>
+	</tx:advice>
+
+    <bean id="switchDataSourceAspect" class="cn.com.clubank.weihang.common.dataSource.DataSourceAspect"/>
+	<!-- 切面配置 -->
+	<aop:aspectj-autoproxy/>
+	
+    <aop:config>
+        <aop:pointcut id="serviceMethod" expression="execution(* cn.com.clubank.weihang.manage.**.service..*.*(..))"/>
+        <aop:pointcut id="beforeMethod" expression="execution(* cn.com.clubank.weihang.manage.**.dao..*.insert*(*)) || execution(* cn.com.clubank.weihang.manage.**.dao..*.update*(*))"/>
+        <!-- 将事务增强与切入点组合（织入事务切面） -->
+        <aop:advisor pointcut-ref="serviceMethod" advice-ref="txAdvice"/>
+        <aop:advisor pointcut-ref="beforeMethod" advice-ref="weihAspect"/>
+        <aop:aspect ref="switchDataSourceAspect">
+            <aop:pointcut id="tx" expression="execution(* cn.com.clubank.weihang.manage.**.service..*.*(..))"/>
+            <aop:before method="before" pointcut-ref="tx"/>
+        </aop:aspect>
+    </aop:config>
+   
+   <!-- 支付宝支付util -->
+   <bean id="weihAlipayUtil" class="cn.com.clubank.weihang.common.weihpay.WeihAlipayUtil" factory-method="getInstance">
+        <property name="appId" value="${alipay.appId}" />
+        <property name="appPrivateKey" value="${alipay.appPrivateKey}" />
+        <property name="alipayPublicKey" value="${alipay.publicKey}" />
+        <property name="notifyUrl" value="${alipay.notifyUrl}" />
+        <property name="returnUrl" value="${alipay.returnUrl}" />
+    </bean>
+</beans>

@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.clubank.weihang.manage.product.dao.ProductAttrMapper">
+  <resultMap id="BaseResultMap" type="cn.com.clubank.weihang.manage.product.pojo.ProductAttr">
+    <id column="attr_id" jdbcType="VARCHAR" property="attrId" />
+    <result column="attr_name" jdbcType="VARCHAR" property="attrName" />
+    <result column="category_id" jdbcType="VARCHAR" property="categoryId" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="is_search" jdbcType="INTEGER" property="isSearch" />
+    <result column="is_sell_attr" jdbcType="INTEGER" property="isSellAttr" />
+    <result column="is_main_attr" jdbcType="INTEGER" property="isMainAttr" />
+    <result column="is_common_attr" jdbcType="INTEGER" property="isCommonAttr" />
+    <result column="is_color" jdbcType="INTEGER" property="isColor" />
+    <result column="is_chx" jdbcType="INTEGER" property="isChx" />
+    <result column="is_enum" jdbcType="INTEGER" property="isEnum" />
+    <result column="is_required" jdbcType="INTEGER" property="isRequired" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="create_user_Id" jdbcType="VARCHAR" property="createUserId" />
+    <result column="create_user_name" jdbcType="VARCHAR" property="createUserName" />
+    <result column="modify_date" jdbcType="TIMESTAMP" property="modifyDate" />
+    <result column="modify_user_Id" jdbcType="VARCHAR" property="modifyUserId" />
+    <result column="modify_user_name" jdbcType="VARCHAR" property="modifyUserName" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from product_attr
+    where attr_id = #{attrId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.com.clubank.weihang.manage.product.pojo.ProductAttr">
+    insert into product_attr (attr_id, attr_name, category_id, 
+      status, is_search, is_sell_attr, 
+      is_main_attr, is_common_attr, description, 
+      create_date, create_user_Id, create_user_name, 
+      modify_date, modify_user_Id, modify_user_name,
+      is_color, is_chx, is_enum, is_required
+      )
+    values (#{attrId,jdbcType=VARCHAR}, #{attrName,jdbcType=VARCHAR}, #{categoryId,jdbcType=VARCHAR}, 
+      #{status,jdbcType=INTEGER}, #{isSearch,jdbcType=INTEGER}, #{isSellAttr,jdbcType=INTEGER}, 
+      #{isMainAttr,jdbcType=INTEGER}, #{isCommonAttr,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{createUserId,jdbcType=VARCHAR}, #{createUserName,jdbcType=VARCHAR}, 
+      #{modifyDate,jdbcType=TIMESTAMP}, #{modifyUserId,jdbcType=VARCHAR}, #{modifyUserName,jdbcType=VARCHAR},
+      #{isColor,jdbcType=TIMESTAMP}, #{isChx,jdbcType=VARCHAR}, #{isEnum,jdbcType=VARCHAR}, #{isRequired,jdbcType=VARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.com.clubank.weihang.manage.product.pojo.ProductAttr">
+    update product_attr
+    set attr_name = #{attrName,jdbcType=VARCHAR},
+      category_id = #{categoryId,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      is_search = #{isSearch,jdbcType=INTEGER},
+      is_sell_attr = #{isSellAttr,jdbcType=INTEGER},
+      is_main_attr = #{isMainAttr,jdbcType=INTEGER},
+      is_common_attr = #{isCommonAttr,jdbcType=INTEGER},
+      description = #{description,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      create_user_Id = #{createUserId,jdbcType=VARCHAR},
+      create_user_name = #{createUserName,jdbcType=VARCHAR},
+      modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+      modify_user_Id = #{modifyUserId,jdbcType=VARCHAR},
+      modify_user_name = #{modifyUserName,jdbcType=VARCHAR},
+      is_color = #{isColor,jdbcType=INTEGER},
+      is_chx = #{isChx,jdbcType=INTEGER},
+      is_enum = #{isEnum,jdbcType=INTEGER},
+      is_required = #{isRequired,jdbcType=INTEGER}
+    where attr_id = #{attrId,jdbcType=VARCHAR}
+  </update>
+	
+	<!-- 选择更新 -->
+	<update id="updateSelectiveByPrimaryKey" parameterType="cn.com.clubank.weihang.manage.product.pojo.ProductAttr">
+		update product_attr
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="attrName != null">attr_name = #{attrName,jdbcType=VARCHAR},</if>
+			<if test="categoryId != null">category_id = #{categoryId,jdbcType=VARCHAR},</if>
+			<if test="status != null">status = #{status,jdbcType=INTEGER},</if>
+			<if test="isSearch != null">is_search = #{isSearch,jdbcType=INTEGER},</if>
+			<if test="isSellAttr != null">is_sell_attr = #{isSellAttr,jdbcType=INTEGER},</if>
+			<if test="isMainAttr != null">is_main_attr = #{isMainAttr,jdbcType=INTEGER},</if>
+			<if test="isCommonAttr != null">is_common_attr = #{isCommonAttr,jdbcType=INTEGER},</if>
+			<if test="description != null">description = #{description,jdbcType=VARCHAR},</if>
+			<if test="createDate != null">create_date = #{createDate,jdbcType=TIMESTAMP},</if>
+			<if test="createUserId != null">create_user_Id = #{createUserId,jdbcType=VARCHAR},</if>
+			<if test="createUserName != null">create_user_name = #{createUserName,jdbcType=VARCHAR},</if>
+			<if test="modifyDate != null">modify_date = #{modifyDate,jdbcType=TIMESTAMP},</if>
+			<if test="modifyUserId != null">modify_user_Id = #{modifyUserId,jdbcType=VARCHAR},</if>
+			<if test="modifyUserName != null">modify_user_name = #{modifyUserName,jdbcType=VARCHAR},</if>
+			<if test="isColor != null">is_color = #{isColor,jdbcType=INTEGER},</if>
+			<if test="isChx != null">is_chx = #{isChx,jdbcType=INTEGER},</if>
+			<if test="isEnum != null">is_enum = #{isEnum,jdbcType=INTEGER},</if>
+			<if test="isRequired != null">is_required = #{isRequired,jdbcType=INTEGER},</if>
+		</trim>
+		where attr_id = #{attrId,jdbcType=VARCHAR}
+	</update>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select attr_id, attr_name, category_id, status, is_search, is_sell_attr, is_main_attr, 
+    is_common_attr, description, create_date, create_user_Id, create_user_name, modify_date, 
+    modify_user_Id, modify_user_name, is_color, is_chx, is_enum, is_required
+    from product_attr
+    where attr_id = #{attrId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectListByCategoryId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select attr_id, attr_name, category_id, status, is_search, is_sell_attr, is_main_attr, 
+    is_common_attr, description, create_date, create_user_Id, create_user_name, modify_date, 
+    modify_user_Id, modify_user_name, is_color, is_chx, is_enum, is_required
+    from product_attr
+    where category_id = #{categoryId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select attr_id, attr_name, category_id, status, is_search, is_sell_attr, is_main_attr, 
+    is_common_attr, description, create_date, create_user_Id, create_user_name, modify_date, 
+    modify_user_Id, modify_user_name, is_color, is_chx, is_enum, is_required
+    from product_attr
+  </select>
+  
+  <!-- 按属性名模糊查询到的总条数 -->
+  <select id="findPageTotal" resultType="INTEGER">
+    select count(0)
+    from product_attr
+    where 1 = 1
+    <if test="attrName != null">
+    	and attr_name like CONCAT('%', #{attrName,jdbcType=VARCHAR}, '%')
+    </if>
+  </select>
+  
+  <!-- 分页查询：通过属性名模糊查询，进行分页 -->
+  <select id="findPage" resultType="map">
+    select
+    	attr.attr_id as attrId, 
+    	attr.attr_name as attrName, 
+    	attr.category_id as categoryId, 
+    	attr.status, 
+    	attr.is_search as isSearch, 
+    	attr.is_sell_attr as isSellAttr, 
+    	attr.is_main_attr as isMainAttr, 
+	    attr.is_common_attr as isCommonAttr, 
+	    attr.description, 
+	    attr.create_date as createDate, 
+	    attr.modify_date as modifyDate, 
+	    attr.is_color as isColor, 
+	    attr.is_chx as isChx, 
+	    attr.is_enum as isEnum, 
+	    attr.is_required as isRequired,
+    
+    	cate.cname as categoryName
+    from product_attr attr left join product_category cate on attr.category_id = cate.category_Id
+    where 1 = 1
+    <if test="attrName != null and attrName != ''">
+    	and attr.attr_name like CONCAT('%', #{attrName,jdbcType=VARCHAR}, '%')
+    </if> 
+    order by attr.create_date desc
+    <if test="startIndex &gt;= 0">
+    	LIMIT #{startIndex,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+    </if>
+  </select>
+</mapper>

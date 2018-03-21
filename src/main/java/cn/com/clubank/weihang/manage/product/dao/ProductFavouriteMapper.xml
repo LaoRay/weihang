@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.clubank.weihang.manage.product.dao.ProductFavouriteMapper">
+  <resultMap id="BaseResultMap" type="cn.com.clubank.weihang.manage.product.pojo.ProductFavourite">
+    <id column="f_id" jdbcType="VARCHAR" property="fId" />
+    <result column="product_id" jdbcType="VARCHAR" property="productId" />
+    <result column="customer_id" jdbcType="VARCHAR" property="customerId" />
+    <result column="sku_id" jdbcType="VARCHAR" property="skuId" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="create_user_Id" jdbcType="VARCHAR" property="createUserId" />
+    <result column="create_user_name" jdbcType="VARCHAR" property="createUserName" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from product_favourite
+    where f_id = #{fId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.com.clubank.weihang.manage.product.pojo.ProductFavourite">
+    insert into product_favourite (f_id, product_id, customer_id, 
+      sku_id, create_date, create_user_Id, 
+      create_user_name)
+    values (#{fId,jdbcType=VARCHAR}, #{productId,jdbcType=VARCHAR}, #{customerId,jdbcType=VARCHAR}, 
+      #{skuId,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{createUserId,jdbcType=VARCHAR}, 
+      #{createUserName,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.com.clubank.weihang.manage.product.pojo.ProductFavourite">
+    update product_favourite
+    set product_id = #{productId,jdbcType=VARCHAR},
+      customer_id = #{customerId,jdbcType=VARCHAR},
+      sku_id = #{skuId,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      create_user_Id = #{createUserId,jdbcType=VARCHAR},
+      create_user_name = #{createUserName,jdbcType=VARCHAR}
+    where f_id = #{fId,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select f_id, product_id, customer_id, sku_id, create_date, create_user_Id, create_user_name
+    from product_favourite
+    where f_id = #{fId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectListByCustomerId" resultType="hashMap">
+  	SELECT
+  		pf.f_id as fId,
+		pf.customer_id as customerId,
+		pf.product_id as productId,
+		pi.product_name as productName,
+		pi.product_type as productType,
+		pi.product_price as productPrice,
+		pi.product_explain as productExplain,
+		pic.pic_big AS picBig,
+	  	pic.pic_small AS picSmall 
+	FROM
+		product_favourite pf 
+		LEFT JOIN product_info pi ON pf.product_id = pi.product_id
+		LEFT JOIN product_pic pic ON pf.product_id = pic.product_id
+	WHERE
+		pf.customer_id = #{customerId}
+	GROUP BY pf.f_id
+	ORDER BY 
+		pf.create_date DESC
+	<if test="start &gt;= 0">
+    limit #{start,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+    </if>
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select f_id, product_id, customer_id, sku_id, create_date, create_user_Id, create_user_name
+    from product_favourite
+  </select>
+  <select id="selectFavouriteListSizeByCustomerId" resultType="int">
+    select count(1)
+    from product_favourite
+    where customer_id = #{customerId}
+  </select>
+  <select id="selectFavouriteByCustomerIdAndProductId" resultMap="BaseResultMap">
+    select f_id, product_id, customer_id, sku_id, create_date, create_user_Id, create_user_name
+    from product_favourite
+    where customer_id = #{customerId}
+    and product_id = #{productId}
+  </select>
+  <delete id="deleteByCustomerIdAndProduct">
+  	delete from product_favourite
+  	where customer_id = #{customerId}
+    and product_id = #{productId}
+  </delete>
+</mapper>

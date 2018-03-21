@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>物料管理</title>
+<#include '/common.html'/>
+</head>
+<body>
+<div class="content" data-options="region:'center'" style="overflow-x: hidden;">
+	<div class="cz_bj">
+		<span class="cz-button icon-czbutton" onclick="saveOk()"><i class="cz-button czbutton">保存</i></span>
+		<span id="closeWinBt" class="cz-button icon-czbutton" onclick="javascript:parent.closeTab('material_classify', 'refresh');"><i class="cz-button czbutton">关闭</i></span>
+		<span class="icon-czbutton" style="float: right;padding-right: 80px;font-weight: bold;cursor: auto;"><strong>*</strong>为必填项</span>
+	</div>
+	<form id="MaterialCategory-form" enctype="multipart/form-data" method="post">
+		
+		<table style="width: 100%;" border="0" cellspacing="0" class="tb-contacts-list">
+			<input type="hidden" name="wicId" class="input loadValue" loadValue="wicId"/>
+			<tbody>
+				<tr>
+					<th style="width: 80px;">分类名称：</th>
+					<td colspan="3">
+						<input type="text" class="input loadValue" loadValue="categoryName" style="width: 80%;" name="categoryName" value=""/>
+					</td>
+				</tr>
+				<tr>
+					<th style="width: 80px;">编&nbsp;&nbsp;&nbsp;&nbsp;码：</th>
+					<td colspan="3">
+						<input type="text" class="input loadValue" loadValue="code" style="width: 80%;" name="code" value=""/>
+					</td>
+				</tr>
+				<tr>
+					<th style="width: 80px;">父分类ID：</th>
+					<td colspan="3">
+						<!-- 
+						<input type="text" class="input loadValue" loadValue="parentId" style="width: 80%;" name="parentId" value=""/>
+						 -->	
+						<select id="parentId" name="parentId" lay-verify="">
+							<option class="input loadValue" loadValue="parentId" selected></option>
+							<option value="">请选择</option>
+						</select>     
+					</td>
+				</tr>
+				
+				<tr>
+					<th style="width: 80px;">备&nbsp;&nbsp;&nbsp;&nbsp;注：</th>
+					<td colspan="3">
+						<input type="text" class="input loadValue" loadValue="description" style="width: 80%;" name="description" value=""/>
+					</td>
+				</tr>		
+			</tbody>
+		</table>
+	</form>
+</div>
+</body>
+
+<script type="text/javascript">
+//加载被编辑的数据
+$(function() {
+	$.ajax({
+		url: "${request.contextPath}/clientGetMaterialCategoryInfo",
+		type: 'post',
+		data: '{wicId: "${wicId}"}',
+    	dataType: 'json',
+    	contentType: "application/json",
+    	beforeSend: function() {
+    		loadLayer = parent.layer.load(0, {shade: [0.5, '#fff'] });
+    	},
+    	success: function(data) {
+    		parent.layer.close(loadLayer);
+    		console.log(data)
+    		$('.tb-contacts-list').customizeLoadValue({
+    			param: $.parseJSON(data).data
+    		});
+    	}
+	});
+})
+
+//新增、编辑后的保存
+function saveOk() {
+	$.ajax({
+		url: "${request.contextPath}/clientSaveMaterialCategoryInfo",
+		type: 'post',
+		data: $("#MaterialCategory-form").serializeJsonStr(),
+    	dataType: 'json',
+    	contentType: "application/json",
+    	beforeSend: function() {
+    		loadLayer = parent.layer.load(0, {shade: [0.5, '#fff'] });
+    	},
+    	success: function(data) {
+    		parent.layer.close(loadLayer);
+    		layer.alert('保存成功!', {skin: 'layui-layer-lan'}, function(){
+    			parent.closeTab('material_classify', 'refresh');
+    		});
+    	}
+	});
+}
+
+//加载下拉框数据
+$(document).ready(function () {
+	  $.ajax({
+	    timeout: 3000,//超时
+	    async: false,//同步
+	    type: "POST",
+	    url: "${request.contextPath}/clientGetMaterialCategoryId",
+	    dataType: "json",
+	    contentType: "application/json",
+//	    data: {
+//	      warehouse: $("#parentId").val(),
+//	    },
+	    success: function (data) {
+	      for (var i = 0; i < data.length; i++) {
+	    	if ($.parseJSON(data).data[i].wicId != '${wicId}') {
+		      	$("#parentId").append("<option value='"+$.parseJSON(data).data[i].wicId+"' >" + $.parseJSON(data).data[i].wicId + "&nbsp;:&nbsp;" +$.parseJSON(data).data[i].categoryName + "</option>");
+	    	} 
+	      }
+	    }
+	  });
+	});
+</script>
+</html>

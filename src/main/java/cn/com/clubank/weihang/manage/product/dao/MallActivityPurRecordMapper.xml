@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.clubank.weihang.manage.product.dao.MallActivityPurRecordMapper">
+  <resultMap id="BaseResultMap" type="cn.com.clubank.weihang.manage.product.pojo.MallActivityPurRecord">
+    <id column="pr_id" jdbcType="VARCHAR" property="prId" />
+    <result column="activity_id" jdbcType="VARCHAR" property="activityId" />
+    <result column="activity_goods_id" jdbcType="VARCHAR" property="activityGoodsId" />
+    <result column="order_no" jdbcType="VARCHAR" property="orderNo" />
+    <result column="quantity" jdbcType="INTEGER" property="quantity" />
+    <result column="customer_id" jdbcType="VARCHAR" property="customerId" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="create_user_Id" jdbcType="VARCHAR" property="createUserId" />
+    <result column="create_user_name" jdbcType="VARCHAR" property="createUserName" />
+    <result column="modify_date" jdbcType="TIMESTAMP" property="modifyDate" />
+    <result column="modify_user_Id" jdbcType="VARCHAR" property="modifyUserId" />
+    <result column="modify_user_name" jdbcType="VARCHAR" property="modifyUserName" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from mall_activity_pur_record
+    where pr_id = #{prId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.com.clubank.weihang.manage.product.pojo.MallActivityPurRecord">
+    insert into mall_activity_pur_record (pr_id, activity_id, activity_goods_id, 
+      order_no, customer_id, quantity, create_date, 
+      create_user_Id, create_user_name, modify_date, 
+      modify_user_Id, modify_user_name)
+    values (#{prId,jdbcType=VARCHAR}, #{activityId,jdbcType=VARCHAR}, #{activityGoodsId,jdbcType=VARCHAR}, 
+      #{orderNo,jdbcType=VARCHAR}, #{customerId,jdbcType=VARCHAR}, #{quantity,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{createUserId,jdbcType=VARCHAR}, #{createUserName,jdbcType=VARCHAR}, #{modifyDate,jdbcType=TIMESTAMP}, 
+      #{modifyUserId,jdbcType=VARCHAR}, #{modifyUserName,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.com.clubank.weihang.manage.product.pojo.MallActivityPurRecord">
+    update mall_activity_pur_record
+    set activity_id = #{activityId,jdbcType=VARCHAR},
+      activity_goods_id = #{activityGoodsId,jdbcType=VARCHAR},
+      quantity = #{quantity,jdbcType=INTEGER},
+      order_no = #{orderNo,jdbcType=VARCHAR},
+      customer_id = #{customerId,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      create_user_Id = #{createUserId,jdbcType=VARCHAR},
+      create_user_name = #{createUserName,jdbcType=VARCHAR},
+      modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+      modify_user_Id = #{modifyUserId,jdbcType=VARCHAR},
+      modify_user_name = #{modifyUserName,jdbcType=VARCHAR}
+    where pr_id = #{prId,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select pr_id, activity_id, activity_goods_id, quantity, order_no, customer_id, create_date, 
+    create_user_Id, create_user_name, modify_date, modify_user_Id, modify_user_name
+    from mall_activity_pur_record
+    where pr_id = #{prId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select pr_id, activity_id, activity_goods_id, quantity, order_no, customer_id, create_date, 
+    create_user_Id, create_user_name, modify_date, modify_user_Id, modify_user_name
+    from mall_activity_pur_record
+  </select>
+  
+  <select id="selectSumQuantityByGoodsId" resultType="int">
+  	select sum(quantity)
+  	from mall_activity_pur_record
+  	where activity_goods_id = #{goodsId}
+  	and customer_id = #{customerId}
+  	group by activity_goods_id, customer_id
+  </select>
+</mapper>

@@ -1,0 +1,319 @@
+.browse{
+	background-position:-32px -176px;
+}
+.trash{
+	background:url('icons/trash.png') no-repeat;
+		margin-right:2px;
+}
+.draft{
+	background:url('icons/draft.png') no-repeat;
+	margin-right:2px;
+}
+.merge{
+	background:url('icons/merges.png') no-repeat;
+		margin-right:2px;
+}
+.c-add{
+	background-position:-64px -64px;
+}
+.c-delete{
+	background-position:-64px -128px;
+}
+.c-save{
+	background-position:-80px -128px;
+}
+/*---------菜单图标----------------------------*/
+.shared{
+	background-position:-80px 0px;
+}
+.site{
+	background-position:0px 0px;
+}
+.site-hover{
+	background-position:-16px 0px;
+}
+.origin{
+	background-position:0px -16px;
+}
+.origin-hover{
+	background-position:-16px -16px;
+}
+.catalog{
+	background-position:0px -32px;
+}
+.catalog-hover{
+	background-position:-16px -32px;
+}
+.info{
+	background-position:0px -48px;
+}
+.info-hover{
+	background-position:-16px -48px;
+}
+.info-verify{
+	background-position:0px -64px;
+}
+.info-verify-hover{
+	background-position:-16px -64px;
+}
+.resources{
+	background-position:0px -80px;
+}
+.resources-hover{
+	background-position:-16px -80px;
+}
+.mail{
+	background-position:0px -96px;
+}
+.mail-hover{
+	background-position:-16px -96px;
+}
+.ad{
+	background-position:0px -112px;
+}
+.ad-hover{
+	background-position:-16px -112px;
+}
+.client{
+	background-position:0px -128px;
+}
+.clientl-hover{
+	background-position:-16px -128px;
+}
+.public{
+	background-position:0px -144px;
+}
+.public-hover{
+	background-position:-16px -144px;
+}
+.data{
+	background-position:0px -160px;
+}
+.data-hover{
+	background-position:-16px -160px;
+}
+
+.pack-up{
+	background-position:-64px -144px;
+	float:right;
+}
+.open-up{
+	background-position:-80px -144px;
+	float:right;
+
+
+	}
+
+/*---------窗口图标----------------------------*/
+.tab-site{
+	background-position:-48px 0px;
+	top:9px; right:3px; 
+
+}
+.tab-origin{
+	background-position:-48px -16px;
+	top:9px; right:3px; 
+}
+.tab-catalog{
+	background-position:-48px -32px;
+	top:9px; right:3px; 
+}
+.tab-info{
+	background-position:-48px -48px;
+	top:9px; right:3px; 
+}
+.tab-info-verify{
+	background-position:-48px -64px;
+	top:9px; right:3px; 
+}
+.tab-resources{
+	background-position:-48px -80px;
+	top:9px; right:3px; 
+}
+.tab-mail{
+	background-position:-48px -96px;
+	top:9px; right:3px; 
+}
+.tab-ad{
+	background-position:-48px -112px;
+	top:9px; right:3px; 
+}
+.tab-client{
+	background-position:-48px -128px;
+	top:9px; right:3px; 
+}
+.tab-public{
+	background-position:-48px -144px;
+	top:9px; right:3px; 
+}
+.tab-data{
+	background-position:-48px -160px;
+	top:9px; right:3px; 
+}
+
+/*---------列表图标----------------------------*/
+
+.d-info{
+	background-position:0px 0px;
+}
+.f-info{
+	background-position:-16px 0px;
+}
+.c-info{
+	background-position:-32px 0px;
+}
+.a-info{
+	background-position:-48px 0px;
+}
+.f-top{
+	background-position:0px -48px;
+}
+.f-bottom{
+	background-position:-16px -48px;
+}
+.f-over{
+	background-position:-48px -32px;
+}
+.f-share{
+	background-position:-32px -48px;
+}
+.f-yes{
+	background-position:0px -64px;
+}
+.f-no{
+	background-position:-16px -64px;
+}
+.f-survey{
+	background-position:-16px -16px;margin:0px 5px 0px 0px;
+}
+.f-result{
+	background-position:-32px -16px;margin:0px 5px 0px 0px;
+}
+.f-message{
+	background-position:-48px -16px;margin:0px 5px 0px 0px;
+}
+.revise{
+	background-position:0px -16px;
+margin:0px 5px;}
+
+.visit{background-position:-32px -64px;margin:0px 5px 0px 5px;}
+.f-home{	background-position:-16px -32px;margin:0px 5px;}
+.whole{	background-position:-32px -32px;margin:0px 5px;}
+.preview{	background-position:-48px -48px; margin:5px 0px; float:right;}
+.file{
+	background-position:0px -32px;margin:0px 5px 0px 0px;
+}
+
+/*---------表单图标----------------*/
+.icon-delete{
+	background-position:-12px -26px; margin-left:20px;}
+.icon-t{
+	background-position:0px -56px; margin-right:10px; float:right;}
+.icon-b{
+	background-position:-12px -56px; margin-right:10px; float:right;}
+	
+/*---------按钮图标----------------*/	
+	
+.icon-blank{
+	background:url('icons/blank.gif') no-repeat;
+}
+.icon-add{
+	background:url('icons/edit_add.png') no-repeat left center;
+	padding:1px 0px 0px 20px;
+}
+.icon-yesmail{
+	background:url('icons/yes_mail.png') no-repeat left center;
+	padding:0px 0px 0px 20px;
+}
+.icon-nomail{
+	background:url('icons/no_mail.png') no-repeat left center;
+	padding:0px 0px 0px 20px;
+}
+.icon-cancel{
+	background:url('icons/cancels.png') no-repeat left center;
+		padding: 3px 0px 0px 20px;
+}
+.icon-static{
+	background:url('icons/static.png') no-repeat left center;
+		padding:3px 0px 0px 20px;
+}
+.icon-mobile{
+	background:url('icons/mobile.png') no-repeat;	
+	padding:0px 0px 0px 20px;
+}
+.icon-preview{
+	background:url('icons/preview.png') no-repeat;
+		padding:0px 0px 0px 20px;
+}
+.icon-merge{
+	background:url('icons/merge.png') no-repeat scroll 0% 30%;
+	padding:0px 0px 0px 20px;
+}
+.icon-share{
+	background:url('icons/share.png') no-repeat;	
+	padding:0px 0px 0px 20px;
+}
+.icon-journal{
+	background:url('icons/journal.png') no-repeat;	
+	padding:0px 0px 0px 20px;
+}
+
+
+.icon-edit{
+	background:url('icons/pencil.png') no-repeat;	
+	padding:0px 0px 0px 20px;
+}
+.icon-remove{
+	background:url('icons/edit_remove.png') no-repeat;	
+	padding:0px 0px 0px 20px;
+}
+.icon-save{
+	background:url('icons/filesave.png') no-repeat scroll 0% 50%;padding: 0px 0px 0px 20px;
+}
+.icon-cut{
+	background:url('icons/cut.png') no-repeat;	padding:0px 0px 0px 20px;
+}
+.icon-ok{
+	background:url('icons/ok.png') no-repeat scroll 0% 50%;	padding:0px 0px 0px 20px;
+}
+.icon-no{
+	background:url('icons/no.png') no-repeat;	padding:0px 0px 0px 20px;
+}
+
+.icon-reload{
+	background:url('icons/reload.png') no-repeat;	padding:0px 0px 0px 20px;
+}
+.icon-search{
+	background:url('icons/search.png') no-repeat;	padding:0px 0px 0px 20px;
+}
+.icon-print{
+	background:url('icons/print.png') no-repeat;	padding:0px 0px 0px 20px;
+}
+.icon-help{
+	background:url('icons/help.png') no-repeat;	padding:0px 0px 0px 20px;
+}
+.icon-undo{
+	background:url('icons/undo.png') no-repeat;	padding:0px 0px 0px 20px;
+}
+.icon-redo{
+	background:url('icons/redo.png') no-repeat;	padding:0px 0px 0px 20px;
+}
+.icon-back{
+	background:url('icons/back.png') no-repeat  scroll 0% 50%;	padding:0px 0px 0px 20px;
+}
+.icon-sum{
+	background:url('icons/sum.png') no-repeat;	padding:0px 0px 0px 20px;
+}
+.icon-tip{
+	background:url('icons/tip.png') no-repeat;	padding:0px 0px 0px 20px;
+}
+
+.icon-mini-add{
+	background:url('icons/mini_add.png') no-repeat 2px 2px;
+}
+.icon-mini-edit{
+	background:url('icons/mini_edit.png') no-repeat 2px 2px;
+}
+.icon-mini-refresh{
+	background:url('icons/mini_refresh.png') no-repeat 3px 2px;
+}

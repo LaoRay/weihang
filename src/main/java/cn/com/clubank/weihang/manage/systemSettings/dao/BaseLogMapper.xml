@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.clubank.weihang.manage.systemSettings.dao.BaseLogMapper">
+  <resultMap id="BaseResultMap" type="cn.com.clubank.weihang.manage.systemSettings.pojo.BaseLog">
+    <id column="log_id" jdbcType="VARCHAR" property="logId" />
+    <result column="operate_time" jdbcType="TIMESTAMP" property="operateTime" />
+    <result column="operate_userId" jdbcType="VARCHAR" property="operateUserid" />
+    <result column="operate_name" jdbcType="VARCHAR" property="operateName" />
+    <result column="module_id" jdbcType="VARCHAR" property="moduleId" />
+    <result column="b_id" jdbcType="VARCHAR" property="bId" />
+    <result column="ip_address" jdbcType="VARCHAR" property="ipAddress" />
+    <result column="browser" jdbcType="VARCHAR" property="browser" />
+    <result column="execute_result" jdbcType="INTEGER" property="executeResult" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="flat_type" jdbcType="INTEGER" property="flatType" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="create_user_Id" jdbcType="VARCHAR" property="createUserId" />
+    <result column="create_user_name" jdbcType="VARCHAR" property="createUserName" />
+    <result column="execute_resultJson" jdbcType="LONGVARCHAR" property="executeResultjson" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from base_log
+    where log_id = #{logId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.com.clubank.weihang.manage.systemSettings.pojo.BaseLog">
+    insert into base_log (log_id, operate_time, operate_userId, 
+      operate_name, module_id, b_id, 
+      ip_address, browser, execute_result, 
+      content, flat_type, create_date, 
+      create_user_Id, create_user_name, execute_resultJson
+      )
+    values (#{logId,jdbcType=VARCHAR}, #{operateTime,jdbcType=TIMESTAMP}, #{operateUserid,jdbcType=VARCHAR}, 
+      #{operateName,jdbcType=VARCHAR}, #{moduleId,jdbcType=VARCHAR}, #{bId,jdbcType=VARCHAR}, 
+      #{ipAddress,jdbcType=VARCHAR}, #{browser,jdbcType=VARCHAR}, #{executeResult,jdbcType=INTEGER}, 
+      #{content,jdbcType=VARCHAR}, #{flatType,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{createUserId,jdbcType=VARCHAR}, #{createUserName,jdbcType=VARCHAR}, #{executeResultjson,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.com.clubank.weihang.manage.systemSettings.pojo.BaseLog">
+    update base_log
+    set operate_time = #{operateTime,jdbcType=TIMESTAMP},
+      operate_userId = #{operateUserid,jdbcType=VARCHAR},
+      operate_name = #{operateName,jdbcType=VARCHAR},
+      module_id = #{moduleId,jdbcType=VARCHAR},
+      b_id = #{bId,jdbcType=VARCHAR},
+      ip_address = #{ipAddress,jdbcType=VARCHAR},
+      browser = #{browser,jdbcType=VARCHAR},
+      execute_result = #{executeResult,jdbcType=INTEGER},
+      content = #{content,jdbcType=VARCHAR},
+      flat_type = #{flatType,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      create_user_Id = #{createUserId,jdbcType=VARCHAR},
+      create_user_name = #{createUserName,jdbcType=VARCHAR},
+      execute_resultJson = #{executeResultjson,jdbcType=LONGVARCHAR}
+    where log_id = #{logId,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select log_id, operate_time, operate_userId, operate_name, module_id, b_id, ip_address, 
+    browser, execute_result, content, flat_type, create_date, create_user_Id, create_user_name, 
+    execute_resultJson
+    from base_log
+    where log_id = #{logId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select log_id, operate_time, operate_userId, operate_name, module_id, b_id, ip_address, 
+    browser, execute_result, content, flat_type, create_date, create_user_Id, create_user_name, 
+    execute_resultJson
+    from base_log
+  </select>
+  
+  <!-- 通过操作用户（模糊）、操作时间查询到的总条数 -->
+  <select id="selectLogListAndPagedCount" resultType="Integer">
+  	select count(0)
+  	from base_log
+  	where 1=1
+  	<if test="operateName != null and operateName != ''">
+  		and operate_name like concat('%',#{operateName,jdbcType=VARCHAR},'%')
+  	</if>
+  	<if test="operateTimeOne != null and operateTimeOne != ''">
+  		and operate_time &gt; concat(#{operateTimeOne}, ' 0:0:0')
+  	</if>
+  	<if test="operateTimeTwo != null and operateTimeTwo != ''">
+  		and operate_time &lt; concat(#{operateTimeTwo}, ' 23:59:59')
+  	</if>
+  </select>
+  
+  <!-- 通过操作用户（模糊）、操作时间查询日志列表并分页 -->
+  <select id="selectLogListAndPaged" resultMap="BaseResultMap">
+	SELECT 
+	  log_id, operate_time, operate_userId, operate_name, module_id, b_id, ip_address, 
+    browser, execute_result, content, flat_type, create_date, create_user_Id, create_user_name, 
+    execute_resultJson
+	FROM
+	  base_log 
+	WHERE 1=1
+	<if test="operateName != null and operateName != ''">
+  		and operate_name like concat('%',#{operateName,jdbcType=VARCHAR},'%')
+  	</if>
+  	<if test="operateTimeOne != null and operateTimeOne != ''">
+  		and operate_time &gt; concat(#{operateTimeOne}, ' 0:0:0')
+  	</if>
+  	<if test="operateTimeTwo != null and operateTimeTwo != ''">
+  		and operate_time &lt; concat(#{operateTimeTwo}, ' 23:59:59')
+  	</if>
+  	order by operate_time desc
+  	<if test="startIndex &gt;= 0">
+  		limit #{startIndex,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
+  	</if>
+  </select>
+</mapper>

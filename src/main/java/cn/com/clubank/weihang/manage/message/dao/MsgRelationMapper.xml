@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.clubank.weihang.manage.message.dao.MsgRelationMapper">
+  <resultMap id="BaseResultMap" type="cn.com.clubank.weihang.manage.message.pojo.MsgRelation">
+    <id column="mr_id" jdbcType="VARCHAR" property="mrId" />
+    <result column="target_id" jdbcType="VARCHAR" property="targetId" />
+    <result column="msg_id" jdbcType="VARCHAR" property="msgId" />
+    <result column="delete_mark" jdbcType="INTEGER" property="deleteMark" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="is_public" jdbcType="INTEGER" property="isPublic" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="create_user_Id" jdbcType="VARCHAR" property="createUserId" />
+    <result column="create_user_name" jdbcType="VARCHAR" property="createUserName" />
+    <result column="modify_date" jdbcType="TIMESTAMP" property="modifyDate" />
+    <result column="modify_user_Id" jdbcType="VARCHAR" property="modifyUserId" />
+    <result column="modify_user_name" jdbcType="VARCHAR" property="modifyUserName" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from msg_relation
+    where mr_id = #{mrId,jdbcType=VARCHAR}
+  </delete>
+  <update id="deleteByMrId" parameterType="cn.com.clubank.weihang.manage.message.pojo.MsgRelation">
+    update msg_relation
+    set delete_mark = 1
+    where mr_id = #{mrId,jdbcType=VARCHAR}
+  </update>
+  <insert id="insert" parameterType="cn.com.clubank.weihang.manage.message.pojo.MsgRelation">
+    insert into msg_relation (mr_id, target_id, msg_id, 
+      delete_mark, status, is_public, 
+      description, create_date, create_user_Id, 
+      create_user_name, modify_date, modify_user_Id, 
+      modify_user_name)
+    values (#{mrId,jdbcType=VARCHAR}, #{targetId,jdbcType=VARCHAR}, #{msgId,jdbcType=VARCHAR}, 
+      #{deleteMark,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{isPublic,jdbcType=INTEGER}, 
+      #{description,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{createUserId,jdbcType=VARCHAR}, 
+      #{createUserName,jdbcType=VARCHAR}, #{modifyDate,jdbcType=TIMESTAMP}, #{modifyUserId,jdbcType=VARCHAR}, 
+      #{modifyUserName,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.com.clubank.weihang.manage.message.pojo.MsgRelation">
+    update msg_relation
+    set target_id = #{targetId,jdbcType=VARCHAR},
+      msg_id = #{msgId,jdbcType=VARCHAR},
+      delete_mark = #{deleteMark,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      is_public = #{isPublic,jdbcType=INTEGER},
+      description = #{description,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      create_user_Id = #{createUserId,jdbcType=VARCHAR},
+      create_user_name = #{createUserName,jdbcType=VARCHAR},
+      modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+      modify_user_Id = #{modifyUserId,jdbcType=VARCHAR},
+      modify_user_name = #{modifyUserName,jdbcType=VARCHAR}
+    where mr_id = #{mrId,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select mr_id, target_id, msg_id, delete_mark, status, is_public, description, create_date, 
+    create_user_Id, create_user_name, modify_date, modify_user_Id, modify_user_name
+    from msg_relation
+    where mr_id = #{mrId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select mr_id, target_id, msg_id, delete_mark, status, is_public, description, create_date, 
+    create_user_Id, create_user_name, modify_date, modify_user_Id, modify_user_name
+    from msg_relation
+    where delete_mark = 0
+  </select>
+  
+  <!-- 根据目标（用户或客户）Id查询未读消息量 -->
+  <select id="getUnreadTotalByTargetId" resultType="INTEGER">
+    select 
+    	count(0)
+    from msg_relation
+    where target_id = #{targetId,jdbcType=VARCHAR} and status = 0 and delete_mark = 0
+  </select>
+  
+  <!-- 修改状态为已读 -->
+  <update id="haveRead">
+    update msg_relation
+    set status = 1
+    where msg_id = #{msgId,jdbcType=VARCHAR} and target_id = #{targetId,jdbcType=VARCHAR}
+  </update>
+</mapper>

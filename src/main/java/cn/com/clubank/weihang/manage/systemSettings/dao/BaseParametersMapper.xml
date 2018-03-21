@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.clubank.weihang.manage.systemSettings.dao.BaseParametersMapper">
+  <resultMap id="BaseResultMap" type="cn.com.clubank.weihang.manage.systemSettings.pojo.BaseParameters">
+    <id column="p_id" jdbcType="VARCHAR" property="pId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="key_code" jdbcType="VARCHAR" property="keyCode" />
+    <result column="value" jdbcType="VARCHAR" property="value" />
+    <result column="default_value" jdbcType="VARCHAR" property="defaultValue" />
+    <result column="delete_mark" jdbcType="INTEGER" property="deleteMark" />
+    <result column="enabled_mark" jdbcType="INTEGER" property="enabledMark" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="create_user_Id" jdbcType="VARCHAR" property="createUserId" />
+    <result column="create_user_name" jdbcType="VARCHAR" property="createUserName" />
+    <result column="modify_date" jdbcType="TIMESTAMP" property="modifyDate" />
+    <result column="modify_user_Id" jdbcType="VARCHAR" property="modifyUserId" />
+    <result column="modify_user_name" jdbcType="VARCHAR" property="modifyUserName" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from base_parameters
+    where p_id = #{pId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.com.clubank.weihang.manage.systemSettings.pojo.BaseParameters">
+    insert into base_parameters (p_id, name, key_code, 
+      value, default_value, delete_mark, 
+      enabled_mark, description, create_date, 
+      create_user_Id, create_user_name, modify_date, 
+      modify_user_Id, modify_user_name)
+    values (#{pId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{keyCode,jdbcType=VARCHAR}, 
+      #{value,jdbcType=VARCHAR}, #{defaultValue,jdbcType=VARCHAR}, #{deleteMark,jdbcType=INTEGER}, 
+      #{enabledMark,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{createUserId,jdbcType=VARCHAR}, #{createUserName,jdbcType=VARCHAR}, #{modifyDate,jdbcType=TIMESTAMP}, 
+      #{modifyUserId,jdbcType=VARCHAR}, #{modifyUserName,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.com.clubank.weihang.manage.systemSettings.pojo.BaseParameters">
+    update base_parameters
+    set name = #{name,jdbcType=VARCHAR},
+      key_code = #{keyCode,jdbcType=VARCHAR},
+      value = #{value,jdbcType=VARCHAR},
+      default_value = #{defaultValue,jdbcType=VARCHAR},
+      delete_mark = #{deleteMark,jdbcType=INTEGER},
+      enabled_mark = #{enabledMark,jdbcType=INTEGER},
+      description = #{description,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      create_user_Id = #{createUserId,jdbcType=VARCHAR},
+      create_user_name = #{createUserName,jdbcType=VARCHAR},
+      modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+      modify_user_Id = #{modifyUserId,jdbcType=VARCHAR},
+      modify_user_name = #{modifyUserName,jdbcType=VARCHAR}
+    where p_id = #{pId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.com.clubank.weihang.manage.systemSettings.pojo.BaseParameters">
+    update base_parameters
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="keyCode != null">
+        key_code = #{keyCode,jdbcType=VARCHAR},
+      </if>
+      <if test="value != null">
+        value = #{value,jdbcType=VARCHAR},
+      </if>
+      <if test="defaultValue != null">
+        default_value = #{defaultValue,jdbcType=VARCHAR},
+      </if>
+      <if test="enabledMark != null">
+        enabled_mark = #{enabledMark,jdbcType=INTEGER},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUserId != null">
+        create_user_Id = #{createUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="createUserName != null">
+        create_user_name = #{createUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyDate != null">
+        modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyUserId != null">
+        modify_user_Id = #{modifyUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyUserName != null">
+        modify_user_name = #{modifyUserName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where p_id = #{pId,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select p_id, name, key_code, value, default_value, delete_mark, enabled_mark, description, 
+    create_date, create_user_Id, create_user_name, modify_date, modify_user_Id, modify_user_name
+    from base_parameters
+    where p_id = #{pId,jdbcType=VARCHAR}
+    and delete_mark = 0
+  </select>
+  <select id="selectByKeyCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select p_id, name, key_code, value, default_value, delete_mark, enabled_mark, description, 
+    create_date, create_user_Id, create_user_name, modify_date, modify_user_Id, modify_user_name
+    from base_parameters
+    where key_code = #{keyCode,jdbcType=VARCHAR}
+    and delete_mark = 0
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select p_id, name, key_code, value, default_value, delete_mark, enabled_mark, description, 
+    create_date, create_user_Id, create_user_name, modify_date, modify_user_Id, modify_user_name
+    from base_parameters
+    where delete_mark = 0
+  </select>
+  
+  <!-- 通过参数名，参数编码模糊查询到的总数 -->
+  <select id="selectCountByNameAndCode" resultType="Integer">
+  	select count(0)
+  	from base_parameters
+  	where delete_mark = 0
+  	<if test="name != null and name != ''">
+  		and name like concat('%',#{name,jdbcType=VARCHAR},'%')
+  	</if>
+  	<if test="keyCode != null and keyCode != ''">
+  		and key_code like concat('%',#{keyCode,jdbcType=VARCHAR},'%')
+  	</if>
+  </select>
+  
+  <!-- 通过参数名，参数编码模糊查询并分页 -->
+  <select id="selectParameterListAndPaged" resultMap="BaseResultMap">
+  	select p_id, name, key_code, value, default_value, delete_mark, enabled_mark, description, 
+    create_date, create_user_Id, create_user_name, modify_date, modify_user_Id, modify_user_name
+  	from base_parameters
+  	where delete_mark = 0
+  	<if test="name != null and name != ''">
+  		and name like concat('%',#{name,jdbcType=VARCHAR},'%')
+  	</if>
+  	<if test="keyCode != null and keyCode != ''">
+  		and key_code like concat('%',#{keyCode,jdbcType=VARCHAR},'%')
+  	</if>
+  	order by create_date desc
+  	<if test="startIndex &gt;= 0">
+  		limit #{startIndex,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
+  	</if>
+  </select>
+</mapper>

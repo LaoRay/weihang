@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.clubank.weihang.manage.product.dao.ProductInfoMapper">
+	<resultMap id="BaseResultMap"
+		type="cn.com.clubank.weihang.manage.product.pojo.ProductInfo">
+		<result column="product_id" jdbcType="VARCHAR" property="productId" />
+		<result column="product_name" jdbcType="VARCHAR" property="productName" />
+		<result column="product_explain" jdbcType="VARCHAR" property="productExplain" />
+		<result column="review_status" jdbcType="INTEGER" property="reviewStatus" />
+		<result column="brand_id" jdbcType="VARCHAR" property="brandId" />
+		<result column="description" jdbcType="VARCHAR" property="description" />
+		<result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+		<result column="create_user_Id" jdbcType="VARCHAR" property="createUserId" />
+		<result column="create_user_name" jdbcType="VARCHAR" property="createUserName" />
+		<result column="modify_date" jdbcType="TIMESTAMP" property="modifyDate" />
+		<result column="modify_user_Id" jdbcType="VARCHAR" property="modifyUserId" />
+		<result column="modify_user_name" jdbcType="VARCHAR" property="modifyUserName" />
+		<result column="product_price" jdbcType="DECIMAL" property="productPrice" />
+		<result column="product_up_time" jdbcType="TIMESTAMP" property="productUpTime" />
+		<result column="product_down_time" jdbcType="TIMESTAMP" property="productDownTime" />
+		<result column="category_Id" jdbcType="VARCHAR" property="categoryId" />
+		<result column="product_details" jdbcType="LONGVARCHAR" property="productDetails" />
+		<result column="product_type" jdbcType="INTEGER" property="productType" />
+	</resultMap>
+	<insert id="insert"
+		parameterType="cn.com.clubank.weihang.manage.product.pojo.ProductInfo">
+		insert into product_info (product_id, product_name,
+		product_explain, review_status,
+		brand_id, description, create_date,
+		create_user_Id,
+		create_user_name, modify_date,
+		modify_user_Id, modify_user_name,
+		product_price,
+		product_up_time, product_down_time, category_Id,
+		product_details, product_type)
+		values (#{productId,jdbcType=VARCHAR},
+		#{productName,jdbcType=VARCHAR},
+		#{productExplain,jdbcType=VARCHAR},
+		#{reviewStatus,jdbcType=INTEGER},
+		#{brandId,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR},
+		#{createDate,jdbcType=TIMESTAMP},
+		#{createUserId,jdbcType=VARCHAR},
+		#{createUserName,jdbcType=VARCHAR},
+		#{modifyDate,jdbcType=TIMESTAMP},
+		#{modifyUserId,jdbcType=VARCHAR}, #{modifyUserName,jdbcType=VARCHAR},
+		#{productPrice,jdbcType=DECIMAL},
+		#{productUpTime,jdbcType=TIMESTAMP},
+		#{productDownTime,jdbcType=TIMESTAMP}, #{categoryId,jdbcType=VARCHAR},
+		#{productDetails,jdbcType=LONGVARCHAR}, #{productType,jdbcType=INTEGER})
+	</insert>
+	<select id="selectAll" resultMap="BaseResultMap">
+		select product_id,
+		product_name, product_explain, review_status, brand_id, description,
+		create_date,
+		create_user_Id, create_user_name, modify_date, modify_user_Id,
+		modify_user_name,
+		product_price, product_up_time, product_down_time,
+		category_Id,
+		product_details, product_type
+		from product_info
+	</select>
+	<select id="selectByPrimaryKey" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select product_id, product_name, product_explain, review_status, brand_id,
+		description,
+		create_date,
+		create_user_Id, create_user_name, modify_date,
+		modify_user_Id, modify_user_name,
+		product_price, product_up_time,
+		product_down_time, category_Id,
+		product_details, product_type
+		from product_info
+		where
+		product_id = #{product_id,jdbcType=VARCHAR}
+	</select>
+	<select id="selectListByProductName" resultType="hashMap">
+		SELECT
+			pi.product_id AS productId,
+			pi.product_name AS productName,
+			pi.product_explain AS productExplain,
+			pi.product_details AS productDetails,
+			pi.brand_id AS brandId,
+			pb.brand_name AS brandName,
+			pi.product_price AS productPrice,
+			pi.product_up_time AS productUpTime,
+			pi.product_down_time AS productDownTime,
+			pi.category_Id AS categoryId,
+			pc.cname AS cname,
+			pi.product_type AS productType
+		FROM
+			product_info pi
+		LEFT JOIN product_category pc ON pi.category_Id = pc.category_Id
+		LEFT JOIN product_brand pb ON pi.brand_id = pb.brand_id
+		WHERE pi.review_status = 2
+		<if test="productName != null and productName != ''">
+			AND pi.product_name like CONCAT('%', #{productName}, '%')
+		</if>
+    	<if test="start &gt;= 0">
+    	LIMIT #{start,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+    	</if>
+	</select>
+	<select id="selectByCategoryKey" resultType="hashMap">
+		SELECT
+			pi.product_id AS productId,
+			pi.product_name AS productName,
+			pi.product_explain AS productExplain,
+			pi.product_details AS productDetails,
+			pi.product_price AS productPrice,
+			pi.product_up_time AS productUpTime,
+			pi.product_down_time AS productDownTime,
+			pc.category_Id AS categoryId,
+			pc.category_key AS categoryKey,
+			pc.cname AS cname,
+			pi.product_type AS productType
+		FROM
+			product_category pc
+		LEFT JOIN product_info pi ON pc.category_Id = pi.category_Id
+		WHERE
+			pc.category_key = #{categoryKey}
+		AND pi.review_status = 2
+    	<if test="start &gt;= 0">
+    	LIMIT #{start,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+    	</if>
+	</select>
+	<update id="updateSelectiveByPrimaryKey" parameterType="cn.com.clubank.weihang.manage.product.pojo.ProductInfo">
+		update product_info
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="productName != null">product_name = #{productName,jdbcType=INTEGER},</if>
+			<if test="productExplain != null">product_explain = #{productExplain,jdbcType=VARCHAR},</if>
+			<if test="reviewStatus != null">review_status = #{reviewStatus,jdbcType=INTEGER},</if>
+			<if test="brandId != null">brand_id = #{brandId,jdbcType=VARCHAR},</if>
+			<if test="description != null">description = #{description,jdbcType=VARCHAR},</if>
+			<if test="createDate != null">create_date = #{createDate,jdbcType=TIMESTAMP},</if>
+			<if test="createUserId != null">create_user_Id = #{createUserId,jdbcType=VARCHAR},</if>
+			<if test="createUserName != null">create_user_name = #{createUserName,jdbcType=VARCHAR},</if>
+			<if test="modifyDate != null">modify_date = #{modifyDate,jdbcType=TIMESTAMP},</if>
+			<if test="modifyUserId != null">modify_user_Id = #{modifyUserId,jdbcType=VARCHAR},</if>
+			<if test="modifyUserName != null">modify_user_name = #{modifyUserName,jdbcType=VARCHAR},</if>
+			<if test="productPrice != null">product_price = #{productPrice,jdbcType=INTEGER},</if>
+			<if test="productUpTime != null">product_up_time = #{productUpTime,jdbcType=VARCHAR},</if>
+			<if test="productDownTime != null">product_down_time = #{productDownTime,jdbcType=VARCHAR},</if>
+			<if test="categoryId != null">category_Id = #{categoryId,jdbcType=VARCHAR},</if>
+			<if test="productDetails != null">product_details = #{productDetails,jdbcType=VARCHAR},</if>
+			<if test="productType != null">product_type = #{productType,jdbcType=INTEGER},</if>
+		</trim>
+		where product_id = #{productId,jdbcType=VARCHAR}
+	</update>
+	
+	<!-- 根据分类查询分类下商品信息 -->
+	<select id="selectProductInfoListByCategoryId" parameterType="java.lang.String" resultType="hashMap">
+	SELECT
+		pi.product_id AS productId,
+		pi.product_name AS productName,
+		pi.product_price AS productPrice,
+		pi.product_explain AS productExplain,
+		pi.product_type AS productType
+	FROM
+		product_info pi
+	WHERE pi.category_Id = #{categoryId}
+	AND pi.review_status = 2
+	limit 10
+	</select>
+	<select id="selectMoreProductInfoListByCategoryId" resultType="hashMap">
+	SELECT
+		pi.product_id AS productId,
+		pi.product_name AS productName,
+		pi.product_price AS productPrice,
+		pi.product_explain AS productExplain,
+		pi.product_type AS productType
+	FROM
+		product_info pi
+	WHERE pi.category_Id = #{categoryId}
+	AND pi.review_status = 2
+	<if test="start &gt;= 0">
+    limit #{start,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+    </if>
+	</select>
+
+  <!-- 后台 -->
+  <select id="selectProductByProductId" parameterType="java.lang.String" resultType="hashMap">
+	SELECT
+		pi.product_id AS productId,
+		pi.product_name AS productName,
+		pi.product_type AS productType,
+		pi.category_Id AS categoryId,
+		pc.cname AS cname,
+		pi.brand_id AS brandId,
+		pb.brand_name AS brandName,
+		pi.product_price AS productPrice,
+		pi.product_explain AS productExplain,
+		pi.product_details AS productDetails,
+		pi.description AS description,
+		pi.product_type AS productType
+	FROM
+		product_info pi
+	LEFT JOIN product_brand pb ON pi.brand_id = pb.brand_id
+	LEFT JOIN product_category pc ON pi.category_Id = pc.category_Id
+	WHERE pi.product_id = #{productId}
+  </select>
+  
+  <select id="selectProductCount" resultType="INTEGER">
+    select count(0)
+    from product_info
+    where 1 = 1
+    <if test="productName != null and productName != ''">
+    	and product_name like CONCAT('%', #{productName,jdbcType=VARCHAR}, '%')
+    </if>
+    <if test="productType != null">
+    	and product_type = #{productType}
+    </if>
+    <if test="categoryId != null and categoryId != ''">
+    	and category_Id = #{categoryId}
+    </if>
+    <if test="reviewStatus != null">
+    	and review_status = #{reviewStatus}
+    </if>
+  </select>
+  <select id="selectProductList" resultType="hashMap">
+	SELECT 
+	  pi.product_id AS productId,
+	  pi.product_name AS productName,
+	  pi.product_type as productType,
+	  pi.category_Id AS categoryId,
+	  pc.cname AS cname,
+	  pi.brand_id AS brandId,
+	  pb.brand_name AS brandName,
+	  pi.product_price AS productPrice,
+	  pi.review_status as reviewStatus,
+	  pi.description as description,
+	  pi.create_date as createDate,
+	  pi.create_user_Id as createUserId,
+	  pi.create_user_name as createUserName,
+	  pi.modify_date as modifyDate,
+	  pi.modify_user_Id as modifyUserId,
+	  pi.modify_user_name as modifyUserName,
+	  pi.product_up_time as productUpTime,
+	  pi.product_down_time as productDownTime,
+	  pi.product_type AS productType
+	FROM
+	  product_info pi left join product_brand pb on pi.brand_id = pb.brand_id
+	  left join product_category pc on pi.category_Id = pc.category_Id
+	WHERE 1 = 1 
+    <if test="productName != null and productName != ''">
+    	AND pi.product_name like CONCAT('%', #{productName,jdbcType=VARCHAR}, '%')
+    </if>
+    <if test="productType != null">
+    	AND pi.product_type = #{productType}
+    </if>
+    <if test="categoryId != null and categoryId != ''">
+    	AND pi.category_Id = #{categoryId}
+    </if>
+    <if test="reviewStatus != null">
+    	AND pi.review_status = #{reviewStatus}
+    </if>
+    ORDER BY pi.create_date desc
+    <if test="start &gt;= 0">
+      LIMIT #{start,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+    </if>
+  </select> 
+  
+  <!-- 通过分类Id查询到的产品总条数 -->
+  <select id="selectSumByCategoryId" resultType="INTEGER">
+  	select count(0)
+  	from product_info
+  	where review_status=2 <!-- 上架 -->
+  		and category_Id = #{categoryId,jdbcType=VARCHAR}
+  </select>
+  
+  <!-- 通过分类ID获得产品列表并分页 -->
+  <select id="selectProductListPaged" resultType="hashMap">
+	SELECT 
+	  pi.product_id as productId,
+	  pi.category_Id as categoryId,
+	  pi.product_name as productName,
+	  pb.brand_name as brandName,
+	  pi.product_price as productPrice,
+	  pi.product_type AS productType
+	FROM
+	  product_info pi
+	  LEFT JOIN product_brand pb 
+	    ON pi.brand_id = pb.brand_id 
+	WHERE pi.review_status=2 <!-- 上架 -->
+		AND pi.category_Id = #{categoryId,jdbcType=VARCHAR}
+	ORDER BY pi.create_date DESC 
+	<if test="startIndex &gt;= 0">
+		LIMIT #{startIndex,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+	</if>
+  </select>
+  
+  <!-- 查询前amount个热销产品（根据sku中的销售数量） -->
+  <select id="selectHotProduct" resultMap="BaseResultMap">
+	SELECT 
+	  info.*
+	FROM
+	  product_sku sku LEFT JOIN product_info info on sku.product_id = info.product_id 
+	GROUP BY sku.product_id 
+	ORDER BY sum(sku.product_sale_quantity) DESC 
+	<if test="amount &gt; 0">
+		LIMIT 0, #{amount,jdbcType=INTEGER}
+	</if>
+  </select>
+  
+  <!-- 根据推荐类型查询：精选商品、新品上市、低价超值... -->
+  <select id="selectByRecommendType" resultMap="BaseResultMap">
+	SELECT 
+	 product_id, product_name, product_explain, review_status, brand_id, description,
+	 create_date, create_user_Id, create_user_name, modify_date, modify_user_Id,
+	 modify_user_name, product_price, product_up_time, product_down_time, category_Id,
+	 product_details, product_type
+	FROM
+	  product_info info
+	<if test="recommendType &gt; 0">
+	  WHERE product_type = #{recommendType,jdbcType=INTEGER}
+	</if>
+	ORDER BY modify_date DESC 
+	<if test="startIndex &gt; -1">
+		LIMIT #{startIndex,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+	</if>
+  </select>
+  
+  <!-- 通过分类ID获得产品列表并分页 -->
+  <select id="selectByProductType" resultType="hashMap">
+	SELECT 
+	  pi.product_id as productId,
+	  pi.category_Id as categoryId,
+	  pi.product_name as productName,
+	  pb.brand_name as brandName,
+	  pi.product_price as productPrice,
+	  pi.product_type AS productType
+	FROM
+	  product_info pi
+	  LEFT JOIN product_brand pb 
+	    ON pi.brand_id = pb.brand_id 
+	WHERE pi.review_status=2 <!-- 上架 -->
+	<if test="productType &gt;= 0">
+		AND pi.product_type = #{productType,jdbcType=INTEGER}
+	</if>
+	ORDER BY pi.modify_date DESC 
+	<if test="startIndex &gt;= 0">
+		LIMIT #{startIndex,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+	</if>
+  </select>
+</mapper>

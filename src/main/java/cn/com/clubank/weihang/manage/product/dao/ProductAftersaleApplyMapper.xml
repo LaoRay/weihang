@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.clubank.weihang.manage.product.dao.ProductAftersaleApplyMapper">
+  <resultMap id="BaseResultMap" type="cn.com.clubank.weihang.manage.product.pojo.ProductAftersaleApply">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="order_no" jdbcType="VARCHAR" property="orderNo" />
+    <result column="sub_time" jdbcType="TIMESTAMP" property="subTime" />
+    <result column="sub_by" jdbcType="VARCHAR" property="subBy" />
+    <result column="order_detail_id" jdbcType="VARCHAR" property="orderDetailId" />
+    <result column="sub_type" jdbcType="INTEGER" property="subType" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="create_user_Id" jdbcType="VARCHAR" property="createUserId" />
+    <result column="create_user_name" jdbcType="VARCHAR" property="createUserName" />
+    <result column="modify_date" jdbcType="TIMESTAMP" property="modifyDate" />
+    <result column="modify_user_Id" jdbcType="VARCHAR" property="modifyUserId" />
+    <result column="modify_user_name" jdbcType="VARCHAR" property="modifyUserName" />
+    <result column="conduct_by" jdbcType="VARCHAR" property="conductBy" />
+    <result column="conduct_result" jdbcType="VARCHAR" property="conductResult" />
+    <result column="conduct_time" jdbcType="TIMESTAMP" property="conductTime" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from product_aftersale_apply
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.com.clubank.weihang.manage.product.pojo.ProductAftersaleApply">
+    insert into product_aftersale_apply (id, order_no, sub_time, sub_by, 
+      order_detail_id, sub_type, status, 
+      description, create_date, create_user_Id, 
+      create_user_name, modify_date, modify_user_Id, 
+      modify_user_name, conduct_by, conduct_result, 
+      conduct_time)
+    values (#{id,jdbcType=VARCHAR}, #{orderNo,jdbcType=VARCHAR}, #{subTime,jdbcType=TIMESTAMP}, #{subBy,jdbcType=VARCHAR}, 
+      #{orderDetailId,jdbcType=VARCHAR}, #{subType,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, 
+      #{description,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{createUserId,jdbcType=VARCHAR}, 
+      #{createUserName,jdbcType=VARCHAR}, #{modifyDate,jdbcType=TIMESTAMP}, #{modifyUserId,jdbcType=VARCHAR}, 
+      #{modifyUserName,jdbcType=VARCHAR}, #{conductBy,jdbcType=VARCHAR}, #{conductResult,jdbcType=VARCHAR}, 
+      #{conductTime,jdbcType=TIMESTAMP})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.com.clubank.weihang.manage.product.pojo.ProductAftersaleApply">
+    update product_aftersale_apply
+    set sub_time = #{subTime,jdbcType=TIMESTAMP},
+      order_no = #{orderNo,jdbcType=VARCHAR},
+      sub_by = #{subBy,jdbcType=VARCHAR},
+      order_detail_id = #{orderDetailId,jdbcType=VARCHAR},
+      sub_type = #{subType,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      description = #{description,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      create_user_Id = #{createUserId,jdbcType=VARCHAR},
+      create_user_name = #{createUserName,jdbcType=VARCHAR},
+      modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+      modify_user_Id = #{modifyUserId,jdbcType=VARCHAR},
+      modify_user_name = #{modifyUserName,jdbcType=VARCHAR},
+      conduct_by = #{conductBy,jdbcType=VARCHAR},
+      conduct_result = #{conductResult,jdbcType=VARCHAR},
+      conduct_time = #{conductTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select id, order_no, sub_time, sub_by, order_detail_id, sub_type, status, description, create_date, 
+    create_user_Id, create_user_name, modify_date, modify_user_Id, modify_user_name, 
+    conduct_by, conduct_result, conduct_time
+    from product_aftersale_apply
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, order_no, sub_time, sub_by, order_detail_id, sub_type, status, description, create_date, 
+    create_user_Id, create_user_name, modify_date, modify_user_Id, modify_user_name, 
+    conduct_by, conduct_result, conduct_time
+    from product_aftersale_apply
+  </select>
+  <select id="selectListByCustomerId" resultType="hashMap">
+	SELECT
+		pa.id AS id,
+		pa.order_no AS orderNo,
+		pa.sub_time AS subTime,
+		pa.sub_by AS subBy,
+		pa.order_detail_id AS orderDetailId,
+		pa.sub_type AS subType,
+		pa.status AS status,
+		pa.description AS description,
+		pa.conduct_by as conductBy,
+		pa.conduct_result as conductResult,
+		pa.conduct_time as conductTime,
+		ps.sku_id as skuId,
+		od.quantity as quantity,
+		od.price as price,
+		ps.sku_name as skuName,
+		ps.attributes as attributes,
+		ord.order_no as orderNo,
+		pp.pic_small AS picSmall,
+		pp.pic_big AS picBig
+	FROM
+		product_aftersale_apply pa LEFT JOIN order_detail od on pa.order_detail_id = od.odi_id
+		LEFT JOIN product_sku ps on ps.sku_id = od.sku_id
+		LEFT JOIN order_list ord on ord.order_id = od.order_id
+		LEFT JOIN product_pic pp on ps.product_pic_id = pp.product_pic_id
+	WHERE pa.sub_by = #{customerId}
+	ORDER BY pa.sub_time DESC
+	<if test="start &gt;= 0">
+    limit #{start,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+    </if>
+  </select>
+  
+  <!-- 后台 -->
+  <select id="selectApplyCount" resultType="int">
+	SELECT count(0)
+	FROM product_aftersale_apply
+	WHERE 1 = 1
+	<if test="status != null">
+    	and status = #{status}
+    </if>
+	<if test="startDate != null and startDate != ''">
+    	and sub_time <![CDATA[>]]> concat(#{startDate}, ' 0:0:0')
+    </if>
+	<if test="endDate != null and endDate != ''">
+    	and sub_time <![CDATA[<]]> concat(#{endDate}, ' 23:59:59')
+    </if>
+  </select>
+  <select id="selectApplyInfoList" resultType="hashMap">
+	SELECT
+		pa.id AS applyId,
+		pa.order_no AS orderNo,
+		ci.realname AS realName,
+		ci.mobile AS mobile,
+		pa.sub_time AS subTime,
+		pa.sub_by AS subBy,
+		ps.sku_id AS skuId,
+		ps.sku_name AS skuName,
+		od.quantity AS quantity,
+		ps.attributes AS attributes,
+		ol.pay_type AS payType,
+		pa.order_detail_id AS orderDetailId,
+		pa.sub_type AS subType,
+		pa.status AS status,
+		od.price AS price,
+		pa.description AS description,
+		pa.conduct_by AS conductBy,
+		pa.conduct_result AS conductResult,
+		pa.conduct_time AS conductTime,
+		ol.order_id AS orderId
+	FROM
+		product_aftersale_apply pa
+	LEFT JOIN customer_info ci ON ci.c_id = pa.sub_by
+	LEFT JOIN order_detail od ON pa.order_detail_id = od.odi_id
+	LEFT JOIN order_list ol ON ol.order_id = od.order_id
+	LEFT JOIN product_sku ps ON ps.sku_id = od.sku_id
+	WHERE 1 = 1
+	<if test="status != null">
+		AND pa.status = #{status}
+	</if>
+	<if test="startDate != null and startDate != ''">
+    	AND pa.sub_time <![CDATA[>]]> concat(#{startDate}, ' 0:0:0')
+    </if>
+	<if test="endDate != null and endDate != ''">
+    	AND pa.sub_time <![CDATA[<]]> concat(#{endDate}, ' 23:59:59')
+    </if>
+	ORDER BY sub_time DESC
+	<if test="start &gt;= 0">
+    	limit #{start,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+    </if>
+  </select>
+  
+  <!-- 导出售后申请信息 -->
+  <select id="exportAftersaleApplyInfo" resultType="Map">
+	SELECT 
+	  pa.order_no AS orderNo,
+	  ci.realname,
+	  ci.mobile,
+	  pa.sub_time AS subTime,
+	  ps.sku_name AS skuName,
+	  od.quantity,
+	  od.price,
+	  ol.pay_type AS payType,
+	  pa.sub_type AS subType,
+	  pa.status,
+	  pa.conduct_by AS conductBy,
+	  pa.conduct_result AS conductResult,
+	  pa.conduct_time AS conductTime,
+	  pa.description 
+	FROM
+	  product_aftersale_apply pa 
+	  LEFT JOIN customer_info ci 
+	    ON ci.c_id = pa.sub_by 
+	  LEFT JOIN order_detail od 
+	    ON pa.order_detail_id = od.odi_id 
+	  LEFT JOIN order_list ol 
+	    ON ol.order_id = od.order_id 
+	  LEFT JOIN product_sku ps 
+	    ON ps.sku_id = od.sku_id 
+	WHERE 1 = 1 
+	<if test="status != null">
+		AND pa.status = #{status}
+	</if>
+	<if test="startDate != null and startDate != ''">
+    	AND pa.sub_time <![CDATA[>]]> concat(#{startDate}, ' 0:0:0')
+    </if>
+	<if test="endDate != null and endDate != ''">
+    	AND pa.sub_time <![CDATA[<]]> concat(#{endDate}, ' 23:59:59')
+    </if>
+	ORDER BY pa.sub_time DESC
+  </select>
+</mapper>

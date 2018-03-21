@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.clubank.weihang.manage.systemSettings.dao.BaseRoleModuleButtonMapper">
+  <resultMap id="BaseResultMap" type="cn.com.clubank.weihang.manage.systemSettings.pojo.BaseRoleModuleButton">
+    <id column="brmb_id" jdbcType="VARCHAR" property="brmbId" />
+    <result column="role_id" jdbcType="VARCHAR" property="roleId" />
+    <result column="module_id" jdbcType="VARCHAR" property="moduleId" />
+    <result column="b_id" jdbcType="VARCHAR" property="bId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    brmb_id, role_id, module_id, b_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from base_role_module_button
+    where brmb_id = #{brmbId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from base_role_module_button
+    where brmb_id = #{brmbId,jdbcType=VARCHAR}
+  </delete>
+  
+  <!-- 删除角色同时删除角色模块按钮表中数据 -->
+  <delete id="deleteByRoleId" parameterType="java.lang.String">
+  	delete from base_role_module_button
+    where role_id = #{roleId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.com.clubank.weihang.manage.systemSettings.pojo.BaseRoleModuleButton">
+    insert into base_role_module_button (brmb_id, role_id, module_id, 
+      b_id)
+    values (#{brmbId,jdbcType=VARCHAR}, #{roleId,jdbcType=VARCHAR}, #{moduleId,jdbcType=VARCHAR}, 
+      #{bId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.com.clubank.weihang.manage.systemSettings.pojo.BaseRoleModuleButton">
+    insert into base_role_module_button
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="brmbId != null">
+        brmb_id,
+      </if>
+      <if test="roleId != null">
+        role_id,
+      </if>
+      <if test="moduleId != null">
+        module_id,
+      </if>
+      <if test="bId != null">
+        b_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="brmbId != null">
+        #{brmbId,jdbcType=VARCHAR},
+      </if>
+      <if test="roleId != null">
+        #{roleId,jdbcType=VARCHAR},
+      </if>
+      <if test="moduleId != null">
+        #{moduleId,jdbcType=VARCHAR},
+      </if>
+      <if test="bId != null">
+        #{bId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.com.clubank.weihang.manage.systemSettings.pojo.BaseRoleModuleButton">
+    update base_role_module_button
+    <set>
+      <if test="roleId != null">
+        role_id = #{roleId,jdbcType=VARCHAR},
+      </if>
+      <if test="moduleId != null">
+        module_id = #{moduleId,jdbcType=VARCHAR},
+      </if>
+      <if test="bId != null">
+        b_id = #{bId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where brmb_id = #{brmbId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.com.clubank.weihang.manage.systemSettings.pojo.BaseRoleModuleButton">
+    update base_role_module_button
+    set role_id = #{roleId,jdbcType=VARCHAR},
+      module_id = #{moduleId,jdbcType=VARCHAR},
+      b_id = #{bId,jdbcType=VARCHAR}
+    where brmb_id = #{brmbId,jdbcType=VARCHAR}
+  </update>
+</mapper>

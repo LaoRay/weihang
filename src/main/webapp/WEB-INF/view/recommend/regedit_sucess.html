@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>威航汽修APP下载</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="${request.contextPath}/static/recommend/css/mui.min.css">
+		<link rel="stylesheet" href="${request.contextPath}/static/recommend/css/physical.css" />
+	</head>
+
+	<body style="background: #fff">
+
+		<div class="mui-content" style="background: #fff">
+			
+			<div class=" mui-row regeditSucess">
+				<img src="${request.contextPath}/static/recommend/images/regedit_sucess.jpg">
+			</div>
+
+			<div class="mui-row regedit-sucess-header bg-shadow mt8">
+				<dl>
+					<dt class="green">威航汽修APP</dt>
+					<dd id="all_dd" style="display: none">
+						<button onclick="anzhuoxiazai()" id='anzhuoxiazai' class="mui-btn mui-btn-primary">安卓下载</button>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<button onclick="iosxiazai()" id='iosxiazai' class="mui-btn mui-btn-primary">IOS下载</button>
+						<br/>
+						<span style="margin-top: 25px; font-size: 14px; color: #2b81d0;">注：如无法点击，请使用浏览器打开下载！</span>
+					</dd>
+					
+					<dd id="anzhuoxiazai_dd" style="display: none">
+						<button onclick="anzhuoxiazai()" id='anzhuoxiazai' class="mui-btn mui-btn-primary">点击下载</button>
+						<br/>
+						<span style="margin-top: 25px; font-size: 14px; color: #2b81d0;">注：如无法点击，请使用浏览器打开下载！</span>
+					</dd>
+					
+					<dd id="iosxiazai_dd" style="display: none">
+						<button onclick="iosxiazai()" id='iosxiazai' class="mui-btn mui-btn-primary" style="width: 200px;">请前往苹果AppStore下载</button>
+						<br/>
+						<!-- <span style="margin-top: 25px; font-size: 14px; color: #2b81d0;">注：如无法点击，请使用浏览器打开下载！</span> -->
+					</dd>
+				</dl>
+			</div>
+			<br/><br/>
+		</div>
+
+	</body>
+<script type="text/javascript" src="${request.contextPath}/static/recommend/js/mui.min.js"></script>
+<script type="text/javascript" src="${request.contextPath}/static/recommend/js/jquery-1.8.2.min.js"></script>
+<script type="text/javascript" src="${request.contextPath}/static/recommend/js/physical.js"></script>
+<script type="text/javascript">
+$(function() {
+	var navAgent = navigator.userAgent.toLowerCase();
+	//判断苹果
+	var isIpad = navAgent.match(/ipad/i) == "ipad";
+	var isIphoneOs = navAgent.match(/iphone os/i) == "iphone os";
+	//判断安卓
+	var isAndroid = navAgent.match(/android/i) == "android";
+	if (isIpad || isIphoneOs) {
+		$("#iosxiazai_dd").show();
+	} else if (isAndroid) {
+		$("#anzhuoxiazai_dd").show();
+	} else {
+		$("#all_dd").show();
+	}
+})
+
+//安卓下载
+function anzhuoxiazai() {
+	location.href="${androidDownloadUrl!'#'}";
+}
+
+//IOS下载
+function iosxiazai() {
+	location.href="${iosDownloadUrl!'#'}";
+}
+</script>
+</html>

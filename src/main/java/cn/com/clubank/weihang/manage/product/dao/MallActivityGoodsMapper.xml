@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.clubank.weihang.manage.product.dao.MallActivityGoodsMapper">
+  <resultMap id="BaseResultMap" type="cn.com.clubank.weihang.manage.product.pojo.MallActivityGoods">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="addtime" jdbcType="TIMESTAMP" property="addtime" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="limit1" jdbcType="INTEGER" property="limit1" />
+    <result column="limit2" jdbcType="INTEGER" property="limit2" />
+    <result column="limit3" jdbcType="INTEGER" property="limit3" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="sku_id" jdbcType="VARCHAR" property="skuId" />
+    <result column="quantity" jdbcType="INTEGER" property="quantity" />
+    <result column="sell_quantity" jdbcType="INTEGER" property="sellQuantity" />
+    <result column="activity_id" jdbcType="VARCHAR" property="activityId" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="create_user_Id" jdbcType="VARCHAR" property="createUserId" />
+    <result column="create_user_name" jdbcType="VARCHAR" property="createUserName" />
+    <result column="modify_date" jdbcType="TIMESTAMP" property="modifyDate" />
+    <result column="modify_user_Id" jdbcType="VARCHAR" property="modifyUserId" />
+    <result column="modify_user_name" jdbcType="VARCHAR" property="modifyUserName" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from mall_activity_goods
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByActivityId" parameterType="java.lang.String">
+    delete from mall_activity_goods
+    where activity_id = #{activityId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.com.clubank.weihang.manage.product.pojo.MallActivityGoods">
+    insert into mall_activity_goods (id, addtime, status, 
+      price, sku_id, quantity, limit1, limit2, limit3,
+      sell_quantity, activity_id, description, 
+      create_date, create_user_Id, create_user_name, 
+      modify_date, modify_user_Id, modify_user_name
+      )
+    values (#{id,jdbcType=VARCHAR}, #{addtime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}, 
+      #{price,jdbcType=DECIMAL}, #{skuId,jdbcType=VARCHAR}, #{quantity,jdbcType=INTEGER}, 
+      #{limit1,jdbcType=INTEGER}, #{limit2,jdbcType=INTEGER}, #{limit3,jdbcType=INTEGER},
+      #{sellQuantity,jdbcType=INTEGER}, #{activityId,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{createUserId,jdbcType=VARCHAR}, #{createUserName,jdbcType=VARCHAR}, 
+      #{modifyDate,jdbcType=TIMESTAMP}, #{modifyUserId,jdbcType=VARCHAR}, #{modifyUserName,jdbcType=VARCHAR}
+      )
+  </insert>
+  
+  <!-- 批量新增 -->
+  <insert id="insertByBatch" parameterType="java.util.List">
+    insert into mall_activity_goods (id, addtime, status, 
+    price, sku_id, quantity, limit1, limit2, limit3,
+    sell_quantity, activity_id, description, 
+    create_date, create_user_Id, create_user_name, 
+    modify_date, modify_user_Id, modify_user_name)
+      values
+      <foreach collection="list" item="item" index="index" separator=",">
+          (#{item.id,jdbcType=VARCHAR}, #{item.addtime,jdbcType=TIMESTAMP}, #{item.status,jdbcType=INTEGER}, 
+      #{item.price,jdbcType=DECIMAL}, #{item.skuId,jdbcType=VARCHAR}, #{item.quantity,jdbcType=INTEGER}, 
+      #{item.limit1,jdbcType=INTEGER}, #{item.limit2,jdbcType=INTEGER}, #{item.limit3,jdbcType=INTEGER}, 
+      #{item.sellQuantity,jdbcType=INTEGER}, #{item.activityId,jdbcType=VARCHAR}, #{item.description,jdbcType=VARCHAR}, 
+      #{item.createDate,jdbcType=TIMESTAMP}, #{item.createUserId,jdbcType=VARCHAR}, #{item.createUserName,jdbcType=VARCHAR}, 
+      #{item.modifyDate,jdbcType=TIMESTAMP}, #{item.modifyUserId,jdbcType=VARCHAR}, #{item.modifyUserName,jdbcType=VARCHAR}
+      )
+      </foreach>
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.com.clubank.weihang.manage.product.pojo.MallActivityGoods">
+    update mall_activity_goods
+    set addtime = #{addtime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=INTEGER},
+      price = #{price,jdbcType=DECIMAL},
+      sku_id = #{skuId,jdbcType=VARCHAR},
+      quantity = #{quantity,jdbcType=INTEGER},
+      sell_quantity = #{sellQuantity,jdbcType=INTEGER},
+      limit1 = #{limit1,jdbcType=INTEGER},
+      limit2 = #{limit2,jdbcType=INTEGER},
+      limit3 = #{limit3,jdbcType=INTEGER},
+      activity_id = #{activityId,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      create_user_Id = #{createUserId,jdbcType=VARCHAR},
+      create_user_name = #{createUserName,jdbcType=VARCHAR},
+      modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+      modify_user_Id = #{modifyUserId,jdbcType=VARCHAR},
+      modify_user_name = #{modifyUserName,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateSelectiveByPrimaryKey" parameterType="cn.com.clubank.weihang.manage.product.pojo.MallActivityGoods">
+    update mall_activity_goods
+    <trim prefix="SET" suffixOverrides=",">
+		<if test="addtime != null">addtime = #{addtime,jdbcType=TIMESTAMP},</if>
+		<if test="status != null">status = #{status,jdbcType=INTEGER},</if>
+		<if test="price != null">price = #{price,jdbcType=DECIMAL},</if>
+		<if test="skuId != null">sku_id = #{skuId,jdbcType=VARCHAR},</if>
+		<if test="quantity != null">quantity = #{quantity,jdbcType=INTEGER},</if>
+		<if test="sellQuantity != null">sell_quantity = #{sellQuantity,jdbcType=INTEGER},</if>
+		<if test="limit1 != null">limit1 = #{limit1,jdbcType=INTEGER},</if>
+		<if test="limit2 != null">limit2 = #{limit2,jdbcType=INTEGER},</if>
+		<if test="limit3 != null">limit3 = #{limit3,jdbcType=INTEGER},</if>
+		<if test="activityId != null">activity_id = #{activityId,jdbcType=VARCHAR},</if>
+		<if test="description != null">description = #{description,jdbcType=VARCHAR},</if>
+		<if test="createDate != null">create_date = #{createDate,jdbcType=TIMESTAMP},</if>
+		<if test="createUserId != null">create_user_Id = #{createUserId,jdbcType=VARCHAR},</if>
+		<if test="createUserName != null">create_user_name = #{createUserName,jdbcType=VARCHAR},</if>
+		<if test="modifyDate != null">modify_date = #{modifyDate,jdbcType=TIMESTAMP},</if>
+		<if test="modifyUserId != null">modify_user_Id = #{modifyUserId,jdbcType=VARCHAR},</if>
+		<if test="modifyUserName != null">modify_user_name = #{modifyUserName,jdbcType=VARCHAR}</if>
+    </trim>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select id, addtime, status, price, sku_id, quantity, sell_quantity, activity_id, 
+    description, create_date, create_user_Id, create_user_name, modify_date, modify_user_Id, 
+    modify_user_name, limit1, limit2, limit3
+    from mall_activity_goods
+    where id = #{id,jdbcType=VARCHAR}
+    and status = 1
+  </select>
+  <select id="selectBySkuId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select id, addtime, status, price, sku_id, quantity, sell_quantity, activity_id, 
+    description, create_date, create_user_Id, create_user_name, modify_date, modify_user_Id, 
+    modify_user_name, limit1, limit2, limit3
+    from mall_activity_goods
+    where sku_id = #{skuId,jdbcType=VARCHAR}
+    and status = 1
+  </select>
+  <select id="selectActivityGoodsBySkuId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select mag.*
+    from mall_activity_goods mag
+    left join mall_activity ma on mag.activity_id = ma.id
+    where mag.sku_id = #{skuId,jdbcType=VARCHAR}
+    and mag.status = 1
+    and ma.status = 3
+  </select>
+  <select id="selectGoodsByActivityIdAndSkuId" resultMap="BaseResultMap">
+    select id, addtime, status, price, sku_id, quantity, sell_quantity, activity_id, 
+    description, create_date, create_user_Id, create_user_name, modify_date, modify_user_Id, 
+    modify_user_name, limit1, limit2, limit3
+    from mall_activity_goods
+    where activity_id = #{activityId}
+    and sku_id = #{skuId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByActivityId" parameterType="java.lang.String" resultType="hashMap">
+	SELECT
+		ag.id AS goodsId,
+		CAST(ag.addtime AS CHAR) AS addTime,
+		CAST(ag.status AS CHAR) AS status,
+		CAST(ag.price AS CHAR) AS price,
+		ag.sku_id AS skuId,
+		CAST(ag.limit1 AS CHAR) AS limit1,
+		CAST(ag.limit2 AS CHAR) AS limit2,
+		CAST(ag.limit3 AS CHAR) AS limit3,
+		ps.attributes AS attributes,
+		ps.sku_name AS skuName,
+		CAST(ps.product_price AS CHAR) as skuPrice,
+		ps.product_pic_id as picId,
+		ps.product_id AS productId,
+		CAST(ag.quantity AS CHAR) AS quantity,
+		CAST(ag.sell_quantity AS CHAR) AS sellQuantity,
+		CAST(ag.quantity - ag.sell_quantity AS CHAR) AS surplusQuantity,
+		ag.activity_id AS activityId,
+		ag.description AS description,
+		CAST(pi.product_type AS CHAR) AS productType,
+		CAST(ma.end_time AS CHAR) AS endTime
+	FROM
+		mall_activity_goods ag
+	LEFT JOIN product_sku ps ON ag.sku_id = ps.sku_id
+	LEFT JOIN product_info pi ON ps.product_id = pi.product_id
+	LEFT JOIN mall_activity ma on ma.id = ag.activity_id
+    WHERE ag.activity_id = #{activityId,jdbcType=VARCHAR}
+    AND ag.status = 1
+    ORDER BY ag.addTime DESC
+    <if test="start &gt;= 0">
+    LIMIT #{start,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+    </if>
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, addtime, status, price, sku_id, quantity, sell_quantity, activity_id, 
+    description, create_date, create_user_Id, create_user_name, modify_date, modify_user_Id, 
+    modify_user_name, limit1, limit2, limit3
+    from mall_activity_goods
+  </select>
+  
+  <!-- 通过活动ID获得活动商品 -->
+  <select id="selectActivityGoodsByActivityId" resultType="hashMap">
+	SELECT 
+	    ag.id as id,
+	    ag.addtime as addtime,
+	    ag.status as status,
+	    ag.price as price,
+	    ag.sku_id as skuId,
+	    ag.limit1 as limit1,
+		ag.limit2 as limit2,
+		ag.limit3 as limit3,
+	    ps.attributes as attributes,
+	    ps.sku_name as skuName,
+	    ps.product_id as productId,
+	    ag.quantity as quantity,
+	    ag.sell_quantity as sellQuantity,
+	    ag.quantity - ag.sell_quantity as surplus,
+	    ag.activity_id as activityId,
+	    ag.description as description
+	FROM
+	    mall_activity_goods ag
+	    LEFT JOIN product_sku ps ON ag.sku_id = ps.sku_id
+	WHERE ag.activity_id = #{activityId,jdbcType=VARCHAR}
+	ORDER BY ag.addtime DESC
+  </select>
+  
+  <!-- 查询最新的num个活动商品 -->
+   <select id="selectNewestByNum" resultType="hashMap">
+	SELECT
+		ag.id AS goodsId,
+		ag.addtime AS addTime,
+		ag.status AS status,
+		ag.limit1 AS limit1,
+		ag.limit2 AS limit2,
+		ag.limit3 AS limit3,
+		ag.price AS price,
+		ag.sku_id AS skuId,
+		ps.attributes AS attributes,
+		ps.sku_name AS skuName,
+		ps.product_id AS productId,
+		ag.quantity AS quantity,
+		ag.sell_quantity AS sellQuantity,
+		ag.activity_id AS activityId,
+		ag.description AS description,
+		pi.product_type AS productType,
+		ps.product_price as skuPrice,
+		ps.product_pic_id as picId,
+		ma.begin_time as beginTime,
+		ma.end_time as endTime
+	FROM
+		mall_activity_goods ag
+	LEFT JOIN product_sku ps ON ag.sku_id = ps.sku_id
+	LEFT JOIN product_info pi ON ps.product_id = pi.product_id
+	LEFT JOIN mall_activity ma on ma.id = ag.activity_id
+	
+    WHERE ma.status = 3 and ps.sku_name != '' and ps.sku_name is not null
+    ORDER BY ag.addTime DESC
+    <if test="num &gt;= 0">
+    LIMIT 0, #{num,jdbcType=INTEGER}
+    </if>
+  </select>
+  
+  <!-- 通过活动ID查询到的活动商品总数 -->
+  <select id="selectGoodsCount" parameterType="java.lang.String" resultType="Integer">
+  	select count(0)
+  	from mall_activity_goods
+  	where activity_id = #{activityId,jdbcType=VARCHAR}
+  </select>
+</mapper>

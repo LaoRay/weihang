@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.clubank.weihang.manage.member.dao.IntegralRecordMapper">
+
+  <resultMap id="BaseResultMap" type="cn.com.clubank.weihang.manage.member.pojo.IntegralRecord">
+    <id column="record_id" jdbcType="VARCHAR" property="recordId" />
+    <result column="customer_id" jdbcType="VARCHAR" property="customerId" />
+    <result column="beginning_integral" jdbcType="INTEGER" property="beginningIntegral" />
+    <result column="finish_integral" jdbcType="INTEGER" property="finishIntegral" />
+    <result column="deal_integral" jdbcType="INTEGER" property="dealIntegral" />
+    <result column="integral_source_type" jdbcType="INTEGER" property="integralSourceType" />
+    <result column="integral_source" jdbcType="VARCHAR" property="integralSource" />
+    <result column="integral_type" jdbcType="INTEGER" property="integralType" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+  </resultMap>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from integral_record
+    where record_id = #{recordId,jdbcType=VARCHAR}
+  </delete>
+  
+  <insert id="insert" parameterType="cn.com.clubank.weihang.manage.member.pojo.IntegralRecord">
+    insert into integral_record (record_id, customer_id, beginning_integral, 
+      finish_integral, deal_integral, integral_source_type, 
+      integral_source, integral_type, description, 
+      create_date)
+    values (#{recordId,jdbcType=VARCHAR}, #{customerId,jdbcType=VARCHAR}, #{beginningIntegral,jdbcType=INTEGER}, 
+      #{finishIntegral,jdbcType=INTEGER}, #{dealIntegral,jdbcType=INTEGER}, #{integralSourceType,jdbcType=INTEGER}, 
+      #{integralSource,jdbcType=VARCHAR}, #{integralType,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR}, 
+      #{createDate,jdbcType=TIMESTAMP})
+  </insert>
+  
+  <update id="updateByPrimaryKey" parameterType="cn.com.clubank.weihang.manage.member.pojo.IntegralRecord">
+    update integral_record
+    set customer_id = #{customerId,jdbcType=VARCHAR},
+      beginning_integral = #{beginningIntegral,jdbcType=INTEGER},
+      finish_integral = #{finishIntegral,jdbcType=INTEGER},
+      deal_integral = #{dealIntegral,jdbcType=INTEGER},
+      integral_source_type = #{integralSourceType,jdbcType=INTEGER},
+      integral_source = #{integralSource,jdbcType=VARCHAR},
+      integral_type = #{integralType,jdbcType=INTEGER},
+      description = #{description,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP}
+    where record_id = #{recordId,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select record_id, customer_id, beginning_integral, finish_integral, deal_integral, 
+    integral_source_type, integral_source, integral_type, description, create_date
+    from integral_record
+    where record_id = #{recordId,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectByCustomerId" resultMap="BaseResultMap">
+    select record_id, customer_id, beginning_integral, finish_integral, deal_integral, 
+    integral_source_type, integral_source, integral_type, description, create_date
+    from integral_record
+    where customer_id = #{customerId,jdbcType=VARCHAR}
+    order by create_date desc
+    <if test="start &gt;= 0">
+    limit #{start,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+    </if>
+  </select>
+  
+  <select id="selectAll" resultMap="BaseResultMap">
+    select record_id, customer_id, beginning_integral, finish_integral, deal_integral, 
+    integral_source_type, integral_source, integral_type, description, create_date
+    from integral_record
+  </select>
+  <!-- 今日已获总积分 -->
+  <select id="selectTodayIntegralByCustomerId" parameterType="java.lang.String" resultType="int">
+    select sum(deal_integral)
+    from integral_record
+    where customer_id = #{customerId}
+    and to_days(create_date) = to_days(now())
+    and integral_type = 1
+  </select>
+  
+  <select id="selectCountIntegralRecordByType" resultType="int">
+    select count(0)
+    from integral_record
+    where customer_id = #{customerId}
+    and integral_source_type = #{type}
+    and to_days(create_date) = to_days(now())
+  </select>
+  
+  <!-- 今日已获日常任务积分 -->
+  <select id="selectTodayDailyTaskIntegralByCustomerId" parameterType="java.lang.String" resultType="int">
+    select sum(deal_integral)
+    from integral_record
+    where customer_id = #{customerId}
+    and to_days(create_date) = to_days(now())
+    and integral_type = 1
+    and integral_source_type &gt;= 10 and integral_source_type &lt;= 14
+  </select>
+</mapper>

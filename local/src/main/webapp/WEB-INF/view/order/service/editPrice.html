@@ -1,0 +1,175 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>编辑价格</title>
+<#include '/common.html'/>
+</head>
+<body class="easyui-layout">
+<div region="north" style="overflow:hidden" style="height:200px;">
+	<table style="width: 100%;" border="0" cellspacing="0" class="tb-contacts-list">
+		<tbody>
+			<tr>
+				<th style="width: 80px;">工单号：</th>
+				<td width="20%">
+					<span class="loadValue" loadValue="repairNo"></span>
+				</td>
+				<th style="width: 80px;">客户姓名：</th>
+				<td width="20%">
+					<span class="loadValue" loadValue="customerName"></span>
+				</td>
+				<th style="width: 80px;">联系方式：</th>
+				<td>
+					<span class="loadValue" loadValue="linkmanMobile"></span>
+				</td>
+			</tr>
+			<tr>
+				<th>会员等级：</th>
+				<td>
+					<span class="loadValue" loadValue="vipLevel"></span>
+				</td>
+				<th>服务顾问：</th>
+				<td>
+					<span class="loadValue" loadValue="consultant"></span>
+				</td>
+				<th>技师：</th>
+				<td>
+					<span class="loadValue" loadValue="enginner"></span>
+				</td>
+			</tr>
+			<tr>
+				<th>维修项目：</th>
+				<td colspan="5">
+					<span class="loadValue" loadValue="itemNames"></span>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<div region="center">
+	<table id="layui-table" lay-even style="table-layout: fixed;"></table>
+</div>
+
+<!-- 编辑价格 -->
+<div id="editPrice" >
+    <div class="easyui-layout" fit="true">
+        <div region="center" border="false" style="overflow-y:auto;">
+        <form id="orderMaterial-form" action="" method="post">
+           <input type="hidden" name="womId" />
+           <table style="width: 100%;" border="0" cellspacing="0" class="tb-contacts-list">
+			<tbody>
+				<tr>
+					<th style="width: 80px;">普通会员价：</th>
+					<td>
+						<input type="text" class="input" style="width: 70%;" name="price1" value=""/>&nbsp;&nbsp;元
+					</td>
+				</tr>
+				<tr>
+					<th>白金会员价：</th>
+					<td>
+						<input type="text" class="input" style="width: 70%;" name="price2" value=""/>&nbsp;&nbsp;元
+					</td>
+				</tr>
+				<tr>
+					<th>蓝金会员价：</th>
+					<td>
+						<input type="text" class="input" style="width: 70%;" name="price3" value=""/>&nbsp;&nbsp;元
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		</form>
+        </div> 
+        <div region="south" border="false" class="window-foot">
+         <i class="icon-window icon-windowbutton" onclick="editPriceOK()"> <input type="button" class="icon-window windowbutton" value="确认" /></i>
+          <i class="icon-window icon-windowbutton" onclick="javascript:$('#editPrice').window('close')"> <input type="button" class="icon-window windowbutton" value="关闭" /></i>
+        </div>
+    </div>
+</div>
+
+</body>
+<script type="text/javascript">
+
+$(function() {
+	$('#layui-table').layuiDatagrid({
+		url: "${request.contextPath}/clientFindMaterialByRepairId",
+		param: {wrId: "${repairId!''}"},
+		contentType: "application/json",
+		columns:[
+			//{checkbox: true},
+			{field:'itemName',title:'材料名称',width:10},
+			{field:'itemCode',title:'材料代码',width:10},
+			{field:'quantity',title:'数量',width:12},
+			{field:'price1',title:'普通会员价',width:15},
+			{field:'price2',title:'白金会员价',width:15},
+			{field:'price3',title:'蓝金会员价',width:15},
+			{field:'womId',title:'操作',width:'100px',
+				formatter: function(value, rec) {
+					var ul = '<ul class="listHandler">';
+					ul += '<li><a onclick="updatePrice(this)" objId="'+value+'" price1="'+rec.price1+'" price2="'+rec.price2+'" price3="'+rec.price3+'">修改价格</a></li>'
+					ul += '</ul>';
+		      		return ul;
+				}
+			}
+		]
+	});
+	
+	//加载显示的维修单数据
+	$.ajax({
+		url: "${request.contextPath}/getReapirOrderDetailById",
+		type: 'post',
+		data: '{repairId: "${repairId}"}',
+    	dataType: 'json',
+    	contentType: "application/json",
+    	beforeSend: function() {
+    		loadLayer = parent.layer.load(0, {shade: [0.5, '#fff'] });
+    	},
+    	success: function(data) {
+    		parent.layer.close(loadLayer);
+    		$('.tb-contacts-list').customizeLoadValue({
+    			param: $.parseJSON(data).data.repairDetail
+    		});
+    	}
+	});
+	
+	//编辑价格
+	$('#editPrice').window({
+	    width: 400,
+	    height: 224,
+	    title: "编辑价格",
+	    modal: true,
+	    draggable: false,
+	    resizable: false
+	});
+	$('#editPrice').window('close');
+})
+
+//修改价格
+function updatePrice(obj) {
+	$('input[name=price1]').val($(obj).attr('price1'));
+	$('input[name=price2]').val($(obj).attr('price2'));
+	$('input[name=price3]').val($(obj).attr('price3'));
+	$('input[name=womId]').val($(obj).attr('objId'));
+	$('#editPrice').window('open');
+}
+
+//修改价格
+function editPriceOK() {
+	$.ajax({
+		url: "${request.contextPath}/clientUpdateOrderMaterial",
+		type: 'post',
+		data: $("#orderMaterial-form").serializeJsonStr(),
+    	dataType: 'json',
+    	contentType: "application/json",
+    	beforeSend: function() {
+    		loadLayer = parent.layer.load(0, {shade: [0.5, '#fff'] });
+    	},
+    	success: function(data) {
+    		parent.layer.close(loadLayer);
+    		$('#editPrice').window('close');
+    		$('#layui-table').layuiDatagrid('reload');
+    	}
+	});
+}
+</script>
+</html>

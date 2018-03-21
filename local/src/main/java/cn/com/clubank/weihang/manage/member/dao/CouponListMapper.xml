@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.clubank.weihang.manage.member.dao.CouponListMapper">
+  <resultMap id="BaseResultMap" type="cn.com.clubank.weihang.manage.member.pojo.CouponList">
+    <id column="coupon_id" jdbcType="VARCHAR" property="couponId" />
+    <result column="coupon_name" jdbcType="VARCHAR" property="couponName" />
+    <result column="valid_Time_start" jdbcType="TIMESTAMP" property="validTimeStart" />
+    <result column="valid_time_end" jdbcType="TIMESTAMP" property="validTimeEnd" />
+    <result column="face_value" jdbcType="DECIMAL" property="faceValue" />
+    <result column="coupon_status" jdbcType="INTEGER" property="couponStatus" />
+    <result column="change_grade" jdbcType="INTEGER" property="changeGrade" />
+    <result column="change_integral" jdbcType="INTEGER" property="changeIntegral" />
+    <result column="change_time" jdbcType="TIMESTAMP" property="changeTime" />
+    <result column="delete_mark" jdbcType="INTEGER" property="deleteMark" />
+    <result column="enabled_mark" jdbcType="INTEGER" property="enabledMark" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="create_user_Id" jdbcType="VARCHAR" property="createUserId" />
+    <result column="create_user_name" jdbcType="VARCHAR" property="createUserName" />
+    <result column="modify_date" jdbcType="TIMESTAMP" property="modifyDate" />
+    <result column="modify_user_Id" jdbcType="VARCHAR" property="modifyUserId" />
+    <result column="modify_user_name" jdbcType="VARCHAR" property="modifyUserName" />
+    <result column="user_time" jdbcType="TIMESTAMP" property="userTime" />
+    <result column="order_no" jdbcType="VARCHAR" property="orderNo" />
+    <result column="customer_id" jdbcType="VARCHAR" property="customerId" />
+    <result column="order_type" jdbcType="INTEGER" property="orderType" />
+    <result column="coupon_code" jdbcType="VARCHAR" property="couponCode" />
+    <result column="coupon_type_id" jdbcType="VARCHAR" property="couponTypeId" />
+    <result column="coupon_explain" jdbcType="LONGVARCHAR" property="couponExplain" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from coupon_list
+    where coupon_id = #{couponId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.com.clubank.weihang.manage.member.pojo.CouponList">
+    insert into coupon_list (coupon_id, coupon_name, valid_Time_start, 
+      valid_time_end, face_value, coupon_status, 
+      change_grade, change_integral, change_time, 
+      delete_mark, enabled_mark, description, 
+      create_date, create_user_Id, create_user_name, 
+      modify_date, modify_user_Id, modify_user_name, 
+      user_time, order_no, customer_id, 
+      order_type, coupon_code, coupon_type_id, 
+      coupon_explain)
+    values (#{couponId,jdbcType=VARCHAR}, #{couponName,jdbcType=VARCHAR}, #{validTimeStart,jdbcType=TIMESTAMP}, 
+      #{validTimeEnd,jdbcType=TIMESTAMP}, #{faceValue,jdbcType=DECIMAL}, #{couponStatus,jdbcType=INTEGER}, 
+      #{changeGrade,jdbcType=INTEGER}, #{changeIntegral,jdbcType=INTEGER}, #{changeTime,jdbcType=TIMESTAMP}, 
+      #{deleteMark,jdbcType=INTEGER}, #{enabledMark,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{createUserId,jdbcType=VARCHAR}, #{createUserName,jdbcType=VARCHAR}, 
+      #{modifyDate,jdbcType=TIMESTAMP}, #{modifyUserId,jdbcType=VARCHAR}, #{modifyUserName,jdbcType=VARCHAR}, 
+      #{userTime,jdbcType=TIMESTAMP}, #{orderNo,jdbcType=VARCHAR}, #{customerId,jdbcType=VARCHAR}, 
+      #{orderType,jdbcType=INTEGER}, #{couponCode,jdbcType=VARCHAR}, #{couponTypeId,jdbcType=VARCHAR}, 
+      #{couponExplain,jdbcType=LONGVARCHAR})
+  </insert>
+  
+  <insert id="insertBatch" parameterType="java.util.List">
+	insert into coupon_list (coupon_id, coupon_name, valid_Time_start,
+	valid_time_end, face_value, coupon_status,
+	change_grade, change_integral, change_time,
+	delete_mark, enabled_mark, description,
+	create_date, create_user_Id, create_user_name,
+	modify_date, modify_user_Id, modify_user_name,
+	user_time, order_no, customer_id,
+	order_type, coupon_code, coupon_type_id,
+	coupon_explain)
+	values
+	<foreach collection="list" item="item" index="index" separator=",">
+		(#{item.couponId,jdbcType=VARCHAR}, 
+		#{item.couponName,jdbcType=VARCHAR},
+		#{item.validTimeStart,jdbcType=TIMESTAMP},
+		#{item.validTimeEnd,jdbcType=TIMESTAMP}, 
+		#{item.faceValue,jdbcType=DECIMAL},
+		#{item.couponStatus,jdbcType=INTEGER},
+		#{item.changeGrade,jdbcType=INTEGER}, 
+		#{item.changeIntegral,jdbcType=INTEGER}, 
+		#{item.changeTime,jdbcType=TIMESTAMP},
+		#{item.deleteMark,jdbcType=INTEGER}, 
+		#{item.enabledMark,jdbcType=INTEGER},
+		#{item.description,jdbcType=VARCHAR},
+		#{item.createDate,jdbcType=TIMESTAMP}, 
+		#{item.createUserId,jdbcType=VARCHAR}, 
+		#{item.createUserName,jdbcType=VARCHAR},
+		#{item.modifyDate,jdbcType=TIMESTAMP}, 
+		#{item.modifyUserId,jdbcType=VARCHAR},
+		#{item.modifyUserName,jdbcType=VARCHAR},
+		#{item.userTime,jdbcType=TIMESTAMP}, 
+		#{item.orderNo,jdbcType=VARCHAR}, 
+		#{item.customerId,jdbcType=VARCHAR},
+		#{item.orderType,jdbcType=INTEGER}, 
+		#{item.couponCode,jdbcType=VARCHAR},
+		#{item.couponTypeId,jdbcType=VARCHAR},
+		#{item.couponExplain,jdbcType=LONGVARCHAR})
+	</foreach>
+  </insert>
+  
+  <update id="updateByPrimaryKey" parameterType="cn.com.clubank.weihang.manage.member.pojo.CouponList">
+    update coupon_list
+    set coupon_name = #{couponName,jdbcType=VARCHAR},
+      valid_Time_start = #{validTimeStart,jdbcType=TIMESTAMP},
+      valid_time_end = #{validTimeEnd,jdbcType=TIMESTAMP},
+      face_value = #{faceValue,jdbcType=DECIMAL},
+      coupon_status = #{couponStatus,jdbcType=INTEGER},
+      change_grade = #{changeGrade,jdbcType=INTEGER},
+      change_integral = #{changeIntegral,jdbcType=INTEGER},
+      change_time = #{changeTime,jdbcType=TIMESTAMP},
+      delete_mark = #{deleteMark,jdbcType=INTEGER},
+      enabled_mark = #{enabledMark,jdbcType=INTEGER},
+      description = #{description,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      create_user_Id = #{createUserId,jdbcType=VARCHAR},
+      create_user_name = #{createUserName,jdbcType=VARCHAR},
+      modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+      modify_user_Id = #{modifyUserId,jdbcType=VARCHAR},
+      modify_user_name = #{modifyUserName,jdbcType=VARCHAR},
+      user_time = #{userTime,jdbcType=TIMESTAMP},
+      order_no = #{orderNo,jdbcType=VARCHAR},
+      customer_id = #{customerId,jdbcType=VARCHAR},
+      order_type = #{orderType,jdbcType=INTEGER},
+      coupon_code = #{couponCode,jdbcType=VARCHAR},
+      coupon_type_id = #{couponTypeId,jdbcType=VARCHAR},
+      coupon_explain = #{couponExplain,jdbcType=LONGVARCHAR}
+    where coupon_id = #{couponId,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="updateCouponStatus">
+  	update coupon_list
+  	set coupon_status = 3
+  	where valid_time_end <![CDATA[<]]> now()
+  	and coupon_status = 1
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select coupon_id, coupon_name, valid_Time_start, valid_time_end, face_value, coupon_status, 
+    change_grade, change_integral, change_time, delete_mark, enabled_mark, description, 
+    create_date, create_user_Id, create_user_name, modify_date, modify_user_Id, modify_user_name, 
+    user_time, order_no, customer_id, order_type, coupon_code, coupon_type_id, coupon_explain
+    from coupon_list
+    where coupon_id = #{couponId,jdbcType=VARCHAR} and delete_mark = 0
+  </select>
+  <select id="selectByCouponCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select coupon_id, coupon_name, valid_Time_start, valid_time_end, face_value, coupon_status, 
+    change_grade, change_integral, change_time, delete_mark, enabled_mark, description, 
+    create_date, create_user_Id, create_user_name, modify_date, modify_user_Id, modify_user_name, 
+    user_time, order_no, customer_id, order_type, coupon_code, coupon_type_id, coupon_explain
+    from coupon_list
+    where coupon_code = #{couponCode,jdbcType=VARCHAR} and delete_mark = 0
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select coupon_id, coupon_name, valid_Time_start, valid_time_end, face_value, coupon_status, 
+    change_grade, change_integral, change_time, delete_mark, enabled_mark, description, 
+    create_date, create_user_Id, create_user_name, modify_date, modify_user_Id, modify_user_name, 
+    user_time, order_no, customer_id, order_type, coupon_code, coupon_type_id, coupon_explain
+    from coupon_list where delete_mark = 0
+  </select>
+  
+  <select id="selectByCustomerId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select coupon_id, coupon_name, valid_Time_start, valid_time_end, face_value, coupon_status, 
+    change_grade, change_integral, change_time, delete_mark, enabled_mark, description, 
+    create_date, create_user_Id, create_user_name, modify_date, modify_user_Id, modify_user_name, 
+    user_time, order_no, customer_id, order_type, coupon_code, coupon_type_id, coupon_explain
+    from coupon_list
+    where customer_id = #{customerId,jdbcType=VARCHAR} and delete_mark = 0
+  </select>
+  
+  <!-- 查询折扣券 -->
+  <select id="selectAvailableDiscountCouponList" resultType="hashMap">
+	SELECT
+		cl.coupon_id AS couponId,
+		cp.coupon_type AS couponType,
+		cl.coupon_name AS couponName,
+		cl.valid_Time_start AS validTimeStart,
+		cl.valid_time_end AS validTimeEnd,
+		cp.pic_small as picSmall,
+		cp.pic_big as picBig,
+		cl.coupon_status AS couponStatus,
+		cl.coupon_code AS couponCode,
+		cl.coupon_explain AS couponExplain,
+		cp.discount AS discount,
+		cp.product_id AS productId,
+		pi.product_name AS productName,
+		cl.coupon_type_id AS crId
+	FROM
+		coupon_list cl
+	LEFT JOIN coupon_inventory cp ON cl.coupon_type_id = cp.cr_id
+	LEFT JOIN product_info pi ON cp.product_id = pi.product_id
+	WHERE 
+		cl.customer_id = #{customerId}
+	AND cp.product_id in
+	<foreach collection="list" index="index" item="item" open="(" separator="," close=")"  >
+       #{item}
+    </foreach>
+    AND cl.coupon_status = 1
+    AND cp.coupon_type = 4
+  </select>
+  
+  <!-- 查询抵扣券 -->
+  <select id="selectAvailableDeductionCouponList" resultType="hashMap">
+	SELECT
+		cl.coupon_id AS couponId,
+		cp.coupon_type AS couponType,
+		cl.coupon_name AS couponName,
+		cl.valid_Time_start AS validTimeStart,
+		cl.valid_time_end AS validTimeEnd,
+		cp.pic_small as picSmall,
+		cp.pic_big as picBig,
+		cl.coupon_status AS couponStatus,
+		cl.coupon_code AS couponCode,
+		cl.coupon_explain AS couponExplain,
+		cp.face_value AS faceValue,
+		cl.coupon_type_id AS crId
+	FROM
+		coupon_list cl
+	LEFT JOIN coupon_inventory cp ON cl.coupon_type_id = cp.cr_id
+	WHERE
+		cl.customer_id = #{customerId}
+	AND cl.coupon_status = 1
+    AND cp.coupon_type = 3
+  </select>
+  
+  <!-- 查询兑换券 -->
+  <select id="selectAvailableExchangeCouponList" resultType="hashMap">
+	SELECT
+		cl.coupon_id AS couponId,
+		cp.coupon_type AS couponType,
+		cl.coupon_name AS couponName,
+		cl.valid_Time_start AS validTimeStart,
+		cl.valid_time_end AS validTimeEnd,
+		cp.pic_small as picSmall,
+		cp.pic_big as picBig,
+		cl.coupon_status AS couponStatus,
+		cl.coupon_code AS couponCode,
+		cl.coupon_explain AS couponExplain,
+		cp.sku_id AS skuId,
+		ps.sku_name AS skuName,
+		cl.coupon_type_id AS crId
+	FROM
+		coupon_list cl
+	LEFT JOIN coupon_inventory cp ON cl.coupon_type_id = cp.cr_id
+	LEFT JOIN product_sku ps ON cp.sku_id = ps.sku_id
+	WHERE 
+		cl.customer_id = #{customerId}
+	AND	cp.sku_id in
+	<foreach collection="list" index="index" item="item" open="(" separator="," close=")"  >
+       #{item}
+    </foreach>
+    AND cl.coupon_status = 1
+    AND cp.coupon_type = 2
+  </select>
+  
+  <!-- 查询服务券 -->
+  <select id="selectAvailableServiceCouponList" resultType="hashMap">
+	SELECT
+		cl.coupon_id AS couponId,
+		cp.coupon_type AS couponType,
+		cl.coupon_name AS couponName,
+		cl.valid_Time_start AS validTimeStart,
+		cl.valid_time_end AS validTimeEnd,
+		cp.pic_small as picSmall,
+		cp.pic_big as picBig,
+		cl.coupon_status AS couponStatus,
+		cl.coupon_code AS couponCode,
+		cl.coupon_explain AS couponExplain,
+		cp.sku_id AS skuId,
+		ps.sku_name AS skuName,
+		cl.coupon_type_id AS crId
+	FROM
+		coupon_list cl
+	LEFT JOIN coupon_inventory cp ON cl.coupon_type_id = cp.cr_id
+	LEFT JOIN product_sku ps ON cp.sku_id = ps.sku_id
+	WHERE 
+		cl.customer_id = #{customerId}
+    AND	cp.sku_id in
+	<foreach collection="list" index="index" item="item" open="(" separator="," close=")"  >
+       #{item}
+    </foreach>
+    AND cl.coupon_status = 1
+    AND cp.coupon_type = 1
+  </select>
+  
+  <!-- 查询客户的优惠券列表(分状态查询未使用，已使用，已过期) -->
+  <select id="selectByCustomerIdAndStatus" resultType="hashMap">
+	SELECT
+		cl.coupon_id AS couponId,
+		cp.coupon_type AS couponType,
+		cl.coupon_name AS couponName,
+		cl.valid_Time_start AS validTimeStart,
+		cl.valid_time_end AS validTimeEnd,
+		cp.face_value AS faceValue,
+		cp.discount AS discount,
+		pi.product_name AS productName,
+		cp.pic_small AS picSmall,
+		cp.pic_big AS picBig,
+		cl.coupon_status AS couponStatus,
+		cl.coupon_code AS couponCode,
+		cl.coupon_explain AS couponExplain,
+		cl.coupon_type_id AS crId
+	FROM
+		coupon_list cl
+	LEFT JOIN coupon_inventory cp ON cl.coupon_type_id = cp.cr_id
+	LEFT JOIN product_info pi ON cp.product_id = pi.product_id
+    WHERE cl.customer_id = #{customerId,jdbcType=VARCHAR}
+    <if test="couponStatus != null">
+	    AND cl.coupon_status = #{couponStatus,jdbcType=INTEGER}
+    </if>
+    AND cp.delete_mark = 0
+  </select>
+  
+  <!-- 查询用户可用优惠券数量(未使用) -->
+  <select id="selectCountByCustomerId" parameterType="java.lang.String" resultType="java.lang.Integer">
+    select count(1) from coupon_list
+    where customer_id = #{customerId}
+    and coupon_status = 1
+    and delete_mark = 0
+  </select>
+  
+  <!-- 后台 -->
+  <select id="selectCountCouponExchangeRecord" resultType="int">
+	SELECT COUNT(0) FROM (
+		SELECT
+			cl.coupon_id AS couponId,
+			cl.coupon_code AS couponCode,
+			cl.coupon_name AS couponName,
+			cu.realname AS customerName,
+			cl.face_value AS faceValue,
+			cl.coupon_status AS couponStatus,
+			cl.change_time AS changeTime,
+			cl.description AS description,
+			cl.coupon_type_id AS crId
+		FROM
+			coupon_list cl
+		LEFT JOIN customer_info cu ON cl.customer_id = cu.c_id
+		WHERE 1 = 1
+		<if test="couponName != null and couponName != ''">
+			and cl.coupon_name like concat('%', #{couponName}, '%')
+		</if>
+		<if test="customerName != null and customerName != ''">
+			and cu.realname like concat('%', #{customerName}, '%')
+		</if>
+		<if test="couponStatus != null">
+			and cl.coupon_status = #{couponStatus}
+		</if>
+	) aa
+  </select>
+  <select id="selectCouponExchangeRecordList" resultType="hashMap">
+	SELECT
+		cl.coupon_id AS couponId,
+		cl.coupon_code AS couponCode,
+		cl.coupon_name AS couponName,
+		cu.realname AS customerName,
+		cl.coupon_status AS couponStatus,
+		cl.change_time AS changeTime,
+		cl.description AS description,
+		cl.coupon_type_id AS crId
+	FROM
+		coupon_list cl
+	LEFT JOIN customer_info cu ON cl.customer_id = cu.c_id
+	WHERE 1 = 1
+	<if test="couponName != null and couponName != ''">
+		and cl.coupon_name like concat('%', #{couponName}, '%')
+	</if>
+	<if test="customerName != null and customerName != ''">
+		and cu.realname like concat('%', #{customerName}, '%')
+	</if>
+	<if test="couponStatus != null">
+		and cl.coupon_status = #{couponStatus}
+	</if>
+	order by cl.change_time desc
+	<if test="start &gt;= 0">
+    limit #{start,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+    </if>
+  </select>
+  
+  <select id="selectCouponExchangeDetailByPrimaryKey" parameterType="java.lang.String" resultType="hashMap">
+	SELECT
+		cl.coupon_id AS couponId,
+		cl.coupon_code AS couponCode,
+		cp.coupon_type AS couponType,
+		cl.coupon_name AS couponName,
+		cl.valid_Time_start AS validTimeStart,
+		cl.valid_time_end AS validTimeEnd,
+		cp.service_coupon_type AS serviceCouponType,
+		cp.discount AS discount,
+		cl.face_value AS faceValue,
+		cl.coupon_status AS couponStatus,
+		cl.change_grade AS changeGrade,
+		cl.change_integral AS changeIntegral,
+		cl.change_time AS changeTime,
+		cl.description AS description,
+		cl.user_time AS useTime,
+		ol.order_no AS orderNo,
+		cl.customer_id AS customerId,
+		cu.realname AS customerName,
+		cl.order_type AS orderType,
+		cl.coupon_explain AS couponExplain,
+		cl.coupon_type_id AS crId
+	FROM
+		coupon_list cl
+	LEFT JOIN coupon_inventory cp ON cl.coupon_type_id = cp.cr_id
+	LEFT JOIN customer_info cu ON cl.customer_id = cu.c_id
+	LEFT JOIN order_list ol ON cl.order_no = ol.order_no
+	WHERE cl.coupon_id = #{couponId}
+  </select>
+</mapper>

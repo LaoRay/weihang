@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>商品规格</title>
+<#include '/common.html'/>
+</head>
+<body class="easyui-layout">
+<div region="north" style="overflow:hidden">
+   <div class="datagrid-toolbar">
+      <a href="#" onclick="newOrEdit(this)" objId=""><span class="l-btn"><span class="icon-add" >新 增</span></span></a>
+      <a href="#" onclick="dele(this)" objId="all"><span class="l-btn"><span class="icon-cancel" >删 除</span></span></a>
+   </div>
+    <!-- 搜索 -->
+	<div class="easyui-search">
+		<form id="search-form" action="" method="post">
+			<input class="search-input" name="valueName" placeholder="输入名称查询" style="width: 200px; margin-left: 10px;" value=""/>
+			<button type="button" class="button search-btn">查询</button>
+		</form>
+	</div>
+</div>
+
+<div region="center">
+<table id="layui-table" lay-even style="table-layout: fixed;"></table>
+</div>
+<div region="south" style="height:32px;">
+	<div id="pagination"></div>
+</div>
+
+</body>
+<script type="text/javascript">
+var param = {pageIndex:0, pageSize:10};
+$(function() {
+
+	$('#layui-table').layuiDatagrid({
+		url: "${request.contextPath}/browser-productAttrValueFindPage",
+		param: param,
+		contentType: "application/json",
+		columns:[
+			{checkbox: true},
+			{field:'valueName',title:'属性值',width:30},
+			{field:'attrName',title:'属性名称',width:20},
+			{field:'cname',title:'所属类别',width:20},
+			{field:'isSellAttr',title:'属性类型',width:20,
+				formatter: function(value, rec) {
+					if (value == 1) {
+						return '<html>销售类</html>';
+					} else {
+						return '<html>非销售类</html>';
+					}
+				}	
+			},
+			{field:'createDate',title:'创建时间',width:30},
+			{field:'description',title:'备注',width:30},
+			{field:'status',title:'状态',width:8,
+				formatter: function(value, rec) {
+					if (value == 2) {
+						return '<button class="layui-btn layui-btn-mini layui-btn-radius">无效</button>';
+					} else {
+						return '<button class="layui-btn layui-btn-mini layui-btn-radius layui-btn-danger">有效</button>';
+					}
+				}
+			},
+			{field:'uuid',title:'操作',width:'100px',
+				formatter: function(value, rec) {
+					return '<ul class="listHandler">'
+					+'<li><a onclick="newOrEdit(this)" objId="'+value+'">编辑</a></li>'
+					+'<li><a onclick="dele(this)" objId="'+value+'">删除</a></li>'
+		      		+'</ul>';
+				}
+			}
+		]
+	});
+	
+	//查询
+	$('.search-btn').click(function() {
+		$('#layui-table').layuiDatagrid("reload", $("#search-form").serializeJsonObject());
+	});
+})
+
+//编辑、新增
+function newOrEdit(obj) {
+	parent.openTab("product_attribute", "商品规格 编辑", "${request.contextPath}/client/attribute/edit");
+}
+
+</script>
+</html>

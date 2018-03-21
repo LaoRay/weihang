@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.clubank.weihang.manage.product.dao.MallActivityMapper">
+  <resultMap id="BaseResultMap" type="cn.com.clubank.weihang.manage.product.pojo.MallActivity">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="addtime" jdbcType="TIMESTAMP" property="addtime" />
+    <result column="grade" jdbcType="INTEGER" property="grade" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="begin_time" jdbcType="TIMESTAMP" property="beginTime" />
+    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="sequence_code" jdbcType="VARCHAR" property="sequenceCode" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="create_user_Id" jdbcType="VARCHAR" property="createUserId" />
+    <result column="create_user_name" jdbcType="VARCHAR" property="createUserName" />
+    <result column="modify_date" jdbcType="TIMESTAMP" property="modifyDate" />
+    <result column="modify_user_Id" jdbcType="VARCHAR" property="modifyUserId" />
+    <result column="modify_user_name" jdbcType="VARCHAR" property="modifyUserName" />
+    <result column="content" jdbcType="LONGVARCHAR" property="content" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from mall_activity
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.com.clubank.weihang.manage.product.pojo.MallActivity">
+    insert into mall_activity (id, addtime, status, grade, 
+      begin_time, end_time, title, 
+      sequence_code, description, create_date, 
+      create_user_Id, create_user_name, modify_date, 
+      modify_user_Id, modify_user_name, content
+      )
+    values (#{id,jdbcType=VARCHAR}, #{addtime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}, #{grade,jdbcType=INTEGER}, 
+      #{beginTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, #{title,jdbcType=VARCHAR}, 
+      #{sequenceCode,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{createUserId,jdbcType=VARCHAR}, #{createUserName,jdbcType=VARCHAR}, #{modifyDate,jdbcType=TIMESTAMP}, 
+      #{modifyUserId,jdbcType=VARCHAR}, #{modifyUserName,jdbcType=VARCHAR}, #{content,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.com.clubank.weihang.manage.product.pojo.MallActivity">
+    update mall_activity
+    set addtime = #{addtime,jdbcType=TIMESTAMP},
+      grade = #{grade,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      begin_time = #{beginTime,jdbcType=TIMESTAMP},
+      end_time = #{endTime,jdbcType=TIMESTAMP},
+      title = #{title,jdbcType=VARCHAR},
+      sequence_code = #{sequenceCode,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      create_user_Id = #{createUserId,jdbcType=VARCHAR},
+      create_user_name = #{createUserName,jdbcType=VARCHAR},
+      modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+      modify_user_Id = #{modifyUserId,jdbcType=VARCHAR},
+      modify_user_name = #{modifyUserName,jdbcType=VARCHAR},
+      content = #{content,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="handleMallActivityStatus">
+  	<!-- 设置活动即将开始 -->
+    update mall_activity
+    set status = 2
+    where TIMESTAMPDIFF(MINUTE, NOW(), begin_time) <![CDATA[<=]]> 60
+    and status = 1;
+  	<!-- 设置活动开始 -->
+    update mall_activity
+    set status = 3
+    where begin_time <![CDATA[<=]]> NOW()
+    and status = 2;
+    <!-- 设置活动结束 -->
+    update mall_activity
+    set status = 4
+    where end_time <![CDATA[<=]]> NOW()
+    and status = 3;
+    <!-- 设置活动无效 -->
+    update mall_activity
+    set status = 5
+    where TIMESTAMPDIFF(MINUTE, end_time, NOW()) <![CDATA[>=]]> 60
+    and status = 4;
+    <!-- 设置已结束活动的商品为无效 -->
+    update mall_activity_goods
+    set status = 2
+    where activity_id in (
+    	select id
+    	from mall_activity
+    	where status = 4
+    )
+    and status = 1
+  </update>
+  <update id="updateSelectiveByPrimaryKey" parameterType="cn.com.clubank.weihang.manage.product.pojo.MallActivity">
+    update mall_activity
+    <trim prefix="SET" suffixOverrides=",">
+		<if test="addtime != null">addtime = #{addtime,jdbcType=TIMESTAMP},</if>
+		<if test="status != null">status = #{status,jdbcType=INTEGER},</if>
+		<if test="grade != null">grade = #{grade,jdbcType=INTEGER},</if>
+		<if test="beginTime != null">begin_time = #{beginTime,jdbcType=TIMESTAMP},</if>
+		<if test="endTime != null">end_time = #{endTime,jdbcType=TIMESTAMP},</if>
+		<if test="title != null">title = #{title,jdbcType=VARCHAR},</if>
+		<if test="sequenceCode != null">sequence_code = #{sequenceCode,jdbcType=VARCHAR},</if>
+		<if test="description != null">description = #{description,jdbcType=VARCHAR},</if>
+		<if test="createDate != null">create_date = #{createDate,jdbcType=TIMESTAMP},</if>
+		<if test="createUserId != null">create_user_Id = #{createUserId,jdbcType=VARCHAR},</if>
+		<if test="createUserName != null">create_user_name = #{createUserName,jdbcType=VARCHAR},</if>
+		<if test="modifyDate != null">modify_date = #{modifyDate,jdbcType=TIMESTAMP},</if>
+		<if test="modifyUserId != null">modify_user_Id = #{modifyUserId,jdbcType=VARCHAR},</if>
+		<if test="modifyUserName != null">modify_user_name = #{modifyUserName,jdbcType=VARCHAR},</if>
+		<if test="content != null">content = #{content,jdbcType=LONGVARCHAR}</if>
+	</trim>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select id, addtime, status, grade, begin_time, end_time, title, sequence_code, description, 
+    create_date, create_user_Id, create_user_name, modify_date, modify_user_Id, modify_user_name, 
+    content
+    from mall_activity
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <!-- 查询即将开始的活动 -->
+  <select id="selectImminentActivity" resultMap="BaseResultMap">
+    select id, addtime, status, grade, begin_time, end_time, title, sequence_code, description, 
+    create_date, create_user_Id, create_user_name, modify_date, modify_user_Id, modify_user_name, 
+    content
+    from mall_activity
+    where status = 2
+  </select>
+  <!-- 查询即将失效的活动 -->
+  <select id="selectInvalidActivityList" resultMap="BaseResultMap">
+    select id, addtime, status, grade, begin_time, end_time, title, sequence_code, description, 
+    create_date, create_user_Id, create_user_name, modify_date, modify_user_Id, modify_user_name, 
+    content
+    from mall_activity
+    where end_time <![CDATA[<=]]> NOW()
+    and status = 3
+  </select>
+  <!-- 查询有效的活动 -->
+  <select id="selectValidActivityList" resultMap="BaseResultMap">
+    select id, addtime, status, grade, begin_time, end_time, title, sequence_code, description, 
+    create_date, create_user_Id, create_user_name, modify_date, modify_user_Id, modify_user_name, 
+    content
+    from mall_activity
+    where status <![CDATA[<]]> 4
+    and status > 1
+    order by begin_time, end_time
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, addtime, status, grade, begin_time, end_time, title, sequence_code, description, 
+    create_date, create_user_Id, create_user_name, modify_date, modify_user_Id, modify_user_name, 
+    content
+    from mall_activity
+    order by begin_time
+  </select>
+  
+  <!-- 按活动名称模糊查询或活动状态查询到的总条数 -->
+  <select id="selectSumByActivityName" resultType="Integer">
+  	select count(0)
+  	from mall_activity
+  	where 1=1
+  	<if test="title != null and title != ''">
+  		and title like concat('%',#{title,jdbcType=VARCHAR},'%')
+  	</if>
+  	<if test="status != null">
+  		and status = #{status,jdbcType=INTEGER}
+  	</if>
+  </select>
+  
+  <!-- 根据活动状态查询、活动名称模糊查询并分页 -->
+  <select id="selectByActivityNamePaged" resultType="hashMap">
+	  SELECT 
+	    id as id,
+	    sequence_code as sequenceCode,
+	    title as title,
+	    status as status,
+	    grade as grade,
+	    begin_time as beginTime,
+	    end_time as endTime,
+	    create_user_name as createUserNaem,
+	    create_date as createDate,
+	    description as description
+	  FROM
+    	mall_activity  
+	  where 1 = 1
+	  <if test="title != null and title != ''">
+		and title like concat('%',#{title,jdbcType=VARCHAR},'%')
+	  </if> 
+	  <if test="status != null">
+	  	and status = #{status,jdbcType=INTEGER}
+	  </if> 
+	  order by status, begin_time, end_time DESC
+	  <if test="startIndex &gt; -1">
+	  	limit #{startIndex,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
+	  </if>
+  </select>
+  
+  <!-- 按照结束时间查询最先结束的一个活动-首页显示 -->
+  <select id="selectFirstByEndTime" resultMap="BaseResultMap">
+	SELECT
+		ma.*
+	FROM
+		mall_activity ma,
+		mall_activity_goods mag
+	WHERE
+		ma.id = mag.activity_id
+	AND ma.status = 3
+	AND mag.status = 1
+	ORDER BY end_time ASC
+	LIMIT 0, 1
+  </select>
+</mapper>

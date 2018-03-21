@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>品牌管理</title>
+<#include '/common.html'/>
+</head>
+<body>
+<div class="content" data-options="region:'center'" style="overflow-x: hidden;">
+	<div class="cz_bj">
+		<span class="cz-button icon-czbutton" onclick="$('#complaintForm').submit();"><i class="cz-button czbutton">保存</i></span>
+		<span id="closeWinBt" class="cz-button icon-czbutton" onclick="javascript:parent.closeTab('product_attribute', 'refresh');"><i class="cz-button czbutton">关闭</i></span>
+		<span class="icon-czbutton" style="float: right;padding-right: 80px;font-weight: bold;cursor: auto;"><strong>*</strong>为必填项</span>
+	</div>
+	<form id="complaintForm" enctype="multipart/form-data" method="post">
+		<input type="hidden" name="uuid" value=""/>
+		<table style="width: 100%;" border="0" cellspacing="0" class="tb-contacts-list">
+			<tbody>
+				<tr>
+					<th style="width: 80px;">属&nbsp;性&nbsp;值：</th>
+					<td colspan="3">
+						<input type="text" class="input" style="width: 80%;" name="valueName" value=""/>
+					</td>
+				</tr>
+				<tr>
+					<th style="width: 80px;">属性名称：</th>
+					<td colspan="3">
+						<input type="text" class="input" style="width: 80%;" name="attrName" value=""/>
+					</td>
+				</tr>
+				<tr>
+					<th style="width: 80px;">所属类别：</th>
+					<td colspan="3">
+						<input type="text" class="input" style="width: 80%;" name="cname" value=""/>
+					</td>
+				</tr>
+				<tr>
+					<th style="width: 80px;">属性类型：</th>
+					<td colspan="3">
+						<input type="text" class="input" style="width: 80%;" name="isSellAttr" value=""/>
+					</td>
+				</tr>
+				<tr>
+					<th style="width: 80px;">备&nbsp;&nbsp;&nbsp;&nbsp;注：</th>
+					<td colspan="3">
+						<input type="text" class="input" style="width: 80%;" name="description" value=""/>
+					</td>
+				</tr>
+				
+				<!-- 
+				<tr>
+				<th>头像：</th>
+					<td>
+						<input type="file" name="portraitImage" class="input" />
+					</td>
+				</tr>
+				<tr>
+				<th>头像：</th>
+					<td>
+						<img src="${request.contextPath}/image/customer/20170915/5d8da9d3-f11f-4f3f-b905-34354bc78519.png" height="40" width="40"/>
+					</td>
+				</tr>
+				 -->
+				
+			</tbody>
+		</table>
+	</form>
+</div>
+</body>
+<script type="text/javascript">
+//保存的参数
+var params = {};
+
+$(function() {
+	//保存
+	$('#complaintForm').form({
+		onSubmit: function() {
+			return true;
+		},
+		success: function(data) {
+			$.messager.alert('消息', '项目基本信息保存成功!', 'info');
+		}
+	});
+})
+
+function find() {}
+</script>
+</html>

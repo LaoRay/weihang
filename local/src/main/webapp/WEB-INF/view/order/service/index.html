@@ -1,0 +1,349 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>服务订单</title>
+<#include '/common.html'/>
+</head>
+<body class="easyui-layout">
+<div region="north" style="overflow:hidden">
+   <!-- <div class="datagrid-toolbar">
+      <a href="#" onclick="newOrEdit(this)" objId=""><span class="l-btn"><span class="icon-add" >新 增</span></span></a>
+      <a href="#" onclick="dele(this)" objId="all"><span class="l-btn"><span class="icon-cancel" >删 除</span></span></a>
+      <a href="${request.contextPath}/alipayWebsite" target="_blank"><span class="l-btn"><span class="icon-reload" >排 序</span></span></a>
+      <a href="javascript:parent.openTab('alipay', '支付宝 支付', '${request.contextPath}/client/clientAliPayTest')" ><span class="l-btn"><span class="icon-reload" >支 付</span></span></a>
+   </div> -->
+    <!-- 搜索 -->
+	<div class="easyui-search">
+		<form id="search-form" action="" method="post">
+			<select class="easyui-combobox" name="payStatus" style="width:152px;height: 32px;" required="true">
+				<option value="">--选择状态--</option>
+				<option value="0">未支付</option>
+				<option value="1">已支付</option>
+			</select>
+			<input class="search-input" name="orderNo" placeholder="输入单号查询" style="width: 200px; margin-left: 10px;" value=""/>
+			<button type="button" class="button search-btn">查询</button>
+		</form>
+	</div>
+</div>
+
+<div region="center">
+<div class="layui-tab-brief" style="background-color: #EDEFF4;">
+  <ul class="layui-tab-title">
+    <li class="layui-this wx">维修单</li>
+    <li class="xc">洗车单</li>
+  </ul>
+</div>
+<table id="layui-table" lay-even style="table-layout: fixed;"></table>
+</div>
+<div region="south" style="height:32px;">
+	<div id="pagination"></div>
+</div>
+
+<!-- 编辑价格 -->
+<div id="editPrice" >
+    <div class="easyui-layout" fit="true">
+        <div region="center" border="false" style="overflow-y:auto;">
+           <iframe id="iframe" src="" scrolling-x="no" scrolling-y="yes" style="width:100%; height:100%; border:0px;"></iframe>
+        </div> 
+        <div region="south" border="false" class="window-foot">
+          <i class="icon-window icon-windowbutton" onclick="editPriceOK()"> <input type="button" class="icon-window windowbutton" value="完成" /></i>
+          <!-- <i class="icon-window icon-windowbutton" onclick="javascript:$('#editPrice').window('close')"> <input type="button" class="icon-window windowbutton" value="关闭" /></i> -->
+        </div>
+    </div>
+</div>
+
+<!-- 编辑价格 -->
+<div id="payWindow" >
+    <div class="easyui-layout" fit="true">
+        <div region="center" border="false" style="overflow-y:auto;">
+        <form id="pay-form" action="" method="post">
+           <table style="width: 100%;" border="0" cellspacing="0" class="tb-contacts-list">
+           <input type="hidden" name="wrId" value="" />
+           <input type="hidden" name="wwId" value="" />
+				<tr>
+					<th style="width: 80px;">支付方式：</th>
+					<td>
+				        <select id="dbType" name="payWay" class="mselect select" style="width: 200px;" >
+					        <option value="4">现金</option>
+					        <option value="5">刷卡</option>
+				        </select>
+					</td>
+				</tr>
+				<tr>
+					<th>支付金额：</th>
+					<td>
+						<input type="text" class="input" style="width: 77%;" name="payTotal" value=""/>&nbsp;&nbsp;元
+					</td>
+				</tr>
+				<tr>
+					<th>备注：</th>
+					<td>
+						<textarea rows="5" style="width: 83%;" name="remarks"></textarea>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		</form>
+        </div> 
+        <div region="south" border="false" class="window-foot">
+         <i class="icon-window icon-windowbutton" onclick="payOK()"> <input type="button" class="icon-window windowbutton" value="确认" /></i>
+          <i class="icon-window icon-windowbutton" onclick="javascript:$('#payWindow').window('close')"> <input type="button" class="icon-window windowbutton" value="取消" /></i>
+        </div>
+    </div>
+</div>
+
+</body>
+<script type="text/javascript">
+
+var param = {pageIndex:0, pageSize:10};
+
+var payType = 'repair';
+
+$(function() {
+	$('.layui-tab-title li').click(function(){
+		$('.layui-tab-title li').removeClass('layui-this');
+		$(this).addClass('layui-this');
+	});
+	
+	loadWX();
+	
+	$('.layui-tab-title li').click(function() {
+		if ($(this).hasClass('wx')) {
+			loadWX();
+		} else {
+			loadXC();
+		}
+	});
+	
+	//查询
+	$('.search-btn').click(function() {
+		$('#layui-table').layuiDatagrid("reload", $("#search-form").serializeJsonObject());
+	});
+	
+	//编辑价格
+	$('#editPrice').window({
+	    width: 900,
+	    height: 500,
+	    title: "编辑价格",
+	    modal: true,
+	    draggable: false,
+	    resizable: false
+	});
+	$('#editPrice').window('close');
+	
+	//编辑价格
+	$('#payWindow').window({
+	    width: 500,
+	    height: 261,
+	    title: "线下支付",
+	    modal: true,
+	    draggable: false,
+	    resizable: false
+	});
+	$('#payWindow').window('close');
+})
+
+//加载维修单
+function loadWX() {
+	$('#layui-table').layuiDatagrid({
+		url: "${request.contextPath}/clientFindRepairServiceOrder",
+		param: param,
+		contentType: "application/json",
+		columns:[
+			{checkbox: true},
+			{field:'repairNo',title:'单号',width:10},
+			{field:'realname',title:'客户',width:12},
+			{field:'carNo',title:'车牌号',width:15},
+			{field:'total',title:'总价',width:20},
+			{field:'receiveDate',title:'接车时间',width:15},
+			{field:'status',title:'状态',width:8,
+				formatter: function(value, rec) {
+					if (value == 10 || value == 11 || value == 0) {
+						return '<button class="layui-btn layui-btn-mini layui-btn-radius">'+ getRepairStatusStr(value) +'</button>';
+					} else {
+						return '<button class="layui-btn layui-btn-mini layui-btn-radius layui-btn-danger">'+ getRepairStatusStr(value) +'</button>';
+					}
+				}
+			},
+			{field:'wrId',title:'操作',width:'100px',
+				formatter: function(value, rec) {
+					var ul = '<ul class="listHandler">';
+					//ul += '<li><a onclick="dele(this)" objId="'+value+'">删除</a></li>'
+					if (rec.status == 5) {
+						ul += '<li><a onclick="pay(this)" objId="'+value+'" type="repair">线下支付</a></li>';
+					}
+					if (rec.status == 3) {
+						ul += '<li><a onclick="editPrice(this)" objId="'+value+'">编辑价格</a></li>';
+					}
+					ul += '</ul>';
+		      		return ul;
+				}
+			}
+		]
+	});
+}
+
+//加载洗车单
+function loadXC() {
+	$('#layui-table').layuiDatagrid({
+		url: "${request.contextPath}/clientFindWashServiceOrder",
+		param: param,
+		contentType: "application/json",
+		columns:[
+			{checkbox: true},
+			{field:'washNo',title:'单号',width:10},
+			{field:'realname',title:'客户',width:12},
+			{field:'carNo',title:'车牌号',width:15},
+			{field:'payTotal',title:'支付金额',width:20},
+			{field:'receiveDate',title:'接车时间',width:15},
+			{field:'status',title:'状态',width:8,
+				formatter: function(value, rec) {
+					if (value == 7 || value == 8) {
+						return '<button class="layui-btn layui-btn-mini layui-btn-radius">'+ getWashStatusStr(value) +'</button>';
+					} else {
+						return '<button class="layui-btn layui-btn-mini layui-btn-radius layui-btn-danger">'+ getWashStatusStr(value) +'</button>';
+					}
+				}
+			},
+			{field:'wwId',title:'操作',width:'100px',
+				formatter: function(value, rec) {
+					var ul = '<ul class="listHandler">';
+					//ul += '<li><a onclick="dele(this)" objId="'+value+'">删除</a></li>'
+					if (rec.status == 3) {
+						ul += '<li><a onclick="pay(this)" objId="'+value+'" type="wash">线下支付</a></li>';
+					}
+					ul += '</ul>';
+		      		return ul;
+				}
+			}
+		]
+	});
+}
+
+//支付
+function pay(obj) {
+	$('#payWindow').window('open');
+	payType = $(obj).attr('type');
+	if (payType == 'repair') {
+		$('input[name=wrId]').val($(obj).attr('objId'));
+	} else {
+		$('input[name=wwId]').val($(obj).attr('objId'));
+	}
+}
+
+//支付确认
+function payOK() {
+	var url = '';
+	if (payType == 'repair') {
+		url = "${request.contextPath}/clientRepairPay";
+	} else {
+		url = "${request.contextPath}/clientWashPay";
+	}
+	$.ajax({
+		url: url,
+		data: $("#pay-form").serializeJsonStr(),
+		type: 'post',
+    	dataType: 'json',
+    	contentType: "application/json",
+    	beforeSend: function() {
+    		loadLayer = parent.layer.load(0, {shade: [0.5, '#fff'] });
+    	},
+    	success: function(data) {
+    		parent.layer.close(loadLayer);
+    		if ($.parseJSON(data).apiStatus != 1) {
+    			layer.alert($.parseJSON(data).msg, {icon: 7});
+    		} else {
+    			$('#payWindow').window('close');
+    			$('#layui-table').layuiDatagrid("reload");
+    		}
+    	}
+	});
+}
+
+//确认材料价格
+function editPriceOK() {
+	confirmLayer = layer.confirm('您确定完成用料价格编辑？', {
+	    btn: ['确定','取消']
+	}, function() {
+		$.ajax({
+			url: "${request.contextPath}/clientLibraryConfirm",
+			type: 'post',
+			data: JSON.stringify(param),
+	    	dataType: 'json',
+	    	contentType: "application/json",
+	    	beforeSend: function() {
+	    		loadLayer = parent.layer.load(0, {shade: [0.5, '#fff'] });
+	    	},
+	    	success: function(data) {
+	    		parent.layer.close(loadLayer);
+	    		layer.close(confirmLayer);
+	    		if ($.parseJSON(data).apiStatus != 1) {
+	    			layer.alert($.parseJSON(data).msg, {icon: 7});
+	    		} else {
+	    			$('#editPrice').window('close');
+	    			$('#layui-table').layuiDatagrid("reload");
+	    		}
+	    	}
+		});
+	});
+}
+
+//编辑价格
+function editPrice(obj) {
+	$("#iframe").attr("src", '${request.contextPath}/client/serviceOrder/editPrice?repairId='+$(obj).attr('objId'));
+	$('#editPrice').window('open');
+	param.wrId = $(obj).attr('objId');
+}
+
+function getWashStatusStr(status) {
+	if (status == 1) {
+		return "待接车";
+	} else if (status == 2) {
+		return "已接车";
+	} else if (status == 3) {
+		return "待支付";
+	} else if (status == 4) {
+		return "已支付";
+	} else if (status == 5) {
+		return "洗车中";
+	} else if (status == 6) {
+		return "客户确认";
+	} else if (status == 7) {
+		return "已完成";
+	} else if (status == 8) {
+		return "不同意";
+	}
+	return "未知状态";
+}
+
+function getRepairStatusStr(status) {
+	if (status == 0) {
+		return "未派单";
+	} else if (status == 1) {
+		return "待接车";
+	} else if (status == 2) {
+		return "已接车";
+	} else if (status == 3) {
+		return "库管确认";
+	} else if (status == 4) {
+		return "待确认";
+	} else if (status == 5) {
+		return "待支付";
+	} else if (status == 6) {
+		return "修改项目";
+	} else if (status == 7) {
+		return "已支付";
+	} else if (status == 8) {
+		return "维修中";
+	} else if (status == 9) {
+		return "客户确认";
+	} else if (status == 10) {
+		return "已完成";
+	} else if (status == 11) {
+		return "不同意";
+	}
+	return "未知状态";
+}
+</script>
+</html>

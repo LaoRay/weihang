@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.clubank.weihang.manage.member.dao.JpushInfoMapper">
+  <resultMap id="BaseResultMap" type="cn.com.clubank.weihang.manage.member.pojo.JpushInfo">
+    <id column="uu_id" jdbcType="VARCHAR" property="uuId" />
+    <result column="jpush_id" jdbcType="VARCHAR" property="jpushId" />
+    <result column="phone_id" jdbcType="VARCHAR" property="phoneId" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="delete_mark" jdbcType="INTEGER" property="deleteMark" />
+    <result column="flat_type" jdbcType="INTEGER" property="flatType" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from jpush_info
+    where uu_id = #{uuId,jdbcType=VARCHAR}
+  </delete>
+  
+  <delete id="deleteByPhoneId" parameterType="java.lang.String">
+    delete from jpush_info
+    where phone_id = #{phoneId,jdbcType=VARCHAR}
+  </delete>
+  
+  <insert id="insert" parameterType="cn.com.clubank.weihang.manage.member.pojo.JpushInfo">
+    insert into jpush_info (uu_id, jpush_id, phone_id, 
+      user_id, delete_mark, create_time, 
+      modify_time, flat_type)
+    values (#{uuId,jdbcType=VARCHAR}, #{jpushId,jdbcType=VARCHAR}, #{phoneId,jdbcType=VARCHAR}, 
+      #{userId,jdbcType=VARCHAR}, #{deleteMark,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{modifyTime,jdbcType=TIMESTAMP}, #{flatType,jdbcType=INTEGER})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.com.clubank.weihang.manage.member.pojo.JpushInfo">
+    update jpush_info
+    set jpush_id = #{jpushId,jdbcType=VARCHAR},
+      phone_id = #{phoneId,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=VARCHAR},
+      delete_mark = #{deleteMark,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      flat_type = #{flatType,jdbcType=INTEGER}
+    where uu_id = #{uuId,jdbcType=VARCHAR}
+    and delete_mark = 0
+  </update>
+  <update id="updateByPhoneId" parameterType="cn.com.clubank.weihang.manage.member.pojo.JpushInfo">
+    update jpush_info
+    set jpush_id = #{jpushId,jdbcType=VARCHAR},
+      phone_id = #{phoneId,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=VARCHAR},
+      delete_mark = #{deleteMark,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      flat_type = #{flatType,jdbcType=INTEGER}
+    where phone_id = #{phoneId,jdbcType=VARCHAR}
+    and delete_mark = 0
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select uu_id, jpush_id, phone_id, user_id, delete_mark, create_time, modify_time, flat_type
+    from jpush_info
+    where uu_id = #{uuId,jdbcType=VARCHAR}
+    and delete_mark = 0
+  </select>
+  <select id="selectByPhoneId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select uu_id, jpush_id, phone_id, user_id, delete_mark, create_time, modify_time, flat_type
+    from jpush_info
+    where phone_id = #{phoneId,jdbcType=VARCHAR}
+    and delete_mark = 0
+  </select>
+  <select id="selectByUserId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select uu_id, jpush_id, phone_id, user_id, delete_mark, create_time, modify_time, flat_type
+    from jpush_info
+    where user_id = #{userId,jdbcType=VARCHAR}
+    and delete_mark = 0
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select uu_id, jpush_id, phone_id, user_id, delete_mark, create_time, modify_time, flat_type
+    from jpush_info
+    where delete_mark = 0
+  </select>
+</mapper>

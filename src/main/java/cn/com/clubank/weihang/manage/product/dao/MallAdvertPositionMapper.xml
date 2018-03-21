@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.clubank.weihang.manage.product.dao.MallAdvertPositionMapper">
+  <resultMap id="BaseResultMap" type="cn.com.clubank.weihang.manage.product.pojo.MallAdvertPosition">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="position_name" jdbcType="VARCHAR" property="positionName" />
+    <result column="ad_width" jdbcType="INTEGER" property="adWidth" />
+    <result column="ad_height" jdbcType="INTEGER" property="adHeight" />
+    <result column="position_desc" jdbcType="VARCHAR" property="positionDesc" />
+    <result column="position_type" jdbcType="INTEGER" property="positionType" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="create_user_Id" jdbcType="VARCHAR" property="createUserId" />
+    <result column="create_user_name" jdbcType="VARCHAR" property="createUserName" />
+    <result column="modify_date" jdbcType="TIMESTAMP" property="modifyDate" />
+    <result column="modify_user_Id" jdbcType="VARCHAR" property="modifyUserId" />
+    <result column="modify_user_name" jdbcType="VARCHAR" property="modifyUserName" />
+    <result column="position_code" jdbcType="VARCHAR" property="positionCode" />
+    <result column="enabled_mark" jdbcType="INTEGER" property="enabledMark" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    update mall_advert_position
+    set enabled_mark = 0
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.com.clubank.weihang.manage.product.pojo.MallAdvertPosition">
+    insert into mall_advert_position (id, position_name, ad_width, 
+      ad_height, position_desc, position_type, 
+      description, create_date, create_user_Id, 
+      create_user_name, modify_date, modify_user_Id, 
+      modify_user_name, position_code, enabled_mark)
+    values (#{id,jdbcType=VARCHAR}, #{positionName,jdbcType=VARCHAR}, #{adWidth,jdbcType=INTEGER}, 
+      #{adHeight,jdbcType=INTEGER}, #{positionDesc,jdbcType=VARCHAR}, #{positionType,jdbcType=INTEGER}, 
+      #{description,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{createUserId,jdbcType=VARCHAR}, 
+      #{createUserName,jdbcType=VARCHAR}, #{modifyDate,jdbcType=TIMESTAMP}, #{modifyUserId,jdbcType=VARCHAR}, 
+      #{modifyUserName,jdbcType=VARCHAR}, #{positionCode,jdbcType=VARCHAR}, #{enabledMark,jdbcType=INTEGER})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.com.clubank.weihang.manage.product.pojo.MallAdvertPosition">
+    update mall_advert_position
+    set position_name = #{positionName,jdbcType=VARCHAR},
+      ad_width = #{adWidth,jdbcType=INTEGER},
+      ad_height = #{adHeight,jdbcType=INTEGER},
+      position_desc = #{positionDesc,jdbcType=VARCHAR},
+      position_type = #{positionType,jdbcType=INTEGER},
+      description = #{description,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      create_user_Id = #{createUserId,jdbcType=VARCHAR},
+      create_user_name = #{createUserName,jdbcType=VARCHAR},
+      modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+      modify_user_Id = #{modifyUserId,jdbcType=VARCHAR},
+      modify_user_name = #{modifyUserName,jdbcType=VARCHAR},
+      position_code = #{positionCode,jdbcType=VARCHAR},
+      enabled_mark = #{enabledMark,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateSelectiveByPrimaryKey" parameterType="cn.com.clubank.weihang.manage.product.pojo.MallAdvertPosition">
+    update mall_advert_position
+    <trim prefix="SET" suffixOverrides=",">
+		<if test="positionName != null">position_name = #{positionName,jdbcType=VARCHAR},</if>
+		<if test="adWidth != null">ad_width = #{adWidth,jdbcType=INTEGER},</if>
+		<if test="adHeight != null">ad_height = #{adHeight,jdbcType=INTEGER},</if>
+		<if test="positionDesc != null">position_desc = #{positionDesc,jdbcType=VARCHAR},</if>
+		<if test="positionType != null">position_type = #{positionType,jdbcType=INTEGER},</if>
+		<if test="description != null">description = #{description,jdbcType=VARCHAR},</if>
+		<if test="createDate != null">create_date = #{createDate,jdbcType=TIMESTAMP},</if>
+		<if test="createUserId != null">create_user_Id = #{createUserId,jdbcType=VARCHAR},</if>
+		<if test="createUserName != null">create_user_name = #{createUserName,jdbcType=VARCHAR},</if>
+		<if test="modifyDate != null">modify_date = #{modifyDate,jdbcType=TIMESTAMP},</if>
+		<if test="modifyUserId != null">modify_user_Id = #{modifyUserId,jdbcType=VARCHAR},</if>
+		<if test="modifyUserName != null">modify_user_name = #{modifyUserName,jdbcType=VARCHAR},</if>
+		<if test="positionCode != null">position_code = #{positionCode,jdbcType=VARCHAR},</if>
+		<if test="enabledMark != null">enabled_mark = #{enabledMark,jdbcType=INTEGER}</if>
+	</trim>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select id, position_name, ad_width, ad_height, position_desc, position_type, description, 
+    create_date, create_user_Id, create_user_name, modify_date, modify_user_Id, modify_user_name, 
+    position_code
+    from mall_advert_position
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select id, position_name, ad_width, ad_height, position_desc, position_type, description, 
+    create_date, create_user_Id, create_user_name, modify_date, modify_user_Id, modify_user_name, 
+    position_code
+    from mall_advert_position
+    where position_code = #{code,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, position_name, ad_width, ad_height, position_desc, position_type, description, 
+    create_date, create_user_Id, create_user_name, modify_date, modify_user_Id, modify_user_name, 
+    position_code
+    from mall_advert_position
+    where enabled_mark = 1
+  </select>
+  
+  <select id="selectPage" resultMap="BaseResultMap">
+    select id, position_name, ad_width, ad_height, position_desc, position_type, description, 
+    create_date, create_user_Id, create_user_name, modify_date, modify_user_Id, modify_user_name, 
+    position_code
+    from mall_advert_position
+    where enabled_mark = 1
+    order by create_date desc
+    <if test="startIndex &gt;= 0">
+  		limit #{startIndex,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+  	</if>
+  </select>
+  
+  <!-- 根据广告位名称模糊查询到的总条数 -->
+  <select id="selectSumByPositionName" parameterType="java.lang.String" resultType="Integer">
+  	select count(0)
+  	from mall_advert_position
+  	where enabled_mark = 1
+  	<if test="positionName != null">
+  		and position_name like concat('%',#{positionName,jdbcType=VARCHAR},'%')
+  	</if>
+  	<if test="positionType != null">
+  		and position_type = #{positionType,jdbcType=INTEGER}
+  	</if>
+  </select>
+  
+  <!-- 根据广告位位置类型查询、广告位名称模糊查询并分页 -->
+  <select id="selectByAdPositionIdNamePaged" resultMap="BaseResultMap">
+  	select id, position_name, ad_width, ad_height, position_desc, position_type, description, 
+    create_date, create_user_Id, create_user_name, modify_date, modify_user_Id, modify_user_name, 
+    position_code
+  	from mall_advert_position
+  	where enabled_mark = 1
+  	<if test="positionName != null">
+  		and position_name like concat('%',#{positionName,jdbcType=VARCHAR},'%')
+  	</if> 
+  	<if test="positionType != null">
+  		and position_type = #{positionType,jdbcType=INTEGER}
+  	</if>
+  	order by create_date desc
+  	<if test="startIndex &gt;= 0">
+  		limit #{startIndex,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+  	</if>
+  </select>
+</mapper>

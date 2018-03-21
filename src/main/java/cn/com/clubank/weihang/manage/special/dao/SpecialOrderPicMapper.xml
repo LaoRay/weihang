@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.clubank.weihang.manage.special.dao.SpecialOrderPicMapper">
+  <resultMap id="BaseResultMap" type="cn.com.clubank.weihang.manage.special.pojo.SpecialOrderPic">
+    <id column="pic_id" jdbcType="VARCHAR" property="picId" />
+    <result column="special_id" jdbcType="VARCHAR" property="specialId" />
+    <result column="pic_url" jdbcType="VARCHAR" property="picUrl" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="create_user_Id" jdbcType="VARCHAR" property="createUserId" />
+    <result column="create_user_name" jdbcType="VARCHAR" property="createUserName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    pic_id, special_id, pic_url, description, create_date, create_user_Id, create_user_name
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from special_order_pic
+    where pic_id = #{picId,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectBySpecialId" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from special_order_pic
+    where special_id = #{specialId,jdbcType=VARCHAR}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from special_order_pic
+    where pic_id = #{picId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.com.clubank.weihang.manage.special.pojo.SpecialOrderPic">
+    insert into special_order_pic (pic_id, special_id, pic_url, 
+      description, create_date, create_user_Id, 
+      create_user_name)
+    values (#{picId,jdbcType=VARCHAR}, #{specialId,jdbcType=VARCHAR}, #{picUrl,jdbcType=VARCHAR}, 
+      #{description,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{createUserId,jdbcType=VARCHAR}, 
+      #{createUserName,jdbcType=VARCHAR})
+  </insert>
+  
+  <insert id="insertBatch" parameterType="cn.com.clubank.weihang.manage.special.pojo.SpecialOrderPic">
+  	insert into special_order_pic 
+  	( pic_id, special_id, pic_url, description, 
+      create_date, create_user_Id, create_user_name
+    )
+    values
+  	<foreach collection="list" item="item" index="index" separator="," >
+  	(
+  	  #{item.picId,jdbcType=VARCHAR}, 
+  	  #{item.specialId,jdbcType=VARCHAR}, 
+  	  #{item.picUrl,jdbcType=VARCHAR}, 
+      #{item.description,jdbcType=VARCHAR}, 
+      #{item.createDate,jdbcType=TIMESTAMP}, 
+      #{item.createUserId,jdbcType=VARCHAR}, 
+      #{item.createUserName,jdbcType=VARCHAR}
+  	)
+  	</foreach>
+  </insert>
+  
+  <insert id="insertSelective" parameterType="cn.com.clubank.weihang.manage.special.pojo.SpecialOrderPic">
+    insert into special_order_pic
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="picId != null">
+        pic_id,
+      </if>
+      <if test="specialId != null">
+        special_id,
+      </if>
+      <if test="picUrl != null">
+        pic_url,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="createUserId != null">
+        create_user_Id,
+      </if>
+      <if test="createUserName != null">
+        create_user_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="picId != null">
+        #{picId,jdbcType=VARCHAR},
+      </if>
+      <if test="specialId != null">
+        #{specialId,jdbcType=VARCHAR},
+      </if>
+      <if test="picUrl != null">
+        #{picUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUserId != null">
+        #{createUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="createUserName != null">
+        #{createUserName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.com.clubank.weihang.manage.special.pojo.SpecialOrderPic">
+    update special_order_pic
+    <set>
+      <if test="specialId != null">
+        special_id = #{specialId,jdbcType=VARCHAR},
+      </if>
+      <if test="picUrl != null">
+        pic_url = #{picUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUserId != null">
+        create_user_Id = #{createUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="createUserName != null">
+        create_user_name = #{createUserName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where pic_id = #{picId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.com.clubank.weihang.manage.special.pojo.SpecialOrderPic">
+    update special_order_pic
+    set special_id = #{specialId,jdbcType=VARCHAR},
+      pic_url = #{picUrl,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      create_user_Id = #{createUserId,jdbcType=VARCHAR},
+      create_user_name = #{createUserName,jdbcType=VARCHAR}
+    where pic_id = #{picId,jdbcType=VARCHAR}
+  </update>
+</mapper>

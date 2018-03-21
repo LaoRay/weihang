@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.clubank.weihang.manage.product.dao.ProductSkuMapper">
+  <resultMap id="BaseResultMap" type="cn.com.clubank.weihang.manage.product.pojo.ProductSku">
+    <id column="sku_id" jdbcType="VARCHAR" property="skuId" />
+    <result column="sku_status" jdbcType="INTEGER" property="skuStatus" />
+    <result column="sku_name" jdbcType="VARCHAR" property="skuName" />
+    <result column="attributes" jdbcType="VARCHAR" property="attributes" />
+    <result column="attributes_id" jdbcType="VARCHAR" property="attributesId" />
+    <result column="product_pic_id" jdbcType="VARCHAR" property="productPicId" />
+    <result column="product_id" jdbcType="VARCHAR" property="productId" />
+    <result column="product_quantity" jdbcType="INTEGER" property="productQuantity" />
+    <result column="product_sale_quantity" jdbcType="INTEGER" property="productSaleQuantity" />
+    <result column="product_price" jdbcType="DECIMAL" property="productPrice" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="create_user_Id" jdbcType="VARCHAR" property="createUserId" />
+    <result column="create_user_name" jdbcType="VARCHAR" property="createUserName" />
+    <result column="modify_date" jdbcType="TIMESTAMP" property="modifyDate" />
+    <result column="modify_user_Id" jdbcType="VARCHAR" property="modifyUserId" />
+    <result column="modify_user_name" jdbcType="VARCHAR" property="modifyUserName" />
+    <result column="product_price1" jdbcType="DECIMAL" property="productPrice1" />
+    <result column="product_price2" jdbcType="DECIMAL" property="productPrice2" />
+    <result column="product_price3" jdbcType="DECIMAL" property="productPrice3" />
+    <result column="product_up_time" jdbcType="TIMESTAMP" property="productUpTime" />
+    <result column="product_down_time" jdbcType="TIMESTAMP" property="productDownTime" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from product_sku
+    where sku_id = #{skuId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.com.clubank.weihang.manage.product.pojo.ProductSku">
+    insert into product_sku (sku_id, sku_status, sku_name, 
+      attributes, attributes_id, product_id, product_quantity, 
+      product_sale_quantity, product_price, description, 
+      create_date, create_user_Id, create_user_name, 
+      modify_date, modify_user_Id, modify_user_name, 
+      product_price1, product_price2, product_price3, 
+      product_up_time, product_down_time, product_pic_id)
+    values (#{skuId,jdbcType=VARCHAR}, #{skuStatus,jdbcType=INTEGER}, #{skuName,jdbcType=VARCHAR}, 
+      #{attributes,jdbcType=VARCHAR}, #{attributesId,jdbcType=VARCHAR}, #{productId,jdbcType=VARCHAR}, #{productQuantity,jdbcType=INTEGER}, 
+      #{productSaleQuantity,jdbcType=INTEGER}, #{productPrice,jdbcType=DECIMAL}, #{description,jdbcType=VARCHAR}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{createUserId,jdbcType=VARCHAR}, #{createUserName,jdbcType=VARCHAR}, 
+      #{modifyDate,jdbcType=TIMESTAMP}, #{modifyUserId,jdbcType=VARCHAR}, #{modifyUserName,jdbcType=VARCHAR}, 
+      #{productPrice1,jdbcType=DECIMAL}, #{productPrice2,jdbcType=DECIMAL}, #{productPrice3,jdbcType=DECIMAL}, 
+      #{productUpTime,jdbcType=TIMESTAMP}, #{productDownTime,jdbcType=TIMESTAMP}, #{productPicId,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertBatch" parameterType="java.util.List">
+	insert into 
+		product_sku
+	(
+		sku_id, sku_status, sku_name, product_pic_id, 
+     		attributes, attributes_id, product_id, product_quantity, 
+     		product_sale_quantity, product_price, description, 
+     		create_date, create_user_Id, create_user_name, 
+     		modify_date, modify_user_Id, modify_user_name, 
+     		product_price1, product_price2, product_price3, 
+     		product_up_time, product_down_time
+	)
+	values 
+	<foreach collection="list" item="item" index="index" separator="," >
+	(
+		#{item.skuId,jdbcType=VARCHAR}, 
+		#{item.skuStatus,jdbcType=INTEGER}, 
+		#{item.skuName,jdbcType=VARCHAR}, 
+		#{item.productPicId,jdbcType=VARCHAR}, 
+		#{item.attributes,jdbcType=VARCHAR}, 
+		#{item.attributesId,jdbcType=VARCHAR}, 
+		#{item.productId,jdbcType=VARCHAR}, 
+		#{item.productQuantity,jdbcType=INTEGER}, 
+		#{item.productSaleQuantity,jdbcType=INTEGER}, 
+		#{item.productPrice,jdbcType=DECIMAL}, 
+		#{item.description,jdbcType=VARCHAR}, 
+		#{item.createDate,jdbcType=TIMESTAMP}, 
+		#{item.createUserId,jdbcType=VARCHAR}, 
+		#{item.createUserName,jdbcType=VARCHAR}, 
+		#{item.modifyDate,jdbcType=TIMESTAMP}, 
+		#{item.modifyUserId,jdbcType=VARCHAR}, 
+		#{item.modifyUserName,jdbcType=VARCHAR}, 
+		#{item.productPrice1,jdbcType=DECIMAL}, 
+		#{item.productPrice2,jdbcType=DECIMAL}, 
+		#{item.productPrice3,jdbcType=DECIMAL}, 
+		#{item.productUpTime,jdbcType=TIMESTAMP}, 
+		#{item.productDownTime,jdbcType=TIMESTAMP}
+	)
+	</foreach>
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.com.clubank.weihang.manage.product.pojo.ProductSku">
+    update product_sku
+    set sku_status = #{skuStatus,jdbcType=INTEGER},
+      sku_name = #{skuName,jdbcType=VARCHAR},
+      attributes = #{attributes,jdbcType=VARCHAR},
+      attributes_id = #{attributesId,jdbcType=VARCHAR},
+      product_id = #{productId,jdbcType=VARCHAR},
+      product_quantity = #{productQuantity,jdbcType=INTEGER},
+      product_sale_quantity = #{productSaleQuantity,jdbcType=INTEGER},
+      product_price = #{productPrice,jdbcType=DECIMAL},
+      description = #{description,jdbcType=VARCHAR},
+      product_pic_id = #{productPicId,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      create_user_Id = #{createUserId,jdbcType=VARCHAR},
+      create_user_name = #{createUserName,jdbcType=VARCHAR},
+      modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+      modify_user_Id = #{modifyUserId,jdbcType=VARCHAR},
+      modify_user_name = #{modifyUserName,jdbcType=VARCHAR},
+      product_price1 = #{productPrice1,jdbcType=DECIMAL},
+      product_price2 = #{productPrice2,jdbcType=DECIMAL},
+      product_price3 = #{productPrice3,jdbcType=DECIMAL},
+      product_up_time = #{productUpTime,jdbcType=TIMESTAMP},
+      product_down_time = #{productDownTime,jdbcType=TIMESTAMP}
+    where sku_id = #{skuId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateSelectiveByPrimaryKey" parameterType="cn.com.clubank.weihang.manage.product.pojo.ProductSku">
+	update product_sku
+	<trim prefix="SET" suffixOverrides=",">
+		<if test="skuStatus != null">sku_status = #{skuStatus,jdbcType=INTEGER},</if>
+		<if test="skuName != null">sku_name = #{skuName,jdbcType=VARCHAR},</if>
+		<if test="productPicId != null">product_pic_id = #{productPicId,jdbcType=VARCHAR},</if>
+		<if test="attributes != null">attributes = #{attributes,jdbcType=VARCHAR},</if>
+		<if test="attributes != null">attributes_id = #{attributesId,jdbcType=VARCHAR},</if>
+		<if test="productId != null">product_id = #{productId,jdbcType=VARCHAR},</if>
+		<if test="productQuantity != null">product_quantity = #{productQuantity,jdbcType=INTEGER},</if>
+		<if test="productSaleQuantity != null">product_sale_quantity = #{productSaleQuantity,jdbcType=INTEGER},</if>
+		<if test="productPrice != null">product_price = #{productPrice,jdbcType=DECIMAL},</if>
+		<if test="description != null">description = #{description,jdbcType=VARCHAR},</if>
+		<if test="createDate != null">create_date = #{createDate,jdbcType=TIMESTAMP},</if>
+		<if test="createUserId != null">create_user_Id = #{createUserId,jdbcType=VARCHAR},</if>
+		<if test="createUserName != null">create_user_name = #{createUserName,jdbcType=VARCHAR},</if>
+		<if test="modifyDate != null">modify_date = #{modifyDate,jdbcType=TIMESTAMP},</if>
+		<if test="modifyUserId != null">modify_user_Id = #{modifyUserId,jdbcType=VARCHAR},</if>
+		<if test="modifyUserName != null">modify_user_name = #{modifyUserName,jdbcType=VARCHAR},</if>
+		<if test="productPrice1 != null">product_price1 = #{productPrice1,jdbcType=DECIMAL},</if>
+		<if test="productPrice2 != null">product_price2 = #{productPrice2,jdbcType=DECIMAL},</if>
+		<if test="productPrice3 != null">product_price3 = #{productPrice3,jdbcType=DECIMAL},</if>
+		<if test="productUpTime != null">product_up_time = #{productUpTime,jdbcType=TIMESTAMP},</if>
+		<if test="productDownTime != null">product_down_time = #{productDownTime,jdbcType=TIMESTAMP}</if>
+	</trim>
+	where sku_id = #{skuId,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select sku_id, sku_status, sku_name, attributes, attributes_id, product_id, product_quantity, product_sale_quantity, 
+    product_price, description, create_date, create_user_Id, create_user_name, modify_date, 
+    modify_user_Id, modify_user_name, product_price1, product_price2, product_price3, 
+    product_up_time, product_down_time, product_pic_id
+    from product_sku
+    where sku_id = #{skuId,jdbcType=VARCHAR}
+    and sku_status = 1
+  </select>
+  <select id="selectSkuListByProductId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select sku_id, sku_status, sku_name, attributes, attributes_id, product_id, product_quantity, product_sale_quantity, 
+    product_price, description, create_date, create_user_Id, create_user_name, modify_date, 
+    modify_user_Id, modify_user_name, product_price1, product_price2, product_price3, 
+    product_up_time, product_down_time, product_pic_id
+    from product_sku
+    where product_id = #{productId,jdbcType=VARCHAR}
+    and sku_status = 1
+  </select>
+  <select id="selectProductSkuDetailBySkuId" parameterType="java.lang.String" resultType="hashMap">
+	SELECT
+		ps.sku_id AS skuId,
+		ps.sku_status AS skuStatus,
+		ps.sku_name AS skuName,
+		ps.attributes AS attributes,
+		ps.attributes_id AS attributesId,
+		ps.product_id AS productId,
+		ag.price AS activityPrice,
+		ag.quantity AS productQuantity,
+		ag.sell_quantity AS productSaleQuantity,
+		ag.quantity-ag.sell_quantity AS surplusQuantity,
+		ps.product_price AS productPrice,
+		ps.description AS description,
+		ps.product_price1 AS productPrice1,
+		ps.product_price2 AS productPrice2,
+		ps.product_price3 AS productPrice3
+	FROM
+		product_sku ps,
+		mall_activity_goods ag
+	WHERE
+		ag.sku_id = ps.sku_id
+	AND ps.sku_status = 1
+	AND ag.sku_id = #{skuId}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select sku_id, sku_status, sku_name, attributes, attributes_id, product_id, product_quantity, product_sale_quantity, 
+    product_price, description, create_date, create_user_Id, create_user_name, modify_date, 
+    modify_user_Id, modify_user_name, product_price1, product_price2, product_price3, 
+    product_up_time, product_down_time, product_pic_id
+    from product_sku
+  </select>
+  <select id="selectSkuInfoByProductId" parameterType="java.lang.String" resultType="hashMap">
+	SELECT
+		ps.sku_id AS skuId,
+		ps.product_id AS productId,
+		ps.sku_name AS skuName,
+		ps.attributes AS attributes,
+		ps.product_quantity AS productQuantity,
+		ps.product_sale_quantity AS productSaleQuantity,
+		ps.product_price AS productPrice,
+		ps.product_price1 AS productPrice1,
+		ps.product_price2 AS productPrice2,
+		ps.product_price3 AS productPrice3,
+		pp.product_pic_id AS productPicId,
+		pp.pic_small AS picSmall,
+		pp.pic_big AS picBig
+	FROM
+		product_sku ps left join product_pic pp on ps.product_pic_id = pp.product_pic_id
+	WHERE ps.product_id = #{productId}
+  </select>
+  <select id="selectSkuInfoByPrimaryKey" parameterType="java.lang.String" resultType="hashMap">
+	SELECT
+		ps.sku_id AS skuId,
+		ps.product_id AS productId,
+		ps.sku_name AS skuName,
+		ps.attributes AS attributes,
+		ps.attributes_id AS attributesId,
+		ps.product_quantity AS productQuantity,
+		ps.product_sale_quantity AS productSaleQuantity,
+		ps.product_price AS productPrice,
+		ps.product_price1 AS productPrice1,
+		ps.product_price2 AS productPrice2,
+		ps.product_price3 AS productPrice3,
+		pp.product_pic_id AS productPicId,
+		pp.pic_small AS picSmall,
+		pp.pic_big AS picBig
+	FROM
+		product_sku ps
+	LEFT JOIN product_pic pp ON ps.product_pic_id = pp.product_pic_id
+	WHERE ps.sku_id = #{skuId}
+  </select>
+  
+  <!-- 根据商品id和属性ids数组查询sku -->
+  <select id="selectByProductIdAndAttrValueIds" resultMap="BaseResultMap">
+    select sku_id, sku_status, sku_name, attributes, attributes_id, product_id, product_quantity, product_sale_quantity, 
+    product_price, description, create_date, create_user_Id, create_user_name, modify_date, 
+    modify_user_Id, modify_user_name, product_price1, product_price2, product_price3, 
+    product_up_time, product_down_time, product_pic_id
+    from product_sku
+    where product_id = #{productId,jdbcType=VARCHAR}
+    and sku_status = 1 and 
+    <foreach collection="attrValueIds" item="attrValueId" index="index" open="" separator=" and " close="">
+    	attributes_id like CONCAT('%', #{attrValueId,jdbcType=VARCHAR}, '%')
+    </foreach>
+  </select>
+</mapper>

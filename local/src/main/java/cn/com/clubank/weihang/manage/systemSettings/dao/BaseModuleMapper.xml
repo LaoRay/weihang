@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.clubank.weihang.manage.systemSettings.dao.BaseModuleMapper">
+  <resultMap id="BaseResultMap" type="cn.com.clubank.weihang.manage.systemSettings.pojo.BaseModule">
+    <id column="module_id" jdbcType="VARCHAR" property="moduleId" />
+    <result column="parent_id" jdbcType="VARCHAR" property="parentId" />
+    <result column="module_name" jdbcType="VARCHAR" property="moduleName" />
+    <result column="icon" jdbcType="VARCHAR" property="icon" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+    <result column="target" jdbcType="VARCHAR" property="target" />
+    <result column="is_menu" jdbcType="INTEGER" property="isMenu" />
+    <result column="allow_expand" jdbcType="INTEGER" property="allowExpand" />
+    <result column="is_public" jdbcType="INTEGER" property="isPublic" />
+    <result column="allow_edit" jdbcType="INTEGER" property="allowEdit" />
+    <result column="allow_delete" jdbcType="INTEGER" property="allowDelete" />
+    <result column="sort" jdbcType="INTEGER" property="sort" />
+    <result column="delete_mark" jdbcType="INTEGER" property="deleteMark" />
+    <result column="enabled_mark" jdbcType="INTEGER" property="enabledMark" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="create_user_Id" jdbcType="VARCHAR" property="createUserId" />
+    <result column="create_user_name" jdbcType="VARCHAR" property="createUserName" />
+    <result column="modify_date" jdbcType="TIMESTAMP" property="modifyDate" />
+    <result column="modify_user_Id" jdbcType="VARCHAR" property="modifyUserId" />
+    <result column="modify_user_name" jdbcType="VARCHAR" property="modifyUserName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    module_id, parent_id, module_name, icon, url, target, is_menu, allow_expand, is_public, 
+    allow_edit, allow_delete, sort, delete_mark, enabled_mark, description, create_date, 
+    create_user_Id, create_user_name, modify_date, modify_user_Id, modify_user_name
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from base_module
+    where module_id = #{moduleId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from base_module
+    where module_id = #{moduleId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.com.clubank.weihang.manage.systemSettings.pojo.BaseModule">
+    insert into base_module (module_id, parent_id, module_name, 
+      icon, url, target, 
+      is_menu, allow_expand, is_public, 
+      allow_edit, allow_delete, sort, 
+      delete_mark, enabled_mark, description, 
+      create_date, create_user_Id, create_user_name, 
+      modify_date, modify_user_Id, modify_user_name
+      )
+    values (#{moduleId,jdbcType=VARCHAR}, #{parentId,jdbcType=VARCHAR}, #{moduleName,jdbcType=VARCHAR}, 
+      #{icon,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, #{target,jdbcType=VARCHAR}, 
+      #{isMenu,jdbcType=INTEGER}, #{allowExpand,jdbcType=INTEGER}, #{isPublic,jdbcType=INTEGER}, 
+      #{allowEdit,jdbcType=INTEGER}, #{allowDelete,jdbcType=INTEGER}, #{sort,jdbcType=INTEGER}, 
+      #{deleteMark,jdbcType=INTEGER}, #{enabledMark,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{createUserId,jdbcType=VARCHAR}, #{createUserName,jdbcType=VARCHAR}, 
+      #{modifyDate,jdbcType=TIMESTAMP}, #{modifyUserId,jdbcType=VARCHAR}, #{modifyUserName,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.com.clubank.weihang.manage.systemSettings.pojo.BaseModule">
+    insert into base_module
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="moduleId != null">
+        module_id,
+      </if>
+      <if test="parentId != null">
+        parent_id,
+      </if>
+      <if test="moduleName != null">
+        module_name,
+      </if>
+      <if test="icon != null">
+        icon,
+      </if>
+      <if test="url != null">
+        url,
+      </if>
+      <if test="target != null">
+        target,
+      </if>
+      <if test="isMenu != null">
+        is_menu,
+      </if>
+      <if test="allowExpand != null">
+        allow_expand,
+      </if>
+      <if test="isPublic != null">
+        is_public,
+      </if>
+      <if test="llowedit != null">
+        allow_edit,
+      </if>
+      <if test="allowDelete != null">
+        allow_delete,
+      </if>
+      <if test="sort != null">
+        sort,
+      </if>
+      <if test="deleteMark != null">
+        delete_mark,
+      </if>
+      <if test="enabledMark != null">
+        enabled_mark,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="createUserId != null">
+        create_user_Id,
+      </if>
+      <if test="createUserName != null">
+        create_user_name,
+      </if>
+      <if test="modifyDate != null">
+        modify_date,
+      </if>
+      <if test="modifyUserId != null">
+        modify_user_Id,
+      </if>
+      <if test="modifyUserName != null">
+        modify_user_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="moduleId != null">
+        #{moduleId,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null">
+        #{parentId,jdbcType=VARCHAR},
+      </if>
+      <if test="moduleName != null">
+        #{moduleName,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null">
+        #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null">
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="target != null">
+        #{target,jdbcType=VARCHAR},
+      </if>
+      <if test="isMenu != null">
+        #{isMenu,jdbcType=INTEGER},
+      </if>
+      <if test="allowExpand != null">
+        #{allowExpand,jdbcType=INTEGER},
+      </if>
+      <if test="isPublic != null">
+        #{isPublic,jdbcType=INTEGER},
+      </if>
+      <if test="allowEdit != null">
+        #{allowEdit,jdbcType=INTEGER},
+      </if>
+      <if test="allowDelete != null">
+        #{allowDelete,jdbcType=INTEGER},
+      </if>
+      <if test="sort != null">
+        #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="deleteMark != null">
+        #{deleteMark,jdbcType=INTEGER},
+      </if>
+      <if test="enabledMark != null">
+        #{enabledMark,jdbcType=INTEGER},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUserId != null">
+        #{createUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="createUserName != null">
+        #{createUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyDate != null">
+        #{modifyDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyUserId != null">
+        #{modifyUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyUserName != null">
+        #{modifyUserName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.com.clubank.weihang.manage.systemSettings.pojo.BaseModule">
+    update base_module
+    <set>
+      <if test="parentId != null">
+        parent_id = #{parentId,jdbcType=VARCHAR},
+      </if>
+      <if test="moduleName != null">
+        module_name = #{moduleName,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null">
+        icon = #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null">
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="target != null">
+        target = #{target,jdbcType=VARCHAR},
+      </if>
+      <if test="isMenu != null">
+        is_menu = #{isMenu,jdbcType=INTEGER},
+      </if>
+      <if test="allowExpand != null">
+        allow_expand = #{allowExpand,jdbcType=INTEGER},
+      </if>
+      <if test="isPublic != null">
+        is_public = #{isPublic,jdbcType=INTEGER},
+      </if>
+      <if test="allowEdit != null">
+        allow_edit = #{allowEdit,jdbcType=INTEGER},
+      </if>
+      <if test="allowDelete != null">
+        allow_delete = #{allowDelete,jdbcType=INTEGER},
+      </if>
+      <if test="sort != null">
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="deleteMark != null">
+        delete_mark = #{deleteMark,jdbcType=INTEGER},
+      </if>
+      <if test="enabledMark != null">
+        enabled_mark = #{enabledMark,jdbcType=INTEGER},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUserId != null">
+        create_user_Id = #{createUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="createUserName != null">
+        create_user_name = #{createUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyDate != null">
+        modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyUserId != null">
+        modify_user_Id = #{modifyUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyUserName != null">
+        modify_user_name = #{modifyUserName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where module_id = #{moduleId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.com.clubank.weihang.manage.systemSettings.pojo.BaseModule">
+    update base_module
+    set parent_id = #{parentId,jdbcType=VARCHAR},
+      module_name = #{moduleName,jdbcType=VARCHAR},
+      icon = #{icon,jdbcType=VARCHAR},
+      url = #{url,jdbcType=VARCHAR},
+      target = #{target,jdbcType=VARCHAR},
+      is_menu = #{isMenu,jdbcType=INTEGER},
+      allow_expand = #{allowExpand,jdbcType=INTEGER},
+      is_public = #{isPublic,jdbcType=INTEGER},
+      allow_edit = #{allowEdit,jdbcType=INTEGER},
+      allow_delete = #{allowDelete,jdbcType=INTEGER},
+      sort = #{sort,jdbcType=INTEGER},
+      delete_mark = #{deleteMark,jdbcType=INTEGER},
+      enabled_mark = #{enabledMark,jdbcType=INTEGER},
+      description = #{description,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      create_user_Id = #{createUserId,jdbcType=VARCHAR},
+      create_user_name = #{createUserName,jdbcType=VARCHAR},
+      modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+      modify_user_Id = #{modifyUserId,jdbcType=VARCHAR},
+      modify_user_name = #{modifyUserName,jdbcType=VARCHAR}
+    where module_id = #{moduleId,jdbcType=VARCHAR}
+  </update>
+</mapper>

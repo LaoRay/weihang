@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.clubank.weihang.manage.insurance.dao.InsurancePicMapper">
+  <resultMap id="BaseResultMap" type="cn.com.clubank.weihang.manage.insurance.pojo.InsurancePic">
+    <id column="pic_id" jdbcType="VARCHAR" property="picId" />
+    <result column="insurance_id" jdbcType="VARCHAR" property="insuranceId" />
+    <result column="pic_url" jdbcType="VARCHAR" property="picUrl" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="create_user_Id" jdbcType="VARCHAR" property="createUserId" />
+    <result column="create_user_name" jdbcType="VARCHAR" property="createUserName" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from insurance_pic
+    where pic_id = #{picId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.com.clubank.weihang.manage.insurance.pojo.InsurancePic">
+    insert into insurance_pic 
+      ( pic_id, insurance_id, pic_url, 
+      type, description, 
+      create_date, create_user_Id, create_user_name
+      )
+    values (#{picId,jdbcType=VARCHAR}, #{insuranceId,jdbcType=VARCHAR}, #{picUrl,jdbcType=VARCHAR}, 
+      #{type,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{createUserId,jdbcType=VARCHAR}, #{createUserName,jdbcType=VARCHAR}
+      )
+  </insert>
+  
+  <insert id="insertBatch" parameterType="cn.com.clubank.weihang.manage.insurance.pojo.InsurancePic">
+  	insert into insurance_pic 
+  	( pic_id, insurance_id, pic_url, 
+      type, description, 
+      create_date, create_user_Id, create_user_name
+    )
+    values
+  	<foreach collection="list" item="item" index="index" separator="," >
+  	(
+  	  #{item.picId,jdbcType=VARCHAR}, 
+  	  #{item.insuranceId,jdbcType=VARCHAR}, 
+  	  #{item.picUrl,jdbcType=VARCHAR}, 
+      #{item.type,jdbcType=INTEGER}, 
+      #{item.description,jdbcType=VARCHAR}, 
+      #{item.createDate,jdbcType=TIMESTAMP}, 
+      #{item.createUserId,jdbcType=VARCHAR}, 
+      #{item.createUserName,jdbcType=VARCHAR}
+  	)
+  	</foreach>
+  </insert>
+  
+  <update id="updateByPrimaryKey" parameterType="cn.com.clubank.weihang.manage.insurance.pojo.InsurancePic">
+    update insurance_pic
+    set insurance_id = #{insuranceId,jdbcType=VARCHAR},
+      pic_url = #{picUrl,jdbcType=VARCHAR},
+      type = #{type,jdbcType=INTEGER},
+      description = #{description,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      create_user_Id = #{createUserId,jdbcType=VARCHAR},
+      create_user_name = #{createUserName,jdbcType=VARCHAR}
+    where pic_id = #{picId,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select pic_id, insurance_id, pic_url, type, description, create_date, 
+    create_user_Id, create_user_name
+    from insurance_pic
+    where pic_id = #{picId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select pic_id, insurance_id, pic_url, type, description, create_date, 
+    create_user_Id, create_user_name
+    from insurance_pic
+  </select>
+  
+  <select id="selectByInsuranceId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select pic_id, insurance_id, pic_url, type, description, create_date, 
+    create_user_Id, create_user_name
+    from insurance_pic
+    where insurance_id = #{insuranceId,jdbcType=VARCHAR}
+  </select>
+</mapper>

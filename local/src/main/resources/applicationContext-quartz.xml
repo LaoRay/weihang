@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans      
+                        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd      
+                        http://www.springframework.org/schema/context      
+                        http://www.springframework.org/schema/context/spring-context-4.0.xsd      
+                        http://www.springframework.org/schema/mvc      
+                        http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+                        http://www.springframework.org/schema/aop
+	              		http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+	              		http://www.springframework.org/schema/tx
+	              		http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+
+	<!-- 任务类 -->
+	<bean id="timedTask" class="cn.com.clubank.weihang.common.quartz.TimedTask" />
+	
+	<!-- 任务1    每小时执行-->
+	<bean id="eachOneHour" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="concurrent" value="false" />
+		<property name="targetObject" ref="timedTask" />
+		<property name="targetMethod" value="eachOneHour" />
+	</bean>
+	<bean id="schedulerEachOneHour" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="eachOneHour" />
+		<property name="cronExpression">
+			<value>0 0 * * * ?</value>
+		</property>
+	</bean>
+	
+	<!-- 任务2     每天零点执行 -->
+	<bean id="everyDayZeroPoint" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="concurrent" value="false" />
+		<property name="targetObject" ref="timedTask" />
+		<property name="targetMethod" value="everyDayZeroPoint" />
+	</bean>
+	<bean id="schedulerEveryDayZeroPoint" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="everyDayZeroPoint" />
+		<property name="cronExpression">
+			<value>0 0 0 * * ?</value>
+		</property>
+	</bean>
+
+	<!-- 触发器 -->
+	<bean id="scheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="schedulerEveryDayZeroPoint" />
+				<ref bean="schedulerEachOneHour" />
+			</list>
+		</property>
+	</bean>
+
+</beans>

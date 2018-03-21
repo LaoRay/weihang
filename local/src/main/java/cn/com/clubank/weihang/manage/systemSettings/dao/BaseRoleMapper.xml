@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.clubank.weihang.manage.systemSettings.dao.BaseRoleMapper">
+  <resultMap id="BaseResultMap" type="cn.com.clubank.weihang.manage.systemSettings.pojo.BaseRole">
+    <id column="role_id" jdbcType="VARCHAR" property="roleId" />
+    <result column="role_name" jdbcType="VARCHAR" property="roleName" />
+    <result column="sort" jdbcType="INTEGER" property="sort" />
+    <result column="delete_mark" jdbcType="INTEGER" property="deleteMark" />
+    <result column="enabled_mark" jdbcType="INTEGER" property="enabledMark" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="create_user_Id" jdbcType="VARCHAR" property="createUserId" />
+    <result column="create_user_name" jdbcType="VARCHAR" property="createUserName" />
+    <result column="modify_date" jdbcType="TIMESTAMP" property="modifyDate" />
+    <result column="modify_user_Id" jdbcType="VARCHAR" property="modifyUserId" />
+    <result column="modify_user_name" jdbcType="VARCHAR" property="modifyUserName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    role_id, role_name, sort, delete_mark, enabled_mark, description, create_date, create_user_Id, 
+    create_user_name, modify_date, modify_user_Id, modify_user_name
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from base_role
+    where role_id = #{roleId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectRoleList" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from base_role
+    order by sort
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from base_role
+    where role_id = #{roleId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.com.clubank.weihang.manage.systemSettings.pojo.BaseRole">
+    insert into base_role (role_id, role_name, sort, 
+      delete_mark, enabled_mark, description, 
+      create_date, create_user_Id, create_user_name, 
+      modify_date, modify_user_Id, modify_user_name
+      )
+    values (#{roleId,jdbcType=VARCHAR}, #{roleName,jdbcType=VARCHAR}, #{sort,jdbcType=INTEGER}, 
+      #{deleteMark,jdbcType=INTEGER}, #{enabledMark,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{createUserId,jdbcType=VARCHAR}, #{createUserName,jdbcType=VARCHAR}, 
+      #{modifyDate,jdbcType=TIMESTAMP}, #{modifyUserId,jdbcType=VARCHAR}, #{modifyUserName,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.com.clubank.weihang.manage.systemSettings.pojo.BaseRole">
+    insert into base_role
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="roleId != null">
+        role_id,
+      </if>
+      <if test="roleName != null">
+        role_name,
+      </if>
+      <if test="sort != null">
+        sort,
+      </if>
+      <if test="deleteMark != null">
+        delete_mark,
+      </if>
+      <if test="enabledMark != null">
+        enabled_mark,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="createUserId != null">
+        create_user_Id,
+      </if>
+      <if test="createUserName != null">
+        create_user_name,
+      </if>
+      <if test="modifyDate != null">
+        modify_date,
+      </if>
+      <if test="modifyUserId != null">
+        modify_user_Id,
+      </if>
+      <if test="modifyUserName != null">
+        modify_user_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="roleId != null">
+        #{roleId,jdbcType=VARCHAR},
+      </if>
+      <if test="roleName != null">
+        #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="deleteMark != null">
+        #{deleteMark,jdbcType=INTEGER},
+      </if>
+      <if test="enabledMark != null">
+        #{enabledMark,jdbcType=INTEGER},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUserId != null">
+        #{createUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="createUserName != null">
+        #{createUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyDate != null">
+        #{modifyDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyUserId != null">
+        #{modifyUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyUserName != null">
+        #{modifyUserName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.com.clubank.weihang.manage.systemSettings.pojo.BaseRole">
+    update base_role
+    <set>
+      <if test="roleName != null">
+        role_name = #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="deleteMark != null">
+        delete_mark = #{deleteMark,jdbcType=INTEGER},
+      </if>
+      <if test="enabledMark != null">
+        enabled_mark = #{enabledMark,jdbcType=INTEGER},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUserId != null">
+        create_user_Id = #{createUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="createUserName != null">
+        create_user_name = #{createUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyDate != null">
+        modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyUserId != null">
+        modify_user_Id = #{modifyUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyUserName != null">
+        modify_user_name = #{modifyUserName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where role_id = #{roleId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.com.clubank.weihang.manage.systemSettings.pojo.BaseRole">
+    update base_role
+    set role_name = #{roleName,jdbcType=VARCHAR},
+      sort = #{sort,jdbcType=INTEGER},
+      delete_mark = #{deleteMark,jdbcType=INTEGER},
+      enabled_mark = #{enabledMark,jdbcType=INTEGER},
+      description = #{description,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      create_user_Id = #{createUserId,jdbcType=VARCHAR},
+      create_user_name = #{createUserName,jdbcType=VARCHAR},
+      modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+      modify_user_Id = #{modifyUserId,jdbcType=VARCHAR},
+      modify_user_name = #{modifyUserName,jdbcType=VARCHAR}
+    where role_id = #{roleId,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 通过角色名称模糊查询到的总数 -->
+  <select id="selectCountByName" resultType="Integer">
+  	select count(0)
+  	from base_role
+  	where 1=1
+  	<if test="roleName != null">
+  		and role_name like concat('%',#{roleName,jdbcType=VARCHAR},'%')
+  	</if>
+  </select>
+  
+  <!-- 通过角色名称模糊查询并分页 -->
+  <select id="selectRoleListAndPaged" resultMap="BaseResultMap">
+  	select
+  	<include refid="Base_Column_List" />
+  	from base_role
+  	where 1=1
+  	<if test="roleName != null">
+  		and role_name like concat('%',#{roleName,jdbcType=VARCHAR},'%')
+  	</if>
+  	order by sort 
+  	<if test="startIndex &gt;= 0">
+  		limit #{startIndex,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
+  	</if>
+  </select>
+  
+  <!-- 获得角色下用户 -->
+  <select id="selectRoleUserByRoleId" parameterType="java.lang.String" resultType="HashMap">
+	SELECT 
+	  bur.role_id AS roleId,
+	  bd.d_id AS dId,
+	  bd.d_name AS dName,
+	  bu.user_id AS userId,
+	  bu.account,
+	  bu.realname,
+	  bu.post,
+	  bu.duty 
+	FROM
+	  base_user_role bur 
+	  LEFT JOIN base_user bu 
+	    ON bur.user_id = bu.user_id 
+	  LEFT JOIN base_department bd 
+	    ON bu.department_id = bd.d_id 
+	WHERE bur.role_id = #{roleId,jdbcType=VARCHAR} 
+  </select>
+  
+  <!-- 获得用户的角色 -->
+  <select id="selectRoleUserByUserId" parameterType="java.lang.String" resultType="HashMap">
+	SELECT 
+	  br.role_id AS roleId,
+	  br.role_name as roleName,
+	  br.sort, 
+      br.description,
+      
+	  bd.d_id AS dId,
+	  bd.d_name AS dName,
+	  
+	  bu.user_id AS userId,
+	  bu.account,
+	  bu.realname,
+	  bu.post,
+	  bu.duty 
+	FROM
+	  base_user_role bur 
+	  LEFT JOIN base_role br
+	    ON bur.role_id = br.role_id  
+	  LEFT JOIN base_user bu 
+	    ON bur.user_id = bu.user_id 
+	  LEFT JOIN base_department bd 
+	    ON bu.department_id = bd.d_id 
+	WHERE bur.user_id = #{userId,jdbcType=VARCHAR} 
+  </select>
+</mapper>

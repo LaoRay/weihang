@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.clubank.weihang.manage.member.dao.InvoiceBasisMapper">
+  <resultMap id="BaseResultMap" type="cn.com.clubank.weihang.manage.member.pojo.InvoiceBasis">
+    <id column="invoice_Id" jdbcType="VARCHAR" property="invoiceId" />
+    <result column="customer_id" jdbcType="VARCHAR" property="customerId" />
+    <result column="company_ame" jdbcType="VARCHAR" property="companyAme" />
+    <result column="identification_code" jdbcType="VARCHAR" property="identificationCode" />
+    <result column="register_address" jdbcType="VARCHAR" property="registerAddress" />
+    <result column="register_telephone" jdbcType="VARCHAR" property="registerTelephone" />
+    <result column="opening_bank" jdbcType="VARCHAR" property="openingBank" />
+    <result column="bank_id" jdbcType="VARCHAR" property="bankId" />
+    <result column="is_default" jdbcType="BIT" property="isDefault" />
+    <result column="delete_mark" jdbcType="INTEGER" property="deleteMark" />
+    <result column="enabled_mark" jdbcType="INTEGER" property="enabledMark" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="create_user_Id" jdbcType="VARCHAR" property="createUserId" />
+    <result column="create_user_name" jdbcType="VARCHAR" property="createUserName" />
+    <result column="modify_date" jdbcType="TIMESTAMP" property="modifyDate" />
+    <result column="modify_user_Id" jdbcType="VARCHAR" property="modifyUserId" />
+    <result column="modify_user_name" jdbcType="VARCHAR" property="modifyUserName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    invoice_Id, customer_id, company_ame, identification_code, register_address, register_telephone, 
+    opening_bank, bank_id, is_default, delete_mark, enabled_mark, description, create_date, 
+    create_user_Id, create_user_name, modify_date, modify_user_Id, modify_user_name
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from invoice_basis
+    where invoice_Id = #{invoiceId,jdbcType=VARCHAR} and delete_mark = 0
+  </select>
+  
+  <!-- 通过客户ID获得客户的增票资质列表 -->
+  <select id="selectBycustomerId" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from invoice_basis
+    where customer_id = #{customerId,jdbcType=VARCHAR} and delete_mark = 0
+  </select>
+  
+  <!-- 通过纳税人识别号查询到的条数 -->
+  <select id="selectCountByIdentificationCode" parameterType="java.lang.String" resultType="Integer">
+	SELECT 
+	  COUNT(0) 
+	FROM
+	  invoice_basis 
+	WHERE identification_code = #{identificationCode,jdbcType=VARCHAR} and delete_mark = 0
+  </select>
+  
+  <!-- 通过银行账户查询到的条数 -->
+  <select id="selectCountByBankId" parameterType="java.lang.String" resultType="Integer">
+  	SELECT 
+	  COUNT(0) 
+	FROM
+	  invoice_basis 
+	WHERE bank_id = #{bankId,jdbcType=VARCHAR} and delete_mark = 0
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from invoice_basis
+    where invoice_Id = #{invoiceId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.com.clubank.weihang.manage.member.pojo.InvoiceBasis">
+    insert into invoice_basis (invoice_Id, customer_id, company_ame, 
+      identification_code, register_address, register_telephone, 
+      opening_bank, bank_id, is_default, 
+      delete_mark, enabled_mark, description, 
+      create_date, create_user_Id, create_user_name, 
+      modify_date, modify_user_Id, modify_user_name
+      )
+    values (#{invoiceId,jdbcType=VARCHAR}, #{customerId,jdbcType=VARCHAR}, #{companyAme,jdbcType=VARCHAR}, 
+      #{identificationCode,jdbcType=VARCHAR}, #{registerAddress,jdbcType=VARCHAR}, #{registerTelephone,jdbcType=VARCHAR}, 
+      #{openingBank,jdbcType=VARCHAR}, #{bankId,jdbcType=VARCHAR}, #{isDefault,jdbcType=BIT}, 
+      #{deleteMark,jdbcType=INTEGER}, #{enabledMark,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{createUserId,jdbcType=VARCHAR}, #{createUserName,jdbcType=VARCHAR}, 
+      #{modifyDate,jdbcType=TIMESTAMP}, #{modifyUserId,jdbcType=VARCHAR}, #{modifyUserName,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.com.clubank.weihang.manage.member.pojo.InvoiceBasis">
+    insert into invoice_basis
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="invoiceId != null">
+        invoice_Id,
+      </if>
+      <if test="customerId != null">
+        customer_id,
+      </if>
+      <if test="companyAme != null">
+        company_ame,
+      </if>
+      <if test="identificationCode != null">
+        identification_code,
+      </if>
+      <if test="registerAddress != null">
+        register_address,
+      </if>
+      <if test="registerTelephone != null">
+        register_telephone,
+      </if>
+      <if test="openingBank != null">
+        opening_bank,
+      </if>
+      <if test="bankId != null">
+        bank_id,
+      </if>
+      <if test="isDefault != null">
+        is_default,
+      </if>
+      <if test="deleteMark != null">
+        delete_mark,
+      </if>
+      <if test="enabledMark != null">
+        enabled_mark,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="createUserId != null">
+        create_user_Id,
+      </if>
+      <if test="createUserName != null">
+        create_user_name,
+      </if>
+      <if test="modifyDate != null">
+        modify_date,
+      </if>
+      <if test="modifyUserId != null">
+        modify_user_Id,
+      </if>
+      <if test="modifyUserName != null">
+        modify_user_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="invoiceId != null">
+        #{invoiceId,jdbcType=VARCHAR},
+      </if>
+      <if test="customerId != null">
+        #{customerId,jdbcType=VARCHAR},
+      </if>
+      <if test="companyAme != null">
+        #{companyAme,jdbcType=VARCHAR},
+      </if>
+      <if test="identificationCode != null">
+        #{identificationCode,jdbcType=VARCHAR},
+      </if>
+      <if test="registerAddress != null">
+        #{registerAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="registerTelephone != null">
+        #{registerTelephone,jdbcType=VARCHAR},
+      </if>
+      <if test="openingBank != null">
+        #{openingBank,jdbcType=VARCHAR},
+      </if>
+      <if test="bankId != null">
+        #{bankId,jdbcType=VARCHAR},
+      </if>
+      <if test="isDefault != null">
+        #{isDefault,jdbcType=BIT},
+      </if>
+      <if test="deleteMark != null">
+        #{deleteMark,jdbcType=INTEGER},
+      </if>
+      <if test="enabledMark != null">
+        #{enabledMark,jdbcType=INTEGER},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUserId != null">
+        #{createUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="createUserName != null">
+        #{createUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyDate != null">
+        #{modifyDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyUserId != null">
+        #{modifyUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyUserName != null">
+        #{modifyUserName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.com.clubank.weihang.manage.member.pojo.InvoiceBasis">
+    update invoice_basis
+    <set>
+      <if test="customerId != null">
+        customer_id = #{customerId,jdbcType=VARCHAR},
+      </if>
+      <if test="companyAme != null">
+        company_ame = #{companyAme,jdbcType=VARCHAR},
+      </if>
+      <if test="identificationCode != null">
+        identification_code = #{identificationCode,jdbcType=VARCHAR},
+      </if>
+      <if test="registerAddress != null">
+        register_address = #{registerAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="registerTelephone != null">
+        register_telephone = #{registerTelephone,jdbcType=VARCHAR},
+      </if>
+      <if test="openingBank != null">
+        opening_bank = #{openingBank,jdbcType=VARCHAR},
+      </if>
+      <if test="bankId != null">
+        bank_id = #{bankId,jdbcType=VARCHAR},
+      </if>
+      <if test="isDefault != null">
+        is_default = #{isDefault,jdbcType=BIT},
+      </if>
+      <if test="deleteMark != null">
+        delete_mark = #{deleteMark,jdbcType=INTEGER},
+      </if>
+      <if test="enabledMark != null">
+        enabled_mark = #{enabledMark,jdbcType=INTEGER},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUserId != null">
+        create_user_Id = #{createUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="createUserName != null">
+        create_user_name = #{createUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyDate != null">
+        modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyUserId != null">
+        modify_user_Id = #{modifyUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyUserName != null">
+        modify_user_name = #{modifyUserName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where invoice_Id = #{invoiceId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.com.clubank.weihang.manage.member.pojo.InvoiceBasis">
+    update invoice_basis
+    set customer_id = #{customerId,jdbcType=VARCHAR},
+      company_ame = #{companyAme,jdbcType=VARCHAR},
+      identification_code = #{identificationCode,jdbcType=VARCHAR},
+      register_address = #{registerAddress,jdbcType=VARCHAR},
+      register_telephone = #{registerTelephone,jdbcType=VARCHAR},
+      opening_bank = #{openingBank,jdbcType=VARCHAR},
+      bank_id = #{bankId,jdbcType=VARCHAR},
+      is_default = #{isDefault,jdbcType=BIT},
+      delete_mark = #{deleteMark,jdbcType=INTEGER},
+      enabled_mark = #{enabledMark,jdbcType=INTEGER},
+      description = #{description,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      create_user_Id = #{createUserId,jdbcType=VARCHAR},
+      create_user_name = #{createUserName,jdbcType=VARCHAR},
+      modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+      modify_user_Id = #{modifyUserId,jdbcType=VARCHAR},
+      modify_user_name = #{modifyUserName,jdbcType=VARCHAR}
+    where invoice_Id = #{invoiceId,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 设置默认增票资质 -->
+  <update id="updateIsDefault" parameterType="cn.com.clubank.weihang.manage.member.pojo.InvoiceBasis">
+  	UPDATE invoice_basis
+  	SET is_default = FALSE
+  	where customer_id = #{customerId,jdbcType=VARCHAR};
+  	UPDATE invoice_basis
+  	SET is_default = TRUE
+  	WHERE invoice_Id = #{invoiceId,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 软删除 -->
+  <update id="softDeleteByPrimaryKey" parameterType="java.lang.String">
+  	update invoice_basis
+  	set delete_mark = 1
+  	where invoice_Id = #{invoiceId,jdbcType=VARCHAR}
+  </update>
+</mapper>

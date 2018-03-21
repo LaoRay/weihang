@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.clubank.weihang.manage.systemSettings.dao.InvoiceInfoMapper">
+  <resultMap id="BaseResultMap" type="cn.com.clubank.weihang.manage.systemSettings.pojo.InvoiceInfo">
+    <id column="invoice_Id" jdbcType="VARCHAR" property="invoiceId" />
+    <result column="company_ame" jdbcType="VARCHAR" property="companyAme" />
+    <result column="identification_code" jdbcType="VARCHAR" property="identificationCode" />
+    <result column="register_address" jdbcType="VARCHAR" property="registerAddress" />
+    <result column="register_telephone" jdbcType="VARCHAR" property="registerTelephone" />
+    <result column="opening_tank" jdbcType="VARCHAR" property="openingTank" />
+    <result column="bank_id" jdbcType="VARCHAR" property="bankId" />
+    <result column="order_no" jdbcType="VARCHAR" property="orderNo" />
+    <result column="opening_money" jdbcType="DECIMAL" property="openingMoney" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="delete_mark" jdbcType="INTEGER" property="deleteMark" />
+    <result column="enabled_mark" jdbcType="INTEGER" property="enabledMark" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="create_user_Id" jdbcType="VARCHAR" property="createUserId" />
+    <result column="create_user_name" jdbcType="VARCHAR" property="createUserName" />
+    <result column="modify_date" jdbcType="TIMESTAMP" property="modifyDate" />
+    <result column="modify_user_Id" jdbcType="VARCHAR" property="modifyUserId" />
+    <result column="modify_user_name" jdbcType="VARCHAR" property="modifyUserName" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from invoice_info
+    where invoice_Id = #{invoiceId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.com.clubank.weihang.manage.systemSettings.pojo.InvoiceInfo">
+    insert into invoice_info (invoice_Id, company_ame, identification_code, 
+      register_address, register_telephone, opening_tank, 
+      bank_id, order_no, opening_money, 
+      status, delete_mark, enabled_mark, 
+      description, create_date, create_user_Id, 
+      create_user_name, modify_date, modify_user_Id, 
+      modify_user_name)
+    values (#{invoiceId,jdbcType=VARCHAR}, #{companyAme,jdbcType=VARCHAR}, #{identificationCode,jdbcType=VARCHAR}, 
+      #{registerAddress,jdbcType=VARCHAR}, #{registerTelephone,jdbcType=VARCHAR}, #{openingTank,jdbcType=VARCHAR}, 
+      #{bankId,jdbcType=VARCHAR}, #{orderNo,jdbcType=VARCHAR}, #{openingMoney,jdbcType=DECIMAL}, 
+      #{status,jdbcType=INTEGER}, #{deleteMark,jdbcType=INTEGER}, #{enabledMark,jdbcType=INTEGER}, 
+      #{description,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{createUserId,jdbcType=VARCHAR}, 
+      #{createUserName,jdbcType=VARCHAR}, #{modifyDate,jdbcType=TIMESTAMP}, #{modifyUserId,jdbcType=VARCHAR}, 
+      #{modifyUserName,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.com.clubank.weihang.manage.systemSettings.pojo.InvoiceInfo">
+    update invoice_info
+    set company_ame = #{companyAme,jdbcType=VARCHAR},
+      identification_code = #{identificationCode,jdbcType=VARCHAR},
+      register_address = #{registerAddress,jdbcType=VARCHAR},
+      register_telephone = #{registerTelephone,jdbcType=VARCHAR},
+      opening_tank = #{openingTank,jdbcType=VARCHAR},
+      bank_id = #{bankId,jdbcType=VARCHAR},
+      order_no = #{orderNo,jdbcType=VARCHAR},
+      opening_money = #{openingMoney,jdbcType=DECIMAL},
+      status = #{status,jdbcType=INTEGER},
+      delete_mark = #{deleteMark,jdbcType=INTEGER},
+      enabled_mark = #{enabledMark,jdbcType=INTEGER},
+      description = #{description,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      create_user_Id = #{createUserId,jdbcType=VARCHAR},
+      create_user_name = #{createUserName,jdbcType=VARCHAR},
+      modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+      modify_user_Id = #{modifyUserId,jdbcType=VARCHAR},
+      modify_user_name = #{modifyUserName,jdbcType=VARCHAR}
+    where invoice_Id = #{invoiceId,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select invoice_Id, company_ame, identification_code, register_address, register_telephone, 
+    opening_tank, bank_id, order_no, opening_money, status, delete_mark, enabled_mark, 
+    description, create_date, create_user_Id, create_user_name, modify_date, modify_user_Id, 
+    modify_user_name
+    from invoice_info
+    where invoice_Id = #{invoiceId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select invoice_Id, company_ame, identification_code, register_address, register_telephone, 
+    opening_tank, bank_id, order_no, opening_money, status, delete_mark, enabled_mark, 
+    description, create_date, create_user_Id, create_user_name, modify_date, modify_user_Id, 
+    modify_user_name
+    from invoice_info
+  </select>
+</mapper>

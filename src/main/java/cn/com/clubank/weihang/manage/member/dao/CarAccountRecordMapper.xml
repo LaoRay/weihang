@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.clubank.weihang.manage.member.dao.CarAccountRecordMapper">
+  <resultMap id="BaseResultMap" type="cn.com.clubank.weihang.manage.member.pojo.CarAccountRecord">
+    <id column="record_id" jdbcType="VARCHAR" property="recordId" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="transaction_id" jdbcType="VARCHAR" property="transactionId" />
+    <result column="beginning_amount" jdbcType="DECIMAL" property="beginningAmount" />
+    <result column="finish_amount" jdbcType="DECIMAL" property="finishAmount" />
+    <result column="deal_amount" jdbcType="DECIMAL" property="dealAmount" />
+    <result column="account_source_type" jdbcType="INTEGER" property="accountSourceType" />
+    <result column="account_source" jdbcType="VARCHAR" property="accountSource" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="create_user_Id" jdbcType="VARCHAR" property="createUserId" />
+    <result column="car_id" jdbcType="VARCHAR" property="carId" />
+    <result column="account_type" jdbcType="INTEGER" property="accountType" />
+    <result column="is_group" jdbcType="BIT" property="isGroup" />
+    <result column="car_id_user" jdbcType="VARCHAR" property="carIdUser" />
+    <result column="car_id_user" jdbcType="VARCHAR" property="carIdUser" />
+    <result column="account_pay_type" jdbcType="INTEGER" property="accountPayType" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from car_account_record
+    where record_id = #{recordId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.com.clubank.weihang.manage.member.pojo.CarAccountRecord">
+    insert into car_account_record (record_id, description, beginning_amount, 
+      finish_amount, deal_amount, account_source_type, 
+      account_source, create_date, create_user_Id, 
+      car_id, account_type, is_group, 
+      car_id_user, transaction_id, account_pay_type)
+    values (#{recordId,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{beginningAmount,jdbcType=DECIMAL}, 
+      #{finishAmount,jdbcType=DECIMAL}, #{dealAmount,jdbcType=DECIMAL}, #{accountSourceType,jdbcType=INTEGER}, 
+      #{accountSource,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{createUserId,jdbcType=VARCHAR}, 
+      #{carId,jdbcType=VARCHAR}, #{accountType,jdbcType=INTEGER}, #{isGroup,jdbcType=BIT}, 
+      #{carIdUser,jdbcType=VARCHAR}, #{transactionId,jdbcType=VARCHAR}, #{accountPayType,jdbcType=INTEGER})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.com.clubank.weihang.manage.member.pojo.CarAccountRecord">
+    update car_account_record
+    set description = #{description,jdbcType=VARCHAR},
+      beginning_amount = #{beginningAmount,jdbcType=DECIMAL},
+      finish_amount = #{finishAmount,jdbcType=DECIMAL},
+      deal_amount = #{dealAmount,jdbcType=DECIMAL},
+      account_source_type = #{accountSourceType,jdbcType=INTEGER},
+      account_source = #{accountSource,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      create_user_Id = #{createUserId,jdbcType=VARCHAR},
+      car_id = #{carId,jdbcType=VARCHAR},
+      account_type = #{accountType,jdbcType=INTEGER},
+      is_group = #{isGroup,jdbcType=BIT},
+      car_id_user = #{carIdUser,jdbcType=VARCHAR},
+      transaction_id = #{transactionId,jdbcType=VARCHAR},
+      account_pay_type = #{accountPayType,jdbcType=INTEGER}
+    where record_id = #{recordId,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select record_id, description, beginning_amount, finish_amount, deal_amount, account_source_type, 
+    account_source, create_date, create_user_Id, car_id, account_type, is_group, car_id_user, transaction_id, account_pay_type
+    from car_account_record
+    where record_id = #{recordId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByTransactionId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select record_id, description, beginning_amount, finish_amount, deal_amount, account_source_type, 
+    account_source, create_date, create_user_Id, car_id, account_type, is_group, car_id_user, transaction_id, account_pay_type
+    from car_account_record
+    where transaction_id = #{transactionId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select record_id, description, beginning_amount, finish_amount, deal_amount, account_source_type, 
+    account_source, create_date, create_user_Id, car_id, account_type, is_group, car_id_user, transaction_id, account_pay_type
+    from car_account_record
+  </select>
+  <select id="selectRecordListByCarId" resultMap="BaseResultMap">
+    select record_id, description, beginning_amount, finish_amount, deal_amount, account_source_type, 
+    account_source, create_date, create_user_Id, car_id, account_type, is_group, car_id_user, transaction_id, account_pay_type
+    from car_account_record
+    where car_id = #{carId}
+    order by create_date desc
+    <if test="start &gt;= 0">
+    limit #{start,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+    </if>
+  </select>
+  
+  <!-- 根据集团组查询减少（消费）的记录 -->
+  <select id="findGroupReduceRecord" resultMap="BaseResultMap">
+    select 
+		re.*,
+    	car.car_no as carNo,
+    	cus.realname as customerName
+    from car_account_record re left join car_info car on car.car_id = re.car_id 
+    left join car_group gro on gro.group_car = re.car_id_user
+    left join customer_info cus on cus.c_id = car.customer_id
+    where gro.group_id = #{groupId,jdbcType=VARCHAR} and re.account_source_type = 2
+    order by re.create_date desc
+    <if test="start &gt;= 0">
+    limit #{start,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+    </if>
+  </select>
+  
+  <!-- 客户端根据集团组查询减少（消费）的记录 -->
+  <select id="clientFindGroupReduceRecord" resultMap="BaseResultMap">
+    select 
+		re.*,
+    	car.car_no as carNo,
+    	cus.realname as customerName
+    from car_account_record re left join car_info car on car.car_id = re.car_id 
+    left join car_group gro on gro.group_car = re.car_id_user
+    left join customer_info cus on cus.c_id = car.customer_id
+    where gro.group_id = #{groupId,jdbcType=VARCHAR} and re.account_source_type = 2
+    order by re.create_date desc
+    <if test="start &gt;= 0">
+    limit #{start,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+    </if>
+  </select>
+  <!-- 根据集团组查询减少（消费）的记录 -->
+  <select id="clientFindGroupReduceRecordCount" resultType="INTEGER">
+    select 
+		count(0)
+    from car_account_record re 
+    left join car_group gro on gro.group_car = re.car_id_user
+    where gro.group_id = #{groupId,jdbcType=VARCHAR} and re.account_source_type = 2
+  </select>
+  
+  <!-- 查询集团组的充值记录 -->
+  <select id="findGroupRechargeRecord" resultMap="BaseResultMap">
+    select 
+		re.*,
+    	car.car_no as carNo
+    from car_account_record re left join car_info car on car.car_id = re.car_id 
+    left join car_group gro on gro.group_car = re.car_id
+    where gro.group_id = #{groupId,jdbcType=VARCHAR} and re.account_source_type = 1
+    order by re.create_date desc
+    <if test="start &gt;= 0">
+    limit #{start,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+    </if>
+  </select>
+</mapper>

@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.clubank.weihang.manage.product.dao.ProductReadLogMapper">
+  <resultMap id="BaseResultMap" type="cn.com.clubank.weihang.manage.product.pojo.ProductReadLog">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="product_id" jdbcType="VARCHAR" property="productId" />
+    <result column="customer_id" jdbcType="VARCHAR" property="customerId" />
+    <result column="sku_id" jdbcType="VARCHAR" property="skuId" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="create_user_Id" jdbcType="VARCHAR" property="createUserId" />
+    <result column="create_user_name" jdbcType="VARCHAR" property="createUserName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, product_id, customer_id, sku_id, create_date, create_user_Id, create_user_name
+  </sql>
+  
+  <select id="selectAll" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from product_read_log
+  </select>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from product_read_log
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectByCustomerIdAndProductId" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from product_read_log
+    where customer_id = #{customerId,jdbcType=VARCHAR}
+    and product_id = #{productId,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectRecordCount" parameterType="java.lang.String" resultType="int">
+  	select count(0)
+  	from product_read_log
+  	where customer_id = #{customerId,jdbcType=VARCHAR}
+  </select>
+  
+  <!-- 通过客户ID查询浏览记录并分页 -->
+  <select id="selectByCustomerId" resultType="hashMap">
+	SELECT 
+	  prl.customer_id AS customerId,
+	  prl.product_id AS productId,
+	  prl.sku_id AS skuId,
+	  pi.product_name AS productName,
+	  pi.product_price AS productPrice,
+	  pi.product_type AS productType
+	FROM
+	  product_read_log prl 
+	  LEFT JOIN product_info pi ON prl.product_id = pi.product_id 
+	WHERE prl.customer_id = #{customerId,jdbcType=VARCHAR}
+	AND prl.product_id IS NOT NULL
+	order by prl.create_date desc
+	<if test="startIndex &gt;= 0">
+		limit #{startIndex,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
+	</if>
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from product_read_log
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <insert id="insert" parameterType="cn.com.clubank.weihang.manage.product.pojo.ProductReadLog">
+    insert into product_read_log (id, product_id, customer_id, 
+      sku_id, create_date, create_user_Id, 
+      create_user_name)
+    values (#{id,jdbcType=VARCHAR}, #{productId,jdbcType=VARCHAR}, #{customerId,jdbcType=VARCHAR}, 
+      #{skuId,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{createUserId,jdbcType=VARCHAR}, 
+      #{createUserName,jdbcType=VARCHAR})
+  </insert>
+  
+  <insert id="insertSelective" parameterType="cn.com.clubank.weihang.manage.product.pojo.ProductReadLog">
+    insert into product_read_log
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="productId != null">
+        product_id,
+      </if>
+      <if test="customerId != null">
+        customer_id,
+      </if>
+      <if test="skuId != null">
+        sku_id,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="createUserId != null">
+        create_user_Id,
+      </if>
+      <if test="createUserName != null">
+        create_user_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="productId != null">
+        #{productId,jdbcType=VARCHAR},
+      </if>
+      <if test="customerId != null">
+        #{customerId,jdbcType=VARCHAR},
+      </if>
+      <if test="skuId != null">
+        #{skuId,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUserId != null">
+        #{createUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="createUserName != null">
+        #{createUserName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="cn.com.clubank.weihang.manage.product.pojo.ProductReadLog">
+    update product_read_log
+    <set>
+      <if test="productId != null">
+        product_id = #{productId,jdbcType=VARCHAR},
+      </if>
+      <if test="customerId != null">
+        customer_id = #{customerId,jdbcType=VARCHAR},
+      </if>
+      <if test="skuId != null">
+        sku_id = #{skuId,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUserId != null">
+        create_user_Id = #{createUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="createUserName != null">
+        create_user_name = #{createUserName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="updateByPrimaryKey" parameterType="cn.com.clubank.weihang.manage.product.pojo.ProductReadLog">
+    update product_read_log
+    set product_id = #{productId,jdbcType=VARCHAR},
+      customer_id = #{customerId,jdbcType=VARCHAR},
+      sku_id = #{skuId,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      create_user_Id = #{createUserId,jdbcType=VARCHAR},
+      create_user_name = #{createUserName,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

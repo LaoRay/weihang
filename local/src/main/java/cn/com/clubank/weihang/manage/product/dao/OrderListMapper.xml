@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.clubank.weihang.manage.product.dao.OrderListMapper">
+  <resultMap id="BaseResultMap" type="cn.com.clubank.weihang.manage.product.pojo.OrderList">
+    <id column="order_id" jdbcType="VARCHAR" property="orderId" />
+    <result column="order_no" jdbcType="VARCHAR" property="orderNo" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="create_user_Id" jdbcType="VARCHAR" property="createUserId" />
+    <result column="create_user_name" jdbcType="VARCHAR" property="createUserName" />
+    <result column="modify_date" jdbcType="TIMESTAMP" property="modifyDate" />
+    <result column="modify_user_Id" jdbcType="VARCHAR" property="modifyUserId" />
+    <result column="modify_user_name" jdbcType="VARCHAR" property="modifyUserName" />
+    <result column="pay_type" jdbcType="INTEGER" property="payType" />
+    <result column="order_status" jdbcType="INTEGER" property="orderStatus" />
+    <result column="order_type" jdbcType="INTEGER" property="orderType" />
+    <result column="order_category" jdbcType="INTEGER" property="orderCategory" />
+    <result column="customer_id" jdbcType="VARCHAR" property="customerId" />
+    <result column="order_amount" jdbcType="DECIMAL" property="orderAmount" />
+    <result column="order_pay_amount" jdbcType="DECIMAL" property="orderPayAmount" />
+    <result column="delivery_status" jdbcType="INTEGER" property="deliveryStatus" />
+    <result column="delivery_type" jdbcType="INTEGER" property="deliveryType" />
+    <result column="delivery_address" jdbcType="CHAR" property="deliveryAddress" />
+    <result column="order_source" jdbcType="INTEGER" property="orderSource" />
+    <result column="pay_status" jdbcType="INTEGER" property="payStatus" />
+    <result column="discount" jdbcType="DECIMAL" property="discount" />
+    <result column="coupon_code" jdbcType="VARCHAR" property="couponCode" />
+    <result column="invoice_code" jdbcType="VARCHAR" property="invoiceCode" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="delivery_time" jdbcType="TIMESTAMP" property="deliveryTime" />
+    <result column="pay_time" jdbcType="TIMESTAMP" property="payTime" />
+    <result column="is_activity" jdbcType="INTEGER" property="isActivity" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from order_list
+    where order_id = #{orderId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.com.clubank.weihang.manage.product.pojo.OrderList">
+    insert into order_list (order_id, create_date, create_user_Id, 
+      create_user_name, modify_date, modify_user_Id, 
+      modify_user_name, pay_type, order_status, 
+      order_type, order_category, customer_id, order_amount, 
+      order_pay_amount, delivery_status, delivery_type, delivery_address, 
+      order_source, pay_status, discount, 
+      coupon_code, invoice_code, description, 
+      pay_time, is_activity, order_no)
+    values (#{orderId,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{createUserId,jdbcType=VARCHAR}, 
+      #{createUserName,jdbcType=VARCHAR}, #{modifyDate,jdbcType=TIMESTAMP}, #{modifyUserId,jdbcType=VARCHAR}, 
+      #{modifyUserName,jdbcType=VARCHAR}, #{payType,jdbcType=INTEGER}, #{orderStatus,jdbcType=INTEGER}, 
+      #{orderType,jdbcType=INTEGER}, #{orderCategory,jdbcType=INTEGER}, #{customerId,jdbcType=VARCHAR}, #{orderAmount,jdbcType=DECIMAL}, 
+      #{orderPayAmount,jdbcType=DECIMAL}, #{deliveryStatus,jdbcType=INTEGER}, #{deliveryType,jdbcType=INTEGER}, #{deliveryAddress,jdbcType=CHAR}, 
+      #{orderSource,jdbcType=INTEGER}, #{payStatus,jdbcType=INTEGER}, #{discount,jdbcType=DECIMAL}, 
+      #{couponCode,jdbcType=VARCHAR}, #{invoiceCode,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
+      #{payTime,jdbcType=TIMESTAMP}, #{isActivity,jdbcType=INTEGER}, #{orderNo,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.com.clubank.weihang.manage.product.pojo.OrderList">
+    update order_list
+    set create_date = #{createDate,jdbcType=TIMESTAMP},
+      create_user_Id = #{createUserId,jdbcType=VARCHAR},
+      create_user_name = #{createUserName,jdbcType=VARCHAR},
+      modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+      modify_user_Id = #{modifyUserId,jdbcType=VARCHAR},
+      modify_user_name = #{modifyUserName,jdbcType=VARCHAR},
+      pay_type = #{payType,jdbcType=INTEGER},
+      order_status = #{orderStatus,jdbcType=INTEGER},
+      order_type = #{orderType,jdbcType=INTEGER},
+      order_category = #{orderCategory,jdbcType=INTEGER},
+      customer_id = #{customerId,jdbcType=VARCHAR},
+      order_amount = #{orderAmount,jdbcType=DECIMAL},
+      order_pay_amount = #{orderPayAmount,jdbcType=DECIMAL},
+      delivery_status = #{deliveryStatus,jdbcType=INTEGER},
+      delivery_type = #{deliveryType,jdbcType=INTEGER},
+      delivery_address = #{deliveryAddress,jdbcType=CHAR},
+      order_source = #{orderSource,jdbcType=INTEGER},
+      pay_status = #{payStatus,jdbcType=INTEGER},
+      discount = #{discount,jdbcType=DECIMAL},
+      coupon_code = #{couponCode,jdbcType=VARCHAR},
+      invoice_code = #{invoiceCode,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      pay_time = #{payTime,jdbcType=TIMESTAMP},
+      is_activity = #{isActivity,jdbcType=INTEGER},
+      order_no = #{orderNo,jdbcType=VARCHAR}
+    where order_id = #{orderId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateSelectiveByPrimaryKey" parameterType="cn.com.clubank.weihang.manage.product.pojo.OrderList">
+    update order_list
+    <trim prefix="SET" suffixOverrides=",">
+      <if test="orderNo != null">order_no = #{orderNo,jdbcType=VARCHAR},</if>
+      <if test="createDate != null">create_date = #{createDate,jdbcType=TIMESTAMP},</if>
+      <if test="createUserId != null">create_user_Id = #{createUserId,jdbcType=VARCHAR},</if>
+      <if test="createUserName != null">create_user_name = #{createUserName,jdbcType=VARCHAR},</if>
+      <if test="modifyDate != null">modify_date = #{modifyDate,jdbcType=TIMESTAMP},</if>
+      <if test="modifyUserId != null">modify_user_Id = #{modifyUserId,jdbcType=VARCHAR},</if>
+      <if test="modifyUserName != null">modify_user_name = #{modifyUserName,jdbcType=VARCHAR},</if>
+      <if test="payType != null">pay_type = #{payType,jdbcType=INTEGER},</if>
+      <if test="orderStatus != null">order_status = #{orderStatus,jdbcType=INTEGER},</if>
+      <if test="orderType != null">order_type = #{orderType,jdbcType=INTEGER},</if>
+      <if test="orderCategory != null">order_category = #{orderCategory,jdbcType=INTEGER},</if>
+      <if test="customerId != null">customer_id = #{customerId,jdbcType=VARCHAR},</if>
+      <if test="orderAmount != null">order_amount = #{orderAmount,jdbcType=DECIMAL},</if>
+      <if test="orderPayAmount != null">order_pay_amount = #{orderPayAmount,jdbcType=DECIMAL},</if>
+      <if test="deliveryStatus != null">delivery_status = #{deliveryStatus,jdbcType=INTEGER},</if>
+      <if test="deliveryType != null">delivery_type = #{deliveryType,jdbcType=INTEGER},</if>
+      <if test="deliveryAddress != null">delivery_address = #{deliveryAddress,jdbcType=CHAR},</if>
+      <if test="orderSource != null">order_source = #{orderSource,jdbcType=INTEGER},</if>
+      <if test="payStatus != null">pay_status = #{payStatus,jdbcType=INTEGER},</if>
+      <if test="discount != null">discount = #{discount,jdbcType=DECIMAL},</if>
+      <if test="couponCode != null">coupon_code = #{couponCode,jdbcType=VARCHAR},</if>
+      <if test="invoiceCode != null">invoice_code = #{invoiceCode,jdbcType=VARCHAR},</if>
+      <if test="description != null">description = #{description,jdbcType=VARCHAR},</if>
+      <if test="payTime != null">pay_time = #{payTime,jdbcType=TIMESTAMP},</if>
+      <if test="deliveryTime != null">delivery_time = #{deliveryTime,jdbcType=TIMESTAMP},</if>
+      <if test="isActivity != null">is_activity = #{isActivity,jdbcType=INTEGER}</if>
+    </trim>
+    where order_id = #{orderId,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select order_id, create_date, create_user_Id, create_user_name, modify_date, modify_user_Id, 
+    modify_user_name, pay_type, order_status, order_type, order_category, customer_id, order_amount, 
+    order_pay_amount, delivery_status, delivery_type, delivery_address, order_source, pay_status, discount, 
+    coupon_code, invoice_code, description, pay_time, delivery_time, is_activity, order_no
+    from order_list
+    where order_id = #{orderId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByNo" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select order_id, create_date, create_user_Id, create_user_name, modify_date, modify_user_Id, 
+    modify_user_name, pay_type, order_status, order_type, order_category, customer_id, order_amount, 
+    order_pay_amount, delivery_status, delivery_type, delivery_address, order_source, pay_status, discount, 
+    coupon_code, invoice_code, description, pay_time, delivery_time, is_activity, order_no
+    from order_list
+    where order_no = #{orderNo,jdbcType=VARCHAR}
+    and order_status != 0
+  </select>
+  <select id="selectByOrderStatus" resultMap="BaseResultMap">
+    select order_id, create_date, create_user_Id, create_user_name, modify_date, modify_user_Id, 
+    modify_user_name, pay_type, order_status, order_type, order_category, customer_id, order_amount, 
+    order_pay_amount, delivery_status, delivery_type, delivery_address, order_source, pay_status, discount, 
+    coupon_code, invoice_code, description, pay_time, delivery_time, is_activity, order_no
+    from order_list
+    where customer_id = #{customerId,jdbcType=VARCHAR}
+    <if test="orderStatus != null">
+    	and order_status = #{orderStatus,jdbcType=INTEGER}
+    </if>
+    <if test="orderStatus == null">
+    	and order_status != 0
+    </if>
+    <if test="orderCategory != null">
+    	and order_category = #{orderCategory}
+    </if>
+    order by pay_time desc
+    <if test="start &gt;= 0">
+    limit #{start,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+    </if>
+  </select>
+  <select id="selectCountByOrderStatus" resultType="int">
+    select count(0) from order_list
+    where customer_id = #{customerId,jdbcType=VARCHAR}
+    and order_status = #{orderStatus,jdbcType=INTEGER}
+    and order_category = 1
+  </select>
+  <select id="selectCountPreOrder" resultType="int">
+    select count(0) from order_list
+    where customer_id = #{customerId,jdbcType=VARCHAR}
+    and order_category = 2
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select order_id, create_date, create_user_Id, create_user_name, modify_date, modify_user_Id, 
+    modify_user_name, pay_type, order_status, order_type, order_category, customer_id, order_amount, 
+    order_pay_amount, delivery_status, delivery_type, delivery_address, order_source, pay_status, discount, 
+    coupon_code, invoice_code, description, pay_time, delivery_time, is_activity, order_no
+    from order_list
+    where order_status != 0
+  </select>
+  <select id="selectImmediatelyInvalidOrderList" resultMap="BaseResultMap">
+  	select order_id, create_date, create_user_Id, create_user_name, modify_date, modify_user_Id, 
+    modify_user_name, pay_type, order_status, order_type, order_category, customer_id, order_amount, 
+    order_pay_amount, delivery_status, delivery_type, delivery_address, order_source, pay_status, discount, 
+    coupon_code, invoice_code, description, pay_time, delivery_time, is_activity, order_no
+    from order_list
+    where order_status = 1
+    and order_category = 1
+    and TIMESTAMPDIFF(HOUR, create_date, NOW()) > 72
+  </select>
+  <update id="updateOrderListStatus" parameterType="java.lang.Integer">
+  	UPDATE order_list
+	SET order_status = #{status}
+	WHERE
+		order_status = 1
+	AND order_category = 1
+	AND	TIMESTAMPDIFF(HOUR, create_date, NOW()) > 72
+  </update>
+  <update id="updateOrderListStatusByOrderId">
+  	UPDATE order_list
+	SET order_status = #{status}
+	WHERE order_id = #{orderId}
+  </update>
+  
+  <!-- 后台 -->
+  <select id="selectOrderCount" resultType="int">
+    select count(0)
+    from order_list
+    where 1 = 1
+    <if test="orderNo != null and orderNo != ''">
+    	and order_no like concat('%', #{orderNo}, '%')
+    </if>
+    <if test="orderStatus != null">
+    	and order_status = #{orderStatus}
+    </if>
+    <if test="startDate != null and startDate != ''">
+    	and create_date <![CDATA[>]]> concat(#{startDate}, ' 0:0:0')
+    </if>
+    <if test="endDate != null and endDate != ''">
+    	and create_date <![CDATA[<]]> concat(#{endDate}, ' 23:59:59')
+    </if>
+    <if test="orderCategory != null">
+    	and order_category = #{orderCategory}
+    </if>
+  </select>
+  <select id="selectOrderList" resultMap="BaseResultMap">
+    select order_id, create_date, create_user_Id, create_user_name, modify_date, modify_user_Id, 
+    modify_user_name, pay_type, order_status, order_type, order_category, customer_id, order_amount, 
+    order_pay_amount, delivery_status, delivery_type, delivery_address, order_source, pay_status, discount, 
+    coupon_code, invoice_code, description, pay_time, delivery_time, is_activity, order_no
+    from order_list
+    where 1 = 1
+    <if test="orderNo != null and orderNo != ''">
+    	and order_no like concat('%', #{orderNo}, '%')
+    </if>
+    <if test="orderStatus != null">
+    	and order_status = #{orderStatus}
+    </if>
+    <if test="startDate != null and startDate != ''">
+    	and create_date <![CDATA[>=]]> concat(#{startDate}, ' 0:0:0')
+    </if>
+    <if test="endDate != null and endDate != ''">
+    	and create_date <![CDATA[<=]]> concat(#{endDate}, ' 23:59:59')
+    </if>
+    <if test="orderCategory != null">
+    	and order_category = #{orderCategory}
+    </if>
+    order by create_date desc
+    <if test="start &gt;= 0">
+    limit #{start,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+    </if>
+  </select>
+</mapper>

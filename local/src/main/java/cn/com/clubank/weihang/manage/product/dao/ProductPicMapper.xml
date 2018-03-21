@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.clubank.weihang.manage.product.dao.ProductPicMapper">
+  <resultMap id="BaseResultMap" type="cn.com.clubank.weihang.manage.product.pojo.ProductPic">
+    <id column="product_pic_id" jdbcType="VARCHAR" property="productPicId" />
+    <result column="product_attr_id" jdbcType="VARCHAR" property="productAttrId" />
+    <result column="product_attr_value_id" jdbcType="VARCHAR" property="productAttrValueId" />
+    <result column="pic_big" jdbcType="VARCHAR" property="picBig" />
+    <result column="pic_small" jdbcType="VARCHAR" property="picSmall" />
+    <result column="product_id" jdbcType="VARCHAR" property="productId" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="create_user_Id" jdbcType="VARCHAR" property="createUserId" />
+    <result column="create_user_name" jdbcType="VARCHAR" property="createUserName" />
+    <result column="modify_date" jdbcType="TIMESTAMP" property="modifyDate" />
+    <result column="modify_user_Id" jdbcType="VARCHAR" property="modifyUserId" />
+    <result column="modify_user_name" jdbcType="VARCHAR" property="modifyUserName" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from product_pic
+    where product_pic_id = #{productPicId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.com.clubank.weihang.manage.product.pojo.ProductPic">
+    insert into product_pic (product_pic_id, product_attr_id, product_attr_value_id, pic_big, 
+      pic_small, product_id, description, 
+      create_date, create_user_Id, create_user_name, 
+      modify_date, modify_user_Id, modify_user_name
+      )
+    values (#{productPicId,jdbcType=VARCHAR}, #{productAttrId,jdbcType=VARCHAR}, #{productAttrValueId,jdbcType=VARCHAR}, #{picBig,jdbcType=VARCHAR}, 
+      #{picSmall,jdbcType=VARCHAR}, #{productId,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{createUserId,jdbcType=VARCHAR}, #{createUserName,jdbcType=VARCHAR}, 
+      #{modifyDate,jdbcType=TIMESTAMP}, #{modifyUserId,jdbcType=VARCHAR}, #{modifyUserName,jdbcType=VARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.com.clubank.weihang.manage.product.pojo.ProductPic">
+    update product_pic
+    set product_attr_id = #{productAttrId,jdbcType=VARCHAR},
+	  product_attr_value_id = #{productAttrValueId,jdbcType=VARCHAR},
+      pic_big = #{picBig,jdbcType=VARCHAR},
+      pic_small = #{picSmall,jdbcType=VARCHAR},
+      product_id = #{productId,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      create_user_Id = #{createUserId,jdbcType=VARCHAR},
+      create_user_name = #{createUserName,jdbcType=VARCHAR},
+      modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+      modify_user_Id = #{modifyUserId,jdbcType=VARCHAR},
+      modify_user_name = #{modifyUserName,jdbcType=VARCHAR}
+    where product_pic_id = #{productPicId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateSelectiveByPrimaryKey" parameterType="cn.com.clubank.weihang.manage.product.pojo.ProductPic">
+    update product_pic
+    <trim prefix="SET" suffixOverrides=",">
+	  <if test="productAttrId != null">product_attr_id = #{productAttrId,jdbcType=VARCHAR},</if>
+	  <if test="productAttrValueId != null">product_attr_value_id = #{productAttrValueId,jdbcType=VARCHAR},</if>
+      <if test="picBig != null">pic_big = #{picBig,jdbcType=VARCHAR},</if>
+      <if test="picSmall != null">pic_small = #{picSmall,jdbcType=VARCHAR},</if>
+      <if test="productId != null">product_id = #{productId,jdbcType=VARCHAR},</if>
+      <if test="productPicId != null">product_pic_id = #{productPicId,jdbcType=VARCHAR},</if>
+      <if test="description != null">description = #{description,jdbcType=VARCHAR},</if>
+      <if test="createDate != null">create_date = #{createDate,jdbcType=TIMESTAMP},</if>
+      <if test="createUserId != null">create_user_Id = #{createUserId,jdbcType=VARCHAR},</if>
+      <if test="createUserName != null">create_user_name = #{createUserName,jdbcType=VARCHAR},</if>
+      <if test="modifyDate != null">modify_date = #{modifyDate,jdbcType=TIMESTAMP},</if>
+      <if test="modifyUserId != null">modify_user_Id = #{modifyUserId,jdbcType=VARCHAR},</if>
+      <if test="modifyUserName != null">modify_user_name = #{modifyUserName,jdbcType=VARCHAR}</if>
+    </trim>
+    where product_pic_id = #{productPicId,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select product_pic_id, product_attr_id, product_attr_value_id, pic_big, pic_small, product_id, description, 
+    create_date, create_user_Id, create_user_name, modify_date, modify_user_Id, modify_user_name
+    from product_pic
+    where product_pic_id = #{productPicId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByProductId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select product_pic_id, product_attr_id, product_attr_value_id, pic_big, pic_small, product_id, description, 
+    create_date, create_user_Id, create_user_name, modify_date, modify_user_Id, modify_user_name
+    from product_pic
+    where product_id = #{productId,jdbcType=VARCHAR} and pic_small is not null and pic_small != ''
+  </select>
+  <select id="selectPicListByProductId" parameterType="java.lang.String" resultType="hashMap">
+    select distinct
+	    pic_small as picSmall,
+	    pic_big as picBig,
+	    product_pic_id
+    from product_pic
+    where product_id = #{productId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select product_pic_id, product_attr_id, product_attr_value_id, pic_big, pic_small, product_id, description, 
+    create_date, create_user_Id, create_user_name, modify_date, modify_user_Id, modify_user_name
+    from product_pic
+  </select>
+  <select id="selectBySmallAndBig" resultMap="BaseResultMap">
+    select product_pic_id, product_attr_id, product_attr_value_id, pic_big, pic_small, product_id, description, 
+    create_date, create_user_Id, create_user_name, modify_date, modify_user_Id, modify_user_name
+    from product_pic
+    where pic_small = #{picSmall}
+    and pic_big = #{picBig}
+  </select>
+  <insert id="insertBatch" parameterType="java.util.List">
+	insert into product_pic (
+	  product_pic_id, 
+	  product_attr_id, 
+	  product_attr_value_id, 
+	  pic_big, 
+      pic_small, 
+      product_id, 
+      description, 
+      create_date, 
+      create_user_Id, 
+      create_user_name, 
+      modify_date, 
+      modify_user_Id, 
+      modify_user_name
+      )
+    values  
+	<foreach collection="list" item="item" index="index" separator="," >
+	 (#{productPicId,jdbcType=VARCHAR}, 
+	  #{productAttrId,jdbcType=VARCHAR}, 
+	  #{productAttrValueId,jdbcType=VARCHAR}, 
+	  #{picBig,jdbcType=VARCHAR}, 
+      #{picSmall,jdbcType=VARCHAR}, 
+      #{productId,jdbcType=VARCHAR}, 
+      #{description,jdbcType=VARCHAR}, 
+      #{createDate,jdbcType=TIMESTAMP}, 
+      #{createUserId,jdbcType=VARCHAR}, 
+      #{createUserName,jdbcType=VARCHAR}, 
+      #{modifyDate,jdbcType=TIMESTAMP}, 
+      #{modifyUserId,jdbcType=VARCHAR}, 
+      #{modifyUserName,jdbcType=VARCHAR}
+     )
+	</foreach>
+	</insert>
+</mapper>

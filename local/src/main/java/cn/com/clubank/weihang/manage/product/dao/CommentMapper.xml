@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.clubank.weihang.manage.product.dao.CommentMapper">
+  <resultMap id="BaseResultMap" type="cn.com.clubank.weihang.manage.product.pojo.Comment">
+    <id column="comment_id" jdbcType="VARCHAR" property="commentId" />
+    <result column="order_detail_id" jdbcType="VARCHAR" property="orderDetailId" />
+    <result column="customer_id" jdbcType="VARCHAR" property="customerId" />
+    <result column="product_id" jdbcType="VARCHAR" property="productId" />
+    <result column="parent_id" jdbcType="VARCHAR" property="parentId" />
+    <result column="admin_id" jdbcType="VARCHAR" property="adminId" />
+    <result column="review_status" jdbcType="INTEGER" property="reviewStatus" />
+    <result column="review_result" jdbcType="INTEGER" property="reviewResult" />
+    <result column="delete_mark" jdbcType="INTEGER" property="deleteMark" />
+    <result column="enabled_mark" jdbcType="INTEGER" property="enabledMark" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="create_user_Id" jdbcType="VARCHAR" property="createUserId" />
+    <result column="create_user_name" jdbcType="VARCHAR" property="createUserName" />
+    <result column="score" jdbcType="INTEGER" property="score" />
+    <result column="assessment" jdbcType="INTEGER" property="assessment" />
+    <result column="comment_time" jdbcType="TIMESTAMP" property="commentTime" />
+    <result column="comment_ip" jdbcType="VARCHAR" property="commentIp" />
+    <result column="content" jdbcType="LONGVARCHAR" property="content" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from comment
+    where comment_id = #{commentId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.com.clubank.weihang.manage.product.pojo.Comment">
+    insert into comment (comment_id, order_detail_id, customer_id, 
+      product_id, parent_id, admin_id, 
+      review_status, review_result, delete_mark, 
+      enabled_mark, description, create_date, 
+      create_user_Id, create_user_name, score, 
+      assessment, comment_time, comment_ip, 
+      content)
+    values (#{commentId,jdbcType=VARCHAR}, #{orderDetailId,jdbcType=VARCHAR}, #{customerId,jdbcType=VARCHAR}, 
+      #{productId,jdbcType=VARCHAR}, #{parentId,jdbcType=VARCHAR}, #{adminId,jdbcType=VARCHAR}, 
+      #{reviewStatus,jdbcType=INTEGER}, #{reviewResult,jdbcType=INTEGER}, #{deleteMark,jdbcType=INTEGER}, 
+      #{enabledMark,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{createUserId,jdbcType=VARCHAR}, #{createUserName,jdbcType=VARCHAR}, #{score,jdbcType=INTEGER}, 
+      #{assessment,jdbcType=INTEGER}, #{commentTime,jdbcType=TIMESTAMP}, #{commentIp,jdbcType=VARCHAR}, 
+      #{content,jdbcType=LONGVARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.com.clubank.weihang.manage.product.pojo.Comment">
+    update comment
+    set order_detail_id = #{orderDetailId,jdbcType=VARCHAR},
+      customer_id = #{customerId,jdbcType=VARCHAR},
+      product_id = #{productId,jdbcType=VARCHAR},
+      parent_id = #{parentId,jdbcType=VARCHAR},
+      admin_id = #{adminId,jdbcType=VARCHAR},
+      review_status = #{reviewStatus,jdbcType=INTEGER},
+      review_result = #{reviewResult,jdbcType=INTEGER},
+      delete_mark = #{deleteMark,jdbcType=INTEGER},
+      enabled_mark = #{enabledMark,jdbcType=INTEGER},
+      description = #{description,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      create_user_Id = #{createUserId,jdbcType=VARCHAR},
+      create_user_name = #{createUserName,jdbcType=VARCHAR},
+      score = #{score,jdbcType=INTEGER},
+      assessment = #{assessment,jdbcType=INTEGER},
+      comment_time = #{commentTime,jdbcType=TIMESTAMP},
+      comment_ip = #{commentIp,jdbcType=VARCHAR},
+      content = #{content,jdbcType=LONGVARCHAR}
+    where comment_id = #{commentId,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select comment_id, order_detail_id, customer_id, product_id, parent_id, admin_id, 
+    review_status, review_result, delete_mark, enabled_mark, description, create_date, 
+    create_user_Id, create_user_name, score, assessment, comment_time, comment_ip, content
+    from comment
+    where comment_id = #{commentId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByProductId" resultType="hashMap">
+	SELECT
+		co.comment_id AS commentId,
+		co.order_detail_id AS orderDetailId,
+		co.customer_id AS customerId,
+		co.product_id AS productId,
+		co.parent_id AS parentId,
+		co.score AS score,
+		co.assessment AS assessment,
+		co.comment_time AS commentTime,
+		co.content AS content,
+		cu.nickname AS nickname,
+		cu.headIcon AS headIcon
+	FROM
+		comment co,
+		customer_info cu
+	WHERE
+		co.customer_id = cu.c_id
+	AND	product_id = #{productId,jdbcType=VARCHAR}
+    ORDER BY comment_time desc
+    <if test="start &gt;= 0">
+    LIMIT #{start,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+    </if>
+  </select>
+  <select id="selectCountAssmentByProductId" parameterType="java.lang.String" resultType="hashMap">
+    <![CDATA[
+    SELECT
+		a.highComment,
+		b.lowComment,
+		c.mediumComment,
+		d.addComment,
+		e.totalComment,
+		f.totalScore
+	FROM
+		(SELECT CAST(COUNT(*) AS CHAR) AS highComment FROM comment
+		WHERE product_id = #{productId} AND score = 5 AND (parent_id IS NULL OR parent_id = '')) a,
+		(SELECT CAST(COUNT(*) AS CHAR) AS lowComment FROM comment
+		WHERE product_id = #{productId} AND score = 1 AND (parent_id IS NULL OR parent_id = '')) b,
+		(SELECT CAST(COUNT(*) AS CHAR) AS mediumComment FROM comment
+		WHERE product_id = #{productId} AND score > 1
+		AND score < 5 AND (parent_id IS NULL OR parent_id = '')) c,
+		(SELECT CAST(COUNT(*) AS CHAR) AS addComment FROM comment
+		WHERE product_id = #{productId} AND parent_id IS NOT NULL AND parent_id != '') d,
+		(SELECT CAST(COUNT(*) AS CHAR) AS totalComment FROM comment
+		WHERE product_id = #{productId} AND (parent_id IS NULL OR parent_id = '')) e,
+		(SELECT CAST(SUM(score) AS CHAR) AS totalScore FROM comment
+		WHERE product_id = #{productId} AND (parent_id IS NULL OR parent_id = '')) f
+    ]]>
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select comment_id, order_detail_id, customer_id, product_id, parent_id, admin_id, 
+    review_status, review_result, delete_mark, enabled_mark, description, create_date, 
+    create_user_Id, create_user_name, score, assessment, comment_time, comment_ip, content
+    from comment
+  </select>
+</mapper>

@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>威航后台管理系统</title>
+<#include '/common.html'/>
+</head>
+<body class="easyui-layout layui-layout layui-layout-admin">
+	<div region="north" split="true" style="height:60px; overflow:hidden; border:0px;">
+        <div class="header">
+          <div class="logo-span" style="font:italic bold 26px/32px arial,sans-serif;">威航后台管理系统</div>
+		  <ul class="layui-nav layui-layout-right">
+			<li class="layui-nav-item">
+				<a href="#">
+					<img lass="layui-nav-img" src="${request.contextPath}/image/customer/20170915/5d8da9d3-f11f-4f3f-b905-34354bc78519.png" height="30" width="30"/>
+					管理员
+				</a>
+        	<dl class="layui-nav-child">
+          <dd><a href="">基本资料</a></dd>
+          <dd><a href="">安全设置</a></dd>
+        </dl>
+      </li>
+      <li class="layui-nav-item"><a href="#">退出</a></li>
+    </ul>
+        </div>
+	</div>
+	
+	<div region="south" split="true" style="height:30px; padding:0px ; overflow:hidden;" class="copyright">
+        <p>西安远古信息版权所有。建议使用Firefox，Chrome，IE9以上版本浏览器。</p>
+	</div>
+	
+	<div region="west" split="true" iconCls="icon-top user-icon" title="当前用户：admin" style="width:200px; overflow:hidden;">
+        <span class="nav-title"> <i class="icon-top home"></i>导航菜单</span>
+		<div class="easyui-accordion" fit="true" border="false">
+          <ul id="menu">
+          	<!-- <li name="商品管理" url=""><a href="#"><i class="t-icon" ></i>商品管理
+            <i class="t-icon pack-up" title="收起" ></i><i class="t-icon open-up" title="展开" style="display:none;"></i></a>
+          		<ul>
+          			<li name="商品分类" url="client/category/index"><a href='#'><i class="t-icon info-verify" ></i>商品分类</a></li>
+           			<li name="品牌管理" url="client/brand/index"><a href='#'><i class="t-icon info-verify" ></i>品牌管理</a></li>
+           			<li name="商品规格" url="client/attribute/index"><a href='#'><i class="t-icon info-verify" ></i>商品规格</a></li>
+           			<li name="商品列表" url="client/product/index"><a href='#'><i class="t-icon info-verify" ></i>商品列表</a></li>
+          		</ul>
+            </li> -->
+            <li name="订单管理" url=""><a href="#"><i class="t-icon" ></i>订单管理
+            <i class="t-icon pack-up" title="收起" ></i><i class="t-icon open-up" title="展开" style="display:none;"></i></a>
+          		<ul>
+          			<!-- <li name="预约订单" url="client/reserveOrder/index"><a href='#'><i class="t-icon info-verify" ></i>预约订单</a></li>
+           			<li name="商品订单" url="client/productOrder/index"><a href='#'><i class="t-icon info-verify" ></i>商品订单</a></li> -->
+           			<li name="服务订单" url="client/serviceOrder/index"><a href='#'><i class="t-icon info-verify"></i>服务订单</a></li>
+           			<!-- <li name="售后订单" url="client/afterOrder/index"><a href='#'><i class="t-icon info-verify" ></i>售后订单</a></li> -->
+          		</ul>
+            </li>
+            <!-- <li name="物料管理" url=""><a href="#"><i class="t-icon " ></i>物料管理
+            <i class="t-icon pack-up" title="收起" ></i><i class="t-icon open-up" title="展开" style="display:none;"></i></a>
+          		<ul>
+          			<li name="物料列表" url="client/materials/index"><a href='#'><i class="t-icon info-verify" ></i>物料列表</a></li>
+          			<li name="物料分类" url="client/classify/index"><a href='#'><i class="t-icon info-verify" ></i>物料分类</a></li>
+          		</ul>
+            </li> -->
+          </ul>
+		</div>
+	</div>
+	
+	<div region="center" style="overflow:hidden;">
+        <div id="tabs" class="easyui-tabs" fit="true" border="false" >
+			<!-- <div title="首页" iconCls="tab-site"  style="padding:0px; overflow:hidden;">
+				<iframe frameborder="0" marginheight="0" marginwidth="0" width="100%" height="100%" src="${request.contextPath}/materials/index" id="main_tabs_iframe_home"></iframe>
+			</div> -->
+        </div>
+	</div>
+</body>
+<script>
+
+// 定义layer的加载弹出层对象
+var loadLayer;
+var confirmLayer;
+
+$(function() {
+	//loadLayer = layer.load(0, {shade: [0.5, '#fff'] });
+	//菜单点击
+	$('#menu li').click(function() {
+		if ($(this).attr('url') != '') {
+			openTab($(this).attr('url'), $(this).attr('name'), "${request.contextPath}/"+$(this).attr('url'));
+		}
+	});
+	
+	$('#menu ul').hide();
+	$('#menu li a').click(function() {
+	    $(this).next().slideToggle('normal');
+	});
+});
+</script>
+</html>

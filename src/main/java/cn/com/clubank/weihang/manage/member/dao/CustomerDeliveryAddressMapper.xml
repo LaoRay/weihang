@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.clubank.weihang.manage.member.dao.CustomerDeliveryAddressMapper">
+  <resultMap id="BaseResultMap" type="cn.com.clubank.weihang.manage.member.pojo.CustomerDeliveryAddress">
+    <id column="da_id" jdbcType="VARCHAR" property="daId" />
+    <result column="customer_id" jdbcType="VARCHAR" property="customerId" />
+    <result column="consignee_name" jdbcType="VARCHAR" property="consigneeName" />
+    <result column="consignee_mobile" jdbcType="VARCHAR" property="consigneeMobile" />
+    <result column="province_id" jdbcType="VARCHAR" property="provinceId" />
+    <result column="city_id" jdbcType="VARCHAR" property="cityId" />
+    <result column="county_id" jdbcType="VARCHAR" property="countyId" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="address_all" jdbcType="VARCHAR" property="addressAll" />
+    <result column="postcode" jdbcType="VARCHAR" property="postcode" />
+    <result column="is_default" jdbcType="BIT" property="isDefault" />
+    <result column="sort" jdbcType="INTEGER" property="sort" />
+    <result column="delete_mark" jdbcType="INTEGER" property="deleteMark" />
+    <result column="enabled_mark" jdbcType="INTEGER" property="enabledMark" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="create_user_Id" jdbcType="VARCHAR" property="createUserId" />
+    <result column="create_user_name" jdbcType="VARCHAR" property="createUserName" />
+    <result column="modify_date" jdbcType="TIMESTAMP" property="modifyDate" />
+    <result column="modify_user_Id" jdbcType="VARCHAR" property="modifyUserId" />
+    <result column="modify_user_name" jdbcType="VARCHAR" property="modifyUserName" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from customer_delivery_address
+    where da_id = #{daId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.com.clubank.weihang.manage.member.pojo.CustomerDeliveryAddress">
+    insert into customer_delivery_address (da_id, customer_id, consignee_name, 
+      consignee_mobile, province_id, city_id, 
+      county_id, address, address_all, 
+      postcode, is_default, sort, 
+      delete_mark, enabled_mark, description, 
+      create_date, create_user_Id, create_user_name, 
+      modify_date, modify_user_Id, modify_user_name
+      )
+    values (#{daId,jdbcType=VARCHAR}, #{customerId,jdbcType=VARCHAR}, #{consigneeName,jdbcType=VARCHAR}, 
+      #{consigneeMobile,jdbcType=VARCHAR}, #{provinceId,jdbcType=VARCHAR}, #{cityId,jdbcType=VARCHAR}, 
+      #{countyId,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{addressAll,jdbcType=VARCHAR}, 
+      #{postcode,jdbcType=VARCHAR}, #{isDefault,jdbcType=BIT}, #{sort,jdbcType=INTEGER}, 
+      #{deleteMark,jdbcType=INTEGER}, #{enabledMark,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{createUserId,jdbcType=VARCHAR}, #{createUserName,jdbcType=VARCHAR}, 
+      #{modifyDate,jdbcType=TIMESTAMP}, #{modifyUserId,jdbcType=VARCHAR}, #{modifyUserName,jdbcType=VARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.com.clubank.weihang.manage.member.pojo.CustomerDeliveryAddress">
+    update customer_delivery_address
+    set customer_id = #{customerId,jdbcType=VARCHAR},
+      consignee_name = #{consigneeName,jdbcType=VARCHAR},
+      consignee_mobile = #{consigneeMobile,jdbcType=VARCHAR},
+      province_id = #{provinceId,jdbcType=VARCHAR},
+      city_id = #{cityId,jdbcType=VARCHAR},
+      county_id = #{countyId,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      address_all = #{addressAll,jdbcType=VARCHAR},
+      postcode = #{postcode,jdbcType=VARCHAR},
+      is_default = #{isDefault,jdbcType=BIT},
+      sort = #{sort,jdbcType=INTEGER},
+      delete_mark = #{deleteMark,jdbcType=INTEGER},
+      enabled_mark = #{enabledMark,jdbcType=INTEGER},
+      description = #{description,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      create_user_Id = #{createUserId,jdbcType=VARCHAR},
+      create_user_name = #{createUserName,jdbcType=VARCHAR},
+      modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+      modify_user_Id = #{modifyUserId,jdbcType=VARCHAR},
+      modify_user_name = #{modifyUserName,jdbcType=VARCHAR}
+    where da_id = #{daId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateDeliveryAddressCancelDefaultByCustomerId" parameterType="java.lang.String">
+    update customer_delivery_address
+    set is_default = false
+    where customer_id = #{customerId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateSelectiveByPrimaryKey" parameterType="cn.com.clubank.weihang.manage.member.pojo.CustomerDeliveryAddress">
+    update customer_delivery_address
+    <trim prefix="SET" suffixOverrides=",">
+		<if test="customerId != null">customer_id = #{customerId,jdbcType=VARCHAR},</if>
+		<if test="consigneeName != null">consignee_name = #{consigneeName,jdbcType=VARCHAR},</if>
+		<if test="consigneeMobile != null">consignee_mobile = #{consigneeMobile,jdbcType=VARCHAR},</if>
+		<if test="provinceId != null">province_id = #{provinceId,jdbcType=VARCHAR},</if>
+		<if test="cityId != null">city_id = #{cityId,jdbcType=VARCHAR},</if>
+		<if test="countyId != null">county_id = #{countyId,jdbcType=VARCHAR},</if>
+		<if test="address != null">address = #{address,jdbcType=VARCHAR},</if>
+		<if test="addressAll != null">address_all = #{addressAll,jdbcType=VARCHAR},</if>
+		<if test="postcode != null">postcode = #{postcode,jdbcType=VARCHAR},</if>
+		<if test="isDefault != null">is_default = #{isDefault,jdbcType=BIT},</if>
+		<if test="sort != null">sort = #{sort,jdbcType=INTEGER},</if>
+		<if test="deleteMark != null">delete_mark = #{deleteMark,jdbcType=INTEGER},</if>
+		<if test="enabledMark != null">enabled_mark = #{enabledMark,jdbcType=INTEGER},</if>
+		<if test="description != null">description = #{description,jdbcType=VARCHAR},</if>
+		<if test="createDate != null">create_date = #{createDate,jdbcType=TIMESTAMP},</if>
+		<if test="createUserId != null">create_user_Id = #{createUserId,jdbcType=VARCHAR},</if>
+		<if test="createUserName != null">create_user_name = #{createUserName,jdbcType=VARCHAR},</if>
+		<if test="modifyDate != null">modify_date = #{modifyDate,jdbcType=TIMESTAMP},</if>
+		<if test="modifyUserId != null">modify_user_Id = #{modifyUserId,jdbcType=VARCHAR},</if>
+		<if test="modifyUserName != null">modify_user_name = #{modifyUserName,jdbcType=VARCHAR}</if>
+    </trim>
+    where da_id = #{daId,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select da_id, customer_id, consignee_name, consignee_mobile, province_id, city_id, 
+    county_id, address, address_all, postcode, is_default, sort, delete_mark, enabled_mark, 
+    description, create_date, create_user_Id, create_user_name, modify_date, modify_user_Id, 
+    modify_user_name
+    from customer_delivery_address
+    where da_id = #{daId,jdbcType=VARCHAR}
+    and delete_mark = 0
+  </select>
+  <select id="selectDefaultByCustomerId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select da_id, customer_id, consignee_name, consignee_mobile, province_id, city_id, 
+    county_id, address, address_all, postcode, is_default, sort, delete_mark, enabled_mark, 
+    description, create_date, create_user_Id, create_user_name, modify_date, modify_user_Id, 
+    modify_user_name
+    from customer_delivery_address
+    where customer_id = #{customerId,jdbcType=VARCHAR}
+    and is_default = true
+    and delete_mark = 0
+  </select>
+  <select id="selectByCustomerId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select da_id, customer_id, consignee_name, consignee_mobile, province_id, city_id, 
+    county_id, address, address_all, postcode, is_default, sort, delete_mark, enabled_mark, description, 
+    create_date, create_user_Id, create_user_name, modify_date, modify_user_Id, modify_user_name
+    from customer_delivery_address
+    where customer_id = #{customerId,jdbcType=VARCHAR}
+    and delete_mark = 0
+    order by modify_date desc, create_date desc
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select da_id, customer_id, consignee_name, consignee_mobile, province_id, city_id, 
+    county_id, address, address_all, postcode, is_default, sort, delete_mark, enabled_mark, 
+    description, create_date, create_user_Id, create_user_name, modify_date, modify_user_Id, 
+    modify_user_name
+    from customer_delivery_address
+    where delete_mark = 0
+  </select>
+  
+  <select id="selectDetailByPrimaryKey" parameterType="java.lang.String" resultType="hashMap">
+	SELECT
+		da.da_id AS daId,
+		da.customer_id AS customerId,
+		da.consignee_name AS consigneeName,
+		da.consignee_mobile AS consigneeMobile,
+		da.province_id AS provinceId,
+		bp.name AS provinceName,
+		da.city_id AS cityId,
+		bc.name AS cityName,
+		da.county_id AS countyId,
+		ba.name AS countryName,
+		da.address AS address,
+		da.address_all AS addressAll,
+		da.postcode AS postcode,
+		da.is_default AS isDefault,
+		da.delete_mark AS deleteMark
+	FROM
+		customer_delivery_address da
+	LEFT JOIN base_area bp ON da.province_id = bp.a_id
+	LEFT JOIN base_area bc ON da.city_id = bc.a_id
+	LEFT JOIN base_area ba ON da.county_id = ba.a_id
+	WHERE da.da_id = #{daId}
+	AND da.delete_mark = 0
+  </select>
+</mapper>

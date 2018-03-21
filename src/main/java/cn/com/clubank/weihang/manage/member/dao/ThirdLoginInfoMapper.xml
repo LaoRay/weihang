@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.clubank.weihang.manage.member.dao.ThirdLoginInfoMapper">
+  <resultMap id="BaseResultMap" type="cn.com.clubank.weihang.manage.member.pojo.ThirdLoginInfo">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="customer_id" jdbcType="VARCHAR" property="customerId" />
+    <result column="third_id" jdbcType="VARCHAR" property="thirdId" />
+    <result column="third_type" jdbcType="INTEGER" property="thirdType" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from third_login_info
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.com.clubank.weihang.manage.member.pojo.ThirdLoginInfo">
+    insert into third_login_info (id, customer_id, third_id, 
+      third_type)
+    values (#{id,jdbcType=VARCHAR}, #{customerId,jdbcType=VARCHAR}, #{thirdId,jdbcType=VARCHAR}, 
+      #{thirdType,jdbcType=INTEGER})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.com.clubank.weihang.manage.member.pojo.ThirdLoginInfo">
+    update third_login_info
+    set customer_id = #{customerId,jdbcType=VARCHAR},
+      third_id = #{thirdId,jdbcType=VARCHAR},
+      third_type = #{thirdType,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select id, customer_id, third_id, third_type
+    from third_login_info
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByThirdId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select id, customer_id, third_id, third_type
+    from third_login_info
+    where third_id = #{thirdId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, customer_id, third_id, third_type
+    from third_login_info
+  </select>
+</mapper>

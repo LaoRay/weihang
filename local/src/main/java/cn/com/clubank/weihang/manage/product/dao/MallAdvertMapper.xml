@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.clubank.weihang.manage.product.dao.MallAdvertMapper">
+  <resultMap id="BaseResultMap" type="cn.com.clubank.weihang.manage.product.pojo.MallAdvert">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="position_type" jdbcType="INTEGER" property="positionType" />
+    <result column="ad_type" jdbcType="INTEGER" property="adType" />
+    <result column="ad_name" jdbcType="VARCHAR" property="adName" />
+    <result column="ad_link" jdbcType="VARCHAR" property="adLink" />
+    <result column="obj_id" jdbcType="VARCHAR" property="objId" />
+    <result column="begin_time" jdbcType="TIMESTAMP" property="beginTime" />
+    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="click_count" jdbcType="INTEGER" property="clickCount" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="link_man" jdbcType="VARCHAR" property="linkMan" />
+    <result column="link_phone" jdbcType="VARCHAR" property="linkPhone" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="create_user_Id" jdbcType="VARCHAR" property="createUserId" />
+    <result column="create_user_name" jdbcType="VARCHAR" property="createUserName" />
+    <result column="modify_date" jdbcType="TIMESTAMP" property="modifyDate" />
+    <result column="modify_user_Id" jdbcType="VARCHAR" property="modifyUserId" />
+    <result column="modify_user_name" jdbcType="VARCHAR" property="modifyUserName" />
+    <result column="img" jdbcType="VARCHAR" property="img" />
+    <result column="position_code" jdbcType="VARCHAR" property="positionCode" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from mall_advert
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.com.clubank.weihang.manage.product.pojo.MallAdvert">
+    insert into mall_advert (id, position_type, ad_type, 
+      ad_name, ad_link, begin_time, 
+      end_time, click_count, status, 
+      link_man, link_phone, description, 
+      create_date, create_user_Id, create_user_name, 
+      modify_date, modify_user_Id, modify_user_name, 
+      img, position_code, obj_id)
+    values (#{id,jdbcType=VARCHAR}, #{positionType,jdbcType=INTEGER}, #{adType,jdbcType=INTEGER}, 
+      #{adName,jdbcType=VARCHAR}, #{adLink,jdbcType=VARCHAR}, #{beginTime,jdbcType=TIMESTAMP}, 
+      #{endTime,jdbcType=TIMESTAMP}, #{clickCount,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, 
+      #{linkMan,jdbcType=VARCHAR}, #{linkPhone,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{createUserId,jdbcType=VARCHAR}, #{createUserName,jdbcType=VARCHAR}, 
+      #{modifyDate,jdbcType=TIMESTAMP}, #{modifyUserId,jdbcType=VARCHAR}, #{modifyUserName,jdbcType=VARCHAR}, 
+      #{img,jdbcType=VARCHAR}, #{positionCode,jdbcType=VARCHAR}, #{objId,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.com.clubank.weihang.manage.product.pojo.MallAdvert">
+    update mall_advert
+    set position_type = #{positionType,jdbcType=INTEGER},
+      ad_type = #{adType,jdbcType=INTEGER},
+      ad_name = #{adName,jdbcType=VARCHAR},
+      ad_link = #{adLink,jdbcType=VARCHAR},
+      obj_id = #{objId,jdbcType=VARCHAR},
+      begin_time = #{beginTime,jdbcType=TIMESTAMP},
+      end_time = #{endTime,jdbcType=TIMESTAMP},
+      click_count = #{clickCount,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      link_man = #{linkMan,jdbcType=VARCHAR},
+      link_phone = #{linkPhone,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      create_user_Id = #{createUserId,jdbcType=VARCHAR},
+      create_user_name = #{createUserName,jdbcType=VARCHAR},
+      modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+      modify_user_Id = #{modifyUserId,jdbcType=VARCHAR},
+      modify_user_name = #{modifyUserName,jdbcType=VARCHAR},
+      img = #{img,jdbcType=VARCHAR},
+      position_code = #{positionCode,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateSelectiveByPrimaryKey" parameterType="cn.com.clubank.weihang.manage.product.pojo.MallAdvert">
+    update mall_advert
+    <trim prefix="SET" suffixOverrides=",">
+		<if test="positionType != null">position_type = #{positionType,jdbcType=INTEGER},</if>
+		<if test="adType != null">ad_type = #{adType,jdbcType=INTEGER},</if>
+		<if test="adName != null">ad_name = #{adName,jdbcType=VARCHAR},</if>
+		<if test="adLink != null">ad_link = #{adLink,jdbcType=VARCHAR},</if>
+		<if test="beginTime != null">begin_time = #{beginTime,jdbcType=TIMESTAMP},</if>
+		<if test="endTime != null">end_time = #{endTime,jdbcType=TIMESTAMP},</if>
+		<if test="clickCount != null">click_count = #{clickCount,jdbcType=INTEGER},</if>
+		<if test="status != null">status = #{status,jdbcType=INTEGER},</if>
+		<if test="linkMan != null">link_man = #{linkMan,jdbcType=VARCHAR},</if>
+		<if test="linkPhone != null">link_phone = #{linkPhone,jdbcType=VARCHAR},</if>
+		<if test="description != null">description = #{description,jdbcType=VARCHAR},</if>
+		<if test="createDate != null">create_date = #{createDate,jdbcType=TIMESTAMP},</if>
+		<if test="createUserId != null">create_user_Id = #{createUserId,jdbcType=VARCHAR},</if>
+		<if test="createUserName != null">create_user_name = #{createUserName,jdbcType=VARCHAR},</if>
+		<if test="modifyDate != null">modify_date = #{modifyDate,jdbcType=TIMESTAMP},</if>
+		<if test="modifyUserId != null">modify_user_Id = #{modifyUserId,jdbcType=VARCHAR},</if>
+		<if test="modifyUserName != null">modify_user_name = #{modifyUserName,jdbcType=VARCHAR},</if>
+		<if test="img != null">img = #{img,jdbcType=VARCHAR},</if>
+		<if test="objId != null">obj_id = #{objId,jdbcType=VARCHAR},</if>
+		<if test="positionCode != null">position_code = #{positionCode,jdbcType=VARCHAR}</if>
+	</trim>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 关闭广告 -->
+  <update id="updateAdvertStatus" parameterType="java.lang.String">
+  	update mall_advert
+  	set status = 4 <!-- 已关闭状态 -->
+  	where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select id, position_type, ad_type, ad_name, ad_link, begin_time, end_time, click_count, 
+    status, link_man, link_phone, description, create_date, create_user_Id, create_user_name, 
+    modify_date, modify_user_Id, modify_user_name, img, position_code, obj_id
+    from mall_advert
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, position_type, ad_type, ad_name, ad_link, begin_time, end_time, click_count, 
+    status, link_man, link_phone, description, create_date, create_user_Id, create_user_name, 
+    modify_date, modify_user_Id, modify_user_name, img, position_code
+    from mall_advert
+  </select>
+  <select id="selectAdvertListByPositionCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select id, position_type, ad_type, ad_name, ifnull(ad_link, 'NULL') as ad_link, begin_time, end_time, click_count, 
+    status, link_man, link_phone, description, create_date, create_user_Id, create_user_name, 
+    modify_date, modify_user_Id, modify_user_name, img, position_code, ifnull(obj_id, 'NULL') as obj_id
+    from mall_advert
+    where position_code like concat('%', #{positionCode}, '%')
+    and status = 2
+  </select>
+  <update id="handleMallAdvert">
+  	<!-- 广告开启 -->
+  	update mall_advert
+  	set status = 2
+  	where begin_time <![CDATA[<=]]> now()
+  	and status = 1;
+  	<!-- 广告关闭 -->
+  	update mall_advert
+  	set status = 3
+  	where end_time <![CDATA[<=]]> now()
+  	and status = 2;
+  </update>
+  
+  <!-- 根据广告名称模糊查询、广告状态、广告位置类型查询到的总条数 -->
+  <select id="selectSumByAdName" resultType="Integer">
+  	select count(0)
+  	from mall_advert
+  	where 1=1
+  	<if test="adName != null">
+  		and ad_name like concat('%',#{adName,jdbcType=VARCHAR},'%')
+  	</if>
+  	<if test="status != null">
+		and status = #{status,jdbcType=INTEGER}
+	</if>
+	<if test="positionType != null">
+		and position_Type = #{positionType,jdbcType=INTEGER}
+	</if>
+  </select>
+  
+  <!-- 根据广告名称模糊查询，状态、类型查询并分页 -->
+  <select id="selectByAdNameOrStartOrTypePaged" resultType="hashMap">
+	SELECT 
+	  ma.id,
+	  ma.position_code AS positionCode,
+	  ma.ad_name AS adName,
+	  ma.click_count AS clickCount,
+	  map.id AS positionId,
+	  map.position_name AS positionName,
+	  ma.position_type AS positionType,
+	  ma.link_man AS linkMan,
+	  ma.link_phone AS linkPhone,
+	  ma.status,
+	  ma.begin_time AS beginTime,
+	  ma.end_time AS endTime,
+	  ma.create_user_name AS createUserName,
+	  ma.create_date AS createDate,
+	  ma.description 
+	FROM
+	  mall_advert ma 
+	  LEFT JOIN mall_advert_position map 
+	    ON ma.position_code = map.position_code
+	where 1=1    
+	<if test="adName != null">
+		and ma.ad_name like concat('%',#{adName,jdbcType=VARCHAR},'%')
+	</if>
+	<if test="status != null">
+		and ma.status = #{status,jdbcType=INTEGER}
+	</if>
+	<if test="positionType != null">
+		and ma.position_Type = #{positionType,jdbcType=INTEGER}
+	</if>
+	order by ma.create_date desc
+	<if test="startIndex &gt;= 0">
+		limit #{startIndex,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
+	</if>
+  </select>
+  
+  <!-- 获得广告详情 -->
+  <select id="selectAdvertDetailByKey" parameterType="java.lang.String" resultType="hashMap">
+	SELECT 
+	  ma.id,
+	  ma.obj_id AS objId,
+	  map.position_name AS positionName,
+	  map.position_type AS positionType,
+	  map.ad_width AS adWidth,
+	  map.ad_height AS adHeight,
+	  ma.ad_name AS adName,
+	  ma.ad_type AS adType,
+	  ma.ad_link AS adLink,
+	  ma.link_man AS linkMan,
+	  ma.link_phone AS linkPhone,
+	  ma.begin_time AS beginTime,
+	  ma.end_time AS endTime,
+	  ma.img,
+	  ma.description 
+	FROM
+	  mall_advert ma 
+	  LEFT JOIN mall_advert_position map 
+	    ON ma.position_code = map.position_code 
+	WHERE ma.id = #{id,jdbcType=VARCHAR}
+  </select>
+</mapper>

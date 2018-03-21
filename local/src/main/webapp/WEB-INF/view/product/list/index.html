@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>商品管理</title>
+<#include '/common.html'/>
+</head>
+<body class="easyui-layout">
+<div region="north" style="overflow:hidden">
+   <div class="datagrid-toolbar">
+      <a href="#" onclick="newOrEdit(this)" objId=""><span class="l-btn"><span class="icon-add" >新 增</span></span></a>
+      <a href="#" onclick="dele(this)" objId="all"><span class="l-btn"><span class="icon-cancel" >删 除</span></span></a>
+   </div>
+    <!-- 搜索 -->
+	<div class="easyui-search">
+		<form id="search-form" action="" method="post">
+			<input class="search-input" name="productName" placeholder="输入商品名称查询" style="width: 200px; margin-left: 10px;" value=""/>
+			<button type="button" class="button search-btn">查询</button>
+		</form>
+	</div>
+</div>
+
+<div region="center">
+<table id="layui-table" lay-even style="table-layout: fixed;"></table>
+</div>
+<div region="south" style="height:32px;">
+	<div id="pagination"></div>
+</div>
+
+</body>
+<script type="text/javascript">
+
+var param = {pageIndex:0, pageSize:10};
+
+$(function() {
+
+	//加载数据
+	$('#layui-table').layuiDatagrid({
+		url: "${request.contextPath}/browser-productProductNameFindPage",
+		param: param,
+		contentType: "application/json",
+		columns:[
+			{checkbox: true},
+			{field:'skuName',title:'SKU名称',width:30},
+			{field:'productName',title:'商品名称',width:30},
+			{field:'cname',title:'所属分类',width:30},
+			{field:'brandName',title:'所属品牌',width:30},
+			{field:'attributes',title:'属性集合',width:30},
+			{field:'productQuantity',title:'数量',width:20},
+			{field:'productSaleQuantity',title:'销售数量',width:20},
+			{field:'productPrice',title:'成本价',width:30},
+			{field:'productPrice1',title:'普卡价',width:30},
+			{field:'productPrice2',title:'金卡价',width:30},
+			{field:'productPrice3',title:'钻卡价',width:30},
+			{field:'productUpTime',title:'上架时间',width:30},
+			{field:'productDownTime',title:'下架时间',width:30},
+			{field:'createDate',title:'创建时间',width:30},
+			{field:'description',title:'备注',width:30},
+			{field:'skuStatus',title:'状态',width:10,
+				formatter: function(value, rec) {
+					if (value == 2) {
+						return '<button class="layui-btn layui-btn-mini layui-btn-radius">无效</button>';
+					} else {
+						return '<button class="layui-btn layui-btn-mini layui-btn-radius layui-btn-danger">有效</button>';
+					}
+				}
+			},
+			{field:'uuid',title:'操作',width:'100px',
+				formatter: function(value, rec) {
+					alert(0);
+					return '<ul class="listHandler">'
+					+'<li><a onclick="newOrEdit(this)" objId="'+value+'">编辑</a></li>'
+					+'<li><a onclick="dele(this)" objId="'+value+'">删除</a></li>'
+		      		+'</ul>';
+				}
+			}
+		]
+	});
+	
+	//查询
+	$('.search-btn').click(function() {
+		$('#layui-table').layuiDatagrid("reload", $("#search-form").serializeJsonObject());
+	});
+})
+
+//编辑、新增
+function newOrEdit(obj) {
+	//parent.openTab("product_brand", "商品品牌 编辑", "${request.contextPath}/client/brand/edit");
+}
+
+</script>
+</html>

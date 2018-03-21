@@ -1,0 +1,248 @@
+﻿* {
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    /*禁止链接高亮*/
+    -webkit-touch-callout: none;
+    /*禁止链接长按弹出选项菜单*/
+}
+html {
+    background: #f3f3f3;
+}
+html {
+    height: 100%;
+    font-size: 62.5%;
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+    /*关闭字体大小自动调整功能*/
+    -ms-touch-action: none;
+    /*禁止winphone默认触摸事件*/
+}
+body {
+    height: 100%;
+    background-color: #f3f3f3;
+    margin: 0;
+    line-height: 1.4rem;
+    font-size: 1.5rem;
+    color: #1a1a1a;
+    font-family: microsoft Yahei !important;
+    -webkit-user-select: none;
+    /*禁止ios和android用户选中文字*/
+    -webkit-touch-callout: none;
+    /*禁止ios 长按时不触发系统的菜单，禁止ios&android长按时下载图片*/
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    /*去掉ios系统中元素被触摸时产生的半透明灰色遮罩*/
+}
+i,
+font,
+a,
+span {
+    display: inline-block;
+    font-style: normal;
+}
+* {
+    margin: 0;
+    padding: 0;
+}
+img {
+    border: 0;
+}
+a img {
+    border: 0;
+}
+a {
+    text-decoration: none;
+}
+ul,
+li,
+dl,
+dt,
+dd {
+    list-style: none;
+}
+a {
+    color: #1a1a1a;
+}
+a:hover {
+    color: #1a1a1a;
+}
+.mui-content {
+    background: #f3f3f3;
+}
+.regedit .mui-input-row {
+    height: 50px;
+}
+
+.regedit .mui-input-row label {
+    width: 20%;
+    float: left;
+    padding: 0 0 0 15px;
+}
+h1{
+    background: #2b81d0;
+    height: 70px;
+    color: #fff;
+    font-weight: normal;
+    text-align: center;
+    font-size: 1.8rem;
+    line-height: 70px;
+    margin: 0;
+}
+.info i{
+    float: left;
+    margin-top: 5px;
+    width: 40px;
+    height: 40px;
+}
+.info i.reg-phone{
+    background: url("../images/mobile.png") no-repeat;
+    background-size: cover;
+}
+.info i.reg-password{
+    background: url("../images/pcode.png") no-repeat;
+    background-size: cover;
+}
+.info i.reg-repassword{
+    background: url("../images/pcodeC.png") no-repeat;
+    background-size: cover;
+}
+.info i.reg-tjm{
+    background: url("../images/rcmtMan.png") no-repeat;
+    background-size: cover;
+}
+.info i.reg-yzm{
+    background: url("../images/vcode.png") no-repeat;
+    background-size: cover;
+}
+.xieyi{
+    padding:20px 20px;
+    font-size: 1.3rem;
+}
+.xieyi i.gray{
+   float: left;
+}
+.xieyi a.blue{
+    float: left;
+    color: #2b81d0;
+}
+.regedit .mui-input-row input {
+    width: 80%;
+    float: left;
+    text-align: left;
+    padding: 0;
+}
+.mui-input-row input::-webkit-input-placeholder {
+    color: #b2b2b2;
+}
+.regedit .mui-input-row .yanzm {
+    width: 25%;
+    margin: 10px 3%;
+    height: 30px;
+    float: right;
+    font-size: 1.5rem;
+    line-height: 30px;
+    padding: 0;
+    text-align: center;
+}
+.regedit .mui-input-row .yanzm-disable {
+    background: #d9d9d9;
+    color: #999999;
+    border: none;
+    border-radius: 4px;
+}
+.regedit .mui-input-row .yanzm-usable {
+    background: #00d0b0;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+}
+.regeditSucess img{
+    width: 100%;
+}
+.regedit-sucess-header{
+    text-align: center;
+    font-size: 1.6rem;
+}
+.regedit-sucess-header button.mui-btn-primary{
+    display: inline-block;
+    width: 125px;
+    height: 38px;
+    background: #fff;
+    border: 1px solid #2b81d0;
+    line-height: 38px;
+    margin-top: 20px;
+    padding: 0;
+    color: #2b81d0;
+}
+.regedit-sucess-header dt{
+	padding-bottom: 20px;
+}
+
+select,
+textarea,
+input[type='text'],
+input[type='search'],
+input[type='password']{
+    height: 50px;
+    line-height: 50px;
+    font-size: 1.6rem;
+}
+.regedit  info{
+    float: left;
+    width: 100px;
+}
+.regedit label i.red {
+    color: #ff0000;
+    margin: 4px 0 0 2px;
+}
+.regedit .mui-btn-green, .mui-btn-positive, .mui-btn-success{
+    border: 1px solid #2b81d0;
+    background-color: #2b81d0;
+    width: 100%;
+    height: 50px;
+    font-size: 1.6rem;
+}
+@media screen and (max-width: 1024px) {
+    .regedit .mui-input-row label {
+        width: 10%;
+    }
+
+    .regedit .mui-input-row input {
+        width: 90%;
+    }
+}
+@media screen and (max-width: 600px) {
+    .regedit .mui-input-row label {
+        width: 16%;
+    }
+
+    .regedit .mui-input-row input {
+        width: 84%;
+    }
+}
+@media screen and (max-width: 384px) {
+    .regedit .mui-input-row label {
+        width: 16%;
+    }
+
+    .regedit .mui-input-row input {
+        width: 84%;
+    }
+}
+@media screen and (max-width: 375px) {
+    .regedit .mui-input-row label {
+        width: 16%;
+    }
+    .regedit .mui-input-row input {
+        width: 84%;
+    }
+}
+@media screen and (max-width: 320px) {
+    .regedit .mui-input-row label {
+        width: 18%;
+    }
+    .regedit .mui-input-row input {
+        width: 82%;
+    }
+}

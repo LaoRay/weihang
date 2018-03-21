@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.clubank.weihang.manage.member.dao.CarGroupMapper">
+  <resultMap id="BaseResultMap" type="cn.com.clubank.weihang.manage.member.pojo.CarGroup">
+    <id column="group_id" jdbcType="VARCHAR" property="groupId" />
+    <result column="account" jdbcType="VARCHAR" property="account" />
+    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+	<result column="email" jdbcType="VARCHAR" property="email" />
+	<result column="level" jdbcType="VARCHAR" property="level" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="group_name" jdbcType="VARCHAR" property="groupName" />
+    <result column="delete_mark" jdbcType="INTEGER" property="deleteMark" />
+    <result column="enabled_mark" jdbcType="INTEGER" property="enabledMark" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="create_user_Id" jdbcType="VARCHAR" property="createUserId" />
+    <result column="create_user_name" jdbcType="VARCHAR" property="createUserName" />
+    <result column="modify_date" jdbcType="TIMESTAMP" property="modifyDate" />
+    <result column="modify_user_Id" jdbcType="VARCHAR" property="modifyUserId" />
+    <result column="modify_user_name" jdbcType="VARCHAR" property="modifyUserName" />
+    <result column="group_pic" jdbcType="VARCHAR" property="groupPic" />
+    <result column="group_car" jdbcType="VARCHAR" property="groupCar" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    update car_group
+    set delete_mark = 1
+    where group_id = #{groupId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.com.clubank.weihang.manage.member.pojo.CarGroup">
+    insert into car_group (group_id, account, password, 
+      group_name, delete_mark, enabled_mark, 
+      description, create_date, create_user_Id, 
+      create_user_name, modify_date, modify_user_Id, 
+      modify_user_name, group_pic, group_car, mobile, email, level
+      )
+    values (#{groupId,jdbcType=VARCHAR}, #{account,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{groupName,jdbcType=VARCHAR}, #{deleteMark,jdbcType=INTEGER}, #{enabledMark,jdbcType=INTEGER}, 
+      #{description,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{createUserId,jdbcType=VARCHAR}, 
+      #{createUserName,jdbcType=VARCHAR}, #{modifyDate,jdbcType=TIMESTAMP}, #{modifyUserId,jdbcType=VARCHAR}, 
+      #{modifyUserName,jdbcType=VARCHAR}, #{groupPic,jdbcType=VARCHAR}, #{groupCar,jdbcType=VARCHAR},
+      #{mobile,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{level,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.com.clubank.weihang.manage.member.pojo.CarGroup">
+    update car_group
+    set account = #{account,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      group_name = #{groupName,jdbcType=VARCHAR},
+      delete_mark = #{deleteMark,jdbcType=INTEGER},
+      enabled_mark = #{enabledMark,jdbcType=INTEGER},
+      description = #{description,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      create_user_Id = #{createUserId,jdbcType=VARCHAR},
+      create_user_name = #{createUserName,jdbcType=VARCHAR},
+      modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+      modify_user_Id = #{modifyUserId,jdbcType=VARCHAR},
+      modify_user_name = #{modifyUserName,jdbcType=VARCHAR},
+      group_pic = #{groupPic,jdbcType=VARCHAR},
+      group_car = #{groupCar,jdbcType=VARCHAR},
+      mobile = #{mobile,jdbcType=VARCHAR},
+	  email = #{email,jdbcType=VARCHAR},
+	  level = #{level,jdbcType=VARCHAR}
+    where group_id = #{groupId,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select group_id, account, password, group_name, delete_mark, enabled_mark, description, 
+    create_date, create_user_Id, create_user_name, modify_date, modify_user_Id, modify_user_name, 
+    group_pic, group_car, mobile, email, level
+    from car_group
+    where group_id = #{groupId,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectDetailByPrimaryKey" parameterType="java.lang.String" resultType="map">
+    select 
+    	gro.group_id AS groupId, 
+    	gro.account, 
+		gro.group_name AS groupName, 
+		gro.description, 
+    	gro.create_date AS createDate, 
+    	gro.mobile, 
+    	gro.email,
+    	gro.level,
+    	gro.group_car AS groupCar,
+    	gro.password, gro.delete_mark AS deleteMark, gro.enabled_mark AS enabledMark,
+    
+   		car.car_no AS groupCarNo,
+    	car.account AS groupAccountBalance
+    
+    from car_group gro left join car_info car on car.car_id = gro.group_car
+    where gro.group_id = #{groupId,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectByAccount" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select group_id, account, password, group_name, delete_mark, enabled_mark, description, 
+    create_date, create_user_Id, create_user_name, modify_date, modify_user_Id, modify_user_name, 
+    group_pic, group_car, mobile, email, level
+    from car_group
+    where account = #{account,jdbcType=VARCHAR} and delete_mark = 0
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select group_id, account, password, group_name, delete_mark, enabled_mark, description, 
+    create_date, create_user_Id, create_user_name, modify_date, modify_user_Id, modify_user_name, 
+    group_pic, group_car, mobile, email, level
+    from car_group 
+    where delete_mark = 0
+  </select>
+  
+  <select id="selectByGroupCar" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select group_id, account, password, group_name, delete_mark, enabled_mark, description, 
+    create_date, create_user_Id, create_user_name, modify_date, modify_user_Id, modify_user_name, 
+    group_pic, group_car, mobile, email, level
+    from car_group 
+    where delete_mark = 0 and group_car = #{groupCar,jdbcType=VARCHAR}
+  </select>
+  
+  <!-- 分页查询：通过集团组名模糊查询，进行分页 -->
+  <select id="findPageTotal" resultType="INTEGER">
+    select count(0)
+    from car_group
+    where delete_mark = 0 
+    <if test="name != null">
+    	and group_name like CONCAT('%', #{name,jdbcType=VARCHAR}, '%')
+    </if>
+  </select>
+  <select id="findPage" resultType="map">
+    select 
+    gro.group_id AS groupId, 
+    gro.account, 
+	gro.group_name AS groupName, 
+	gro.description, 
+    gro.create_date AS createDate, 
+    gro.mobile, 
+    gro.email,
+    gro.level,
+    
+    car.car_no AS groupCarNo,
+    car.account AS accountBalance
+    
+    from car_group gro LEFT JOIN car_info car ON car.car_id = gro.group_car
+    where gro.delete_mark = 0 
+    <if test="name != null">
+    	and gro.group_name like CONCAT('%', #{name,jdbcType=VARCHAR}, '%')
+    </if>
+    order by gro.create_date desc
+    <if test="startIndex &gt;= 0">
+    	LIMIT #{startIndex,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+    </if>
+  </select>
+</mapper>

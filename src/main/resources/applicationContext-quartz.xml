@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans      
+                        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd      
+                        http://www.springframework.org/schema/context      
+                        http://www.springframework.org/schema/context/spring-context-4.0.xsd      
+                        http://www.springframework.org/schema/mvc      
+                        http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+                        http://www.springframework.org/schema/aop
+	              		http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+	              		http://www.springframework.org/schema/tx
+	              		http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+
+	<bean id="quartzJobFactory" class="cn.com.clubank.weihang.common.quartz.BaseQuartzJobFactory"/>
+
+	<!-- 任务1    每小时执行-->
+	<bean id="eachOneHour" autowire="no" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass" value="cn.com.clubank.weihang.common.quartz.EachHourTask"/>
+	    <property name="durability" value="true"/>
+	    <property name="requestsRecovery" value="true" />
+	</bean>
+	<bean id="schedulerEachOneHour" autowire="no" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="eachOneHour" />
+		<property name="cronExpression">
+			<value>0 0 * * * ?</value>
+		</property>
+	</bean>
+	
+	<!-- 任务2     每天零点执行 -->
+	<bean id="eachDayZero" autowire="no" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass" value="cn.com.clubank.weihang.common.quartz.EachDayZeroTask"/>
+	    <property name="durability" value="true"/>
+	    <property name="requestsRecovery" value="true" />
+	</bean>
+	<bean id="schedulerEveryDayZeroPoint" autowire="no" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="eachDayZero" />
+		<property name="cronExpression">
+			<value>0 0 0 * * ?</value>
+		</property>
+	</bean>
+
+	<!-- 触发器 -->
+	<bean id="scheduler" lazy-init="false" autowire="no" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="dataSource" ref="dataSource"/>
+		<property name="jobFactory" ref="quartzJobFactory"/>
+        <!--可选，QuartzScheduler 启动时更新己存在的Job，这样就不用每次修改targetObject后删除qrtz_job_details表对应记录了 -->      
+        <property name="overwriteExistingJobs" value="true"/>
+         <!--必须的，QuartzScheduler 延时启动，应用启动完后 QuartzScheduler 再启动 -->
+        <property name="startupDelay" value="30"/>
+        <!-- 设置自动启动 -->
+        <property name="autoStartup" value="true"/>
+        <property name="applicationContextSchedulerContextKey" value="applicationContextKey"/>
+        <property name="configLocation" value="classpath:config/quartz.properties"/>
+        <property name="triggers">
+            <list>
+                <ref bean="schedulerEveryDayZeroPoint"/>
+				<ref bean="schedulerEachOneHour"/>
+            </list>
+        </property>  
+	</bean>
+</beans>

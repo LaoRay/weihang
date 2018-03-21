@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.clubank.weihang.manage.product.dao.ProductBrandRelationMapper">
+  <resultMap id="BaseResultMap" type="cn.com.clubank.weihang.manage.product.pojo.ProductBrandRelation">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="category_Id" jdbcType="VARCHAR" property="categoryId" />
+    <result column="brand_id" jdbcType="VARCHAR" property="brandId" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from product_brand_relation
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByBrandId" parameterType="java.lang.String">
+    delete from product_brand_relation
+    where brand_id = #{brandId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.com.clubank.weihang.manage.product.pojo.ProductBrandRelation">
+    insert into product_brand_relation (id, category_Id, brand_id
+      )
+    values (#{id,jdbcType=VARCHAR}, #{categoryId,jdbcType=VARCHAR}, #{brandId,jdbcType=VARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.com.clubank.weihang.manage.product.pojo.ProductBrandRelation">
+    update product_brand_relation
+    set category_Id = #{categoryId,jdbcType=VARCHAR},
+      brand_id = #{brandId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select id, category_Id, brand_id
+    from product_brand_relation
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, category_Id, brand_id
+    from product_brand_relation
+  </select>
+  <select id="selectByBrandId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select id, category_Id, brand_id
+    from product_brand_relation
+    where brand_id = #{brandId}
+  </select>
+</mapper>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.clubank.weihang.manage.product.dao.ShoppingCartMapper">
+  <resultMap id="BaseResultMap" type="cn.com.clubank.weihang.manage.product.pojo.ShoppingCart">
+    <id column="cart_id" jdbcType="VARCHAR" property="cartId" />
+    <result column="customer_id" jdbcType="VARCHAR" property="customerId" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="create_user_Id" jdbcType="VARCHAR" property="createUserId" />
+    <result column="create_user_name" jdbcType="VARCHAR" property="createUserName" />
+    <result column="sku_id" jdbcType="VARCHAR" property="skuId" />
+    <result column="quantity" jdbcType="INTEGER" property="quantity" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from shopping_cart
+    where cart_id = #{cartId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteShoppingCartByCartIds" parameterType="list">
+    delete from shopping_cart
+    where cart_id in 
+    <foreach collection="list" index="index" item="item" open="(" separator="," close=")"  >
+       #{item}
+    </foreach>
+  </delete>
+  <insert id="insert" parameterType="cn.com.clubank.weihang.manage.product.pojo.ShoppingCart">
+    insert into shopping_cart (cart_id, customer_id, create_date, 
+      create_user_Id, create_user_name, sku_id, 
+      quantity)
+    values (#{cartId,jdbcType=VARCHAR}, #{customerId,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{createUserId,jdbcType=VARCHAR}, #{createUserName,jdbcType=VARCHAR}, #{skuId,jdbcType=VARCHAR}, 
+      #{quantity,jdbcType=INTEGER})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.com.clubank.weihang.manage.product.pojo.ShoppingCart">
+    update shopping_cart
+    set customer_id = #{customerId,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      create_user_Id = #{createUserId,jdbcType=VARCHAR},
+      create_user_name = #{createUserName,jdbcType=VARCHAR},
+      sku_id = #{skuId,jdbcType=VARCHAR},
+      quantity = #{quantity,jdbcType=INTEGER}
+    where cart_id = #{cartId,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select cart_id, customer_id, create_date, create_user_Id, create_user_name, sku_id, 
+    quantity
+    from shopping_cart
+    where cart_id = #{cartId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select cart_id, customer_id, create_date, create_user_Id, create_user_name, sku_id, 
+    quantity
+    from shopping_cart
+  </select>
+  <select id="selectShoppingCartByCustomerIdAndSkuId" resultMap="BaseResultMap">
+    select cart_id, customer_id, create_date, create_user_Id, create_user_name, sku_id, 
+    quantity
+    from shopping_cart
+    where customer_id = #{customerId}
+    and sku_id = #{skuId}
+  </select>
+  <select id="selectShoppingCartListByCustomerId" parameterType="java.lang.String" resultType="hashMap">
+	SELECT
+		sc.cart_id AS cartId,
+		ps.sku_name AS skuName,
+		ps.sku_status AS skuStatus,
+		ps.attributes AS attributes,
+		ps.product_price AS productPrice,
+		sc.quantity AS quantity,
+		ps.product_id AS productId,
+		ps.sku_id AS skuId,
+		sc.customer_id AS customerId,
+		pp.pic_small AS picSmall,
+		pp.pic_big AS picBig
+	FROM
+		shopping_cart sc
+	LEFT JOIN product_sku ps ON sc.sku_id = ps.sku_id
+	LEFT JOIN product_pic pp ON ps.product_id = pp.product_id
+	WHERE sc.customer_id = #{customerId}
+  </select>
+</mapper>

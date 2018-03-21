@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.clubank.weihang.manage.systemSettings.dao.BaseButtonMapper">
+  <resultMap id="BaseResultMap" type="cn.com.clubank.weihang.manage.systemSettings.pojo.BaseButton">
+    <id column="b_id" jdbcType="VARCHAR" property="bId" />
+    <result column="module_id" jdbcType="VARCHAR" property="moduleId" />
+    <result column="parent_id" jdbcType="VARCHAR" property="parentId" />
+    <result column="icon" jdbcType="VARCHAR" property="icon" />
+    <result column="button_name" jdbcType="VARCHAR" property="buttonName" />
+    <result column="action_address" jdbcType="VARCHAR" property="actionAddress" />
+    <result column="sort" jdbcType="INTEGER" property="sort" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    b_id, module_id, parent_id, icon, button_name, action_address, sort
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from base_button
+    where b_id = #{bId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from base_button
+    where b_id = #{bId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.com.clubank.weihang.manage.systemSettings.pojo.BaseButton">
+    insert into base_button (b_id, module_id, parent_id, 
+      icon, button_name, action_address, 
+      sort)
+    values (#{bId,jdbcType=VARCHAR}, #{moduleId,jdbcType=VARCHAR}, #{parentId,jdbcType=VARCHAR}, 
+      #{icon,jdbcType=VARCHAR}, #{buttonName,jdbcType=VARCHAR}, #{actionAddress,jdbcType=VARCHAR}, 
+      #{sort,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.com.clubank.weihang.manage.systemSettings.pojo.BaseButton">
+    insert into base_button
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="bId != null">
+        b_id,
+      </if>
+      <if test="moduleId != null">
+        module_id,
+      </if>
+      <if test="parentId != null">
+        parent_id,
+      </if>
+      <if test="icon != null">
+        icon,
+      </if>
+      <if test="buttonName != null">
+        button_name,
+      </if>
+      <if test="actionAddress != null">
+        action_address,
+      </if>
+      <if test="sort != null">
+        sort,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="bId != null">
+        #{bId,jdbcType=VARCHAR},
+      </if>
+      <if test="moduleId != null">
+        #{moduleId,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null">
+        #{parentId,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null">
+        #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="buttonName != null">
+        #{buttonName,jdbcType=VARCHAR},
+      </if>
+      <if test="actionAddress != null">
+        #{actionAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        #{sort,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.com.clubank.weihang.manage.systemSettings.pojo.BaseButton">
+    update base_button
+    <set>
+      <if test="moduleId != null">
+        module_id = #{moduleId,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null">
+        parent_id = #{parentId,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null">
+        icon = #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="buttonName != null">
+        button_name = #{buttonName,jdbcType=VARCHAR},
+      </if>
+      <if test="actionAddress != null">
+        action_address = #{actionAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+    </set>
+    where b_id = #{bId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.com.clubank.weihang.manage.systemSettings.pojo.BaseButton">
+    update base_button
+    set module_id = #{moduleId,jdbcType=VARCHAR},
+      parent_id = #{parentId,jdbcType=VARCHAR},
+      icon = #{icon,jdbcType=VARCHAR},
+      button_name = #{buttonName,jdbcType=VARCHAR},
+      action_address = #{actionAddress,jdbcType=VARCHAR},
+      sort = #{sort,jdbcType=INTEGER}
+    where b_id = #{bId,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 获得模块下按钮 -->
+  <select id="selectModuleButtonByModuleId" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	select
+  	<include refid="Base_Column_List" />
+    from base_button
+    where module_id = #{moduleId,jdbcType=VARCHAR}
+  </select>
+</mapper>

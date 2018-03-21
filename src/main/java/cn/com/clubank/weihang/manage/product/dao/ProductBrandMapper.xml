@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.clubank.weihang.manage.product.dao.ProductBrandMapper">
+  <resultMap id="BaseResultMap" type="cn.com.clubank.weihang.manage.product.pojo.ProductBrand">
+    <id column="brand_id" jdbcType="VARCHAR" property="brandId" />
+    <result column="brand_key" jdbcType="VARCHAR" property="brandKey" />
+    <result column="brand_logo_url" jdbcType="VARCHAR" property="brandLogoUrl" />
+    <result column="brand_name" jdbcType="VARCHAR" property="brandName" />
+    <result column="brand_status" jdbcType="INTEGER" property="brandStatus" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="create_user_Id" jdbcType="VARCHAR" property="createUserId" />
+    <result column="create_user_name" jdbcType="VARCHAR" property="createUserName" />
+    <result column="modify_date" jdbcType="TIMESTAMP" property="modifyDate" />
+    <result column="modify_user_Id" jdbcType="VARCHAR" property="modifyUserId" />
+    <result column="modify_user_name" jdbcType="VARCHAR" property="modifyUserName" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from product_brand
+    where brand_id = #{brandId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.com.clubank.weihang.manage.product.pojo.ProductBrand">
+    insert into product_brand (brand_id, brand_key, brand_logo_url, 
+      brand_name, brand_status, 
+      description, create_date, create_user_Id, 
+      create_user_name, modify_date, modify_user_Id, 
+      modify_user_name)
+    values (#{brandId,jdbcType=VARCHAR}, #{brandKey,jdbcType=VARCHAR}, #{brandLogoUrl,jdbcType=VARCHAR}, 
+      #{brandName,jdbcType=VARCHAR}, #{brandStatus,jdbcType=INTEGER}, 
+      #{description,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{createUserId,jdbcType=VARCHAR}, 
+      #{createUserName,jdbcType=VARCHAR}, #{modifyDate,jdbcType=TIMESTAMP}, #{modifyUserId,jdbcType=VARCHAR}, 
+      #{modifyUserName,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.com.clubank.weihang.manage.product.pojo.ProductBrand">
+    update product_brand
+    set brand_key = #{brandKey,jdbcType=VARCHAR},
+      brand_logo_url = #{brandLogoUrl,jdbcType=VARCHAR},
+      brand_name = #{brandName,jdbcType=VARCHAR},
+      brand_status = #{brandStatus,jdbcType=INTEGER},
+      description = #{description,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      create_user_Id = #{createUserId,jdbcType=VARCHAR},
+      create_user_name = #{createUserName,jdbcType=VARCHAR},
+      modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+      modify_user_Id = #{modifyUserId,jdbcType=VARCHAR},
+      modify_user_name = #{modifyUserName,jdbcType=VARCHAR}
+    where brand_id = #{brandId,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select brand_id, brand_key, brand_logo_url, brand_name, brand_status,
+    description, create_date, create_user_Id, create_user_name, modify_date, modify_user_Id, 
+    modify_user_name
+    from product_brand
+    where brand_id = #{brandId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select brand_id, brand_key, brand_logo_url, brand_name, brand_status,
+    description, create_date, create_user_Id, create_user_name, modify_date, modify_user_Id, 
+    modify_user_name
+    from product_brand
+  </select>
+  
+  <!-- 分页查询 -->
+  <select id="findPage" resultMap="BaseResultMap">
+    select brand_id, brand_key, brand_logo_url, brand_name, brand_status,
+    description, create_date, create_user_Id, create_user_name, modify_date, modify_user_Id, 
+    modify_user_name
+    from product_brand
+    where 1 = 1
+    <if test="brandName != null and brandName != ''">
+    	and brand_name like CONCAT('%', #{brandName,jdbcType=VARCHAR}, '%')
+    </if>
+    and brand_status = 1
+    order by create_date desc
+    <if test="startIndex &gt;= 0">
+    	LIMIT #{startIndex,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+    </if>
+  </select>
+  <select id="findPageTotal" resultType="INTEGER">
+    select count(0)
+    from product_brand
+    where 1 = 1
+    <if test="brandName != null and brandName != ''">
+    	and brand_name like CONCAT('%', #{brandName,jdbcType=VARCHAR}, '%')
+    </if>
+  </select>
+  <select id="selectByCategoryId" parameterType="java.lang.String" resultType="hashMap">
+	SELECT
+		pb.brand_id AS brandId,
+		pb.brand_name AS brandName
+	FROM
+		product_brand pb,
+		product_brand_relation pbr
+	WHERE
+		pb.brand_id = pbr.brand_id
+	AND pbr.category_Id = #{categoryId}
+  </select>
+</mapper>

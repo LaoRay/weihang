@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>物料管理</title>
+<#include '/common.html'/>
+</head>
+<body class="easyui-layout">
+<div region="north" style="overflow:hidden">
+   <div class="datagrid-toolbar">
+      <a href="#" onclick="newOrEdit(this)" objId=""><span class="l-btn"><span class="icon-add" >新 增</span></span></a>
+      <a href="#" onclick="dele(this)" objId="all"><span class="l-btn"><span class="icon-cancel" >删 除</span></span></a>
+   </div>
+    <!-- 搜索 -->
+	<div class="easyui-search">
+		<form id="search-form" action="" method="post">
+			<input class="search-input" name="categoryName" placeholder="输入分类名称查询" style="width: 200px; margin-left: 10px;" value=""/>
+			<button type="button" class="button search-btn">查询</button>
+		</form>
+	</div>
+</div>
+
+<div region="center">
+<table id="layui-table" lay-even style="table-layout: fixed;"></table>
+</div>
+<div region="south" style="height:32px;">
+	<div id="pagination"></div>
+</div>
+
+</body>
+<script type="text/javascript">
+var param = {pageIndex:0, pageSize:10};
+$(function() {
+
+	$('#layui-table').layuiDatagrid({
+		url: "${request.contextPath}/clientMaterialCategoryFindPage",
+		param: param,
+		contentType: "application/json",
+		columns:[
+			{checkbox: true},
+			{field:'categoryName',title:'分类名称',width:30},
+			{field:'code',title:'编码',width:30},
+			{field:'parentName',title:'父分类名',width:30},
+			{field:'createDate',title:'创建时间',width:30},
+			{field:'description',title:'备注',width:30},
+			{field:'wicId',title:'操作',width:'100px',
+				formatter: function(value, rec) {
+					return '<ul class="listHandler">'
+					+'<li><a onclick="newOrEdit(this)" objId="'+value+'">编辑</a></li>'
+					+'<li><a onclick="dele(this)" objId="'+value+'">删除</a></li>'
+		      		+'</ul>';
+				}
+			}
+		]
+	});
+	
+	//查询
+	$('.search-btn').click(function() {
+		$('#layui-table').layuiDatagrid("reload", $("#search-form").serializeJsonObject());
+	});
+})
+
+//编辑、新增
+function newOrEdit(obj) {
+	parent.openTab("material_classify", "物料分类 编辑", "${request.contextPath}/client/classify/edit?wicId="+$(obj).attr('objId'));
+}
+
+</script>
+</html>

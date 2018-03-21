@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.clubank.weihang.manage.member.dao.CustomerSignMapper">
+	<resultMap id="BaseResultMap"
+		type="cn.com.clubank.weihang.manage.member.pojo.CustomerSign">
+		<id column="sign_id" jdbcType="VARCHAR" property="signId" />
+		<result column="customer_id" jdbcType="VARCHAR" property="customerId" />
+		<result column="sign_time" jdbcType="TIMESTAMP" property="signTime" />
+		<result column="sustain_day" jdbcType="INTEGER" property="sustainDay" />
+		<result column="bestowal_integral" jdbcType="INTEGER" property="bestowalIntegral" />
+		<result column="description" jdbcType="VARCHAR" property="description" />
+	</resultMap>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from customer_sign
+		where sign_id = #{signId,jdbcType=VARCHAR}
+	</delete>
+	<insert id="insert"
+		parameterType="cn.com.clubank.weihang.manage.member.pojo.CustomerSign">
+		insert into customer_sign (sign_id, customer_id, sign_time,
+		sustain_day, bestowal_integral, description
+		)
+		values (#{signId,jdbcType=VARCHAR}, #{customerId,jdbcType=VARCHAR},
+		#{signTime,jdbcType=TIMESTAMP},
+		#{sustainDay,jdbcType=INTEGER}, #{bestowalIntegral,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR}
+		)
+	</insert>
+	<update id="updateByPrimaryKey"
+		parameterType="cn.com.clubank.weihang.manage.member.pojo.CustomerSign">
+		update customer_sign
+		set customer_id = #{customerId,jdbcType=VARCHAR},
+		sign_time = #{signTime,jdbcType=TIMESTAMP},
+		sustain_day = #{sustainDay,jdbcType=INTEGER},
+		bestowal_integral = #{bestowalIntegral,jdbcType=INTEGER},
+		description = #{description,jdbcType=VARCHAR}
+		where sign_id = #{signId,jdbcType=VARCHAR}
+	</update>
+	<select id="selectByPrimaryKey" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select sign_id, customer_id, sign_time, sustain_day, bestowal_integral,
+		description
+		from customer_sign
+		where sign_id = #{signId,jdbcType=VARCHAR}
+	</select>
+	<select id="selectByCustomerId" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select sign_id, customer_id, sign_time, sustain_day, bestowal_integral,
+		description
+		from customer_sign
+		where customer_id = #{customerId,jdbcType=VARCHAR}
+		and DATE_SUB(CURDATE(), INTERVAL 30 DAY) <![CDATA[<=]]> sign_time
+		order by sign_time
+	</select>
+	<select id="selectAll" resultMap="BaseResultMap">
+		select sign_id, customer_id, sign_time, sustain_day, bestowal_integral,
+		description
+		from customer_sign
+	</select>
+</mapper>

@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>预约订单</title>
+<#include '/common.html'/>
+</head>
+<body class="easyui-layout">
+<div region="north" style="overflow:hidden">
+    <!-- 搜索 -->
+	<div class="easyui-search">
+		<form id="search-form" action="" method="post">
+			<input class="search-input" name="carNo" placeholder="输入车牌号查询" style="width: 200px; margin-left: 10px;" value=""/>
+			<button type="button" class="button search-btn">查询</button>
+		</form>
+	</div>
+</div>
+
+<div region="center">
+<div class="layui-tab-brief" style="background-color: #EDEFF4;">
+  <ul class="layui-tab-title">
+    <li class="layui-this fw">服务预约</li>
+    <li class="sp">商品预约</li>
+  </ul>
+</div>
+<table id="layui-table" lay-even style="table-layout: fixed;"></table>
+</div>
+<div region="south" style="height:32px;">
+	<div id="pagination"></div>
+</div>
+</body>
+<script type="text/javascript">
+
+var param = {pageIndex:0, pageSize:10};
+
+$(function() {
+
+	//查询
+	$('.search-btn').click(function() {
+		$('#layui-table').layuiDatagrid("reload", $("#search-form").serializeJsonObject());
+	});
+	
+	$('#layui-table').layuiDatagrid({
+		url: "${request.contextPath}/clientFindReservationOrder",
+		param: param,
+		contentType: "application/json",
+		columns:[
+			{checkbox: true},
+			{field:'orderNo',title:'预约单号',width:15},
+			{field:'customerName',title:'客户',width:12},
+			{field:'carNo',title:'车牌号',width:15},
+			{field:'reservationType',title:'预约类型',width:10,
+				formatter: function(value, rec) {
+					return getTypeStr(value);
+				}
+			},
+			{field:'createDate',title:'创建时间',width:15},
+			{field:'reservationDate',title:'预约时间',width:15},
+			{field:'status',title:'状态',width:8,
+				formatter: function(value, rec) {
+					if (value == 1) {
+						return '<button class="layui-btn layui-btn-mini layui-btn-radius">'+ getStatusStr(value) +'</button>';
+					} else {
+						return '<button class="layui-btn layui-btn-mini layui-btn-radius layui-btn-danger">'+ getStatusStr(value) +'</button>';
+					}
+				}
+			},
+			{field:'roId',title:'操作',width:'100px',
+				formatter: function(value, rec) {
+					var ul = '<ul class="listHandler">';
+					ul += '<li><a onclick="dele(this)" objId="'+value+'">删除</a></li>'
+					ul += '</ul>';
+		      		return ul;
+				}
+			}
+		]
+	});
+})
+
+function getStatusStr(status) {
+	if (status == 1) {
+		return "待确认";
+	} else if (status == 2) {
+		return "已确认";
+	} else if (status == 3) {
+		return "已取消";
+	} else if (status == 4) {
+		return "已完成";
+	}
+	return "已失效";
+}
+
+function getTypeStr(status) {
+	if (status == 1) {
+		return "洗车";
+	} else if (status == 2) {
+		return "维修";
+	} else if (status == 3) {
+		return "保养";
+	} else if (status == 4) {
+		return "美容";
+	}
+	return "未知";
+}
+</script>
+</html>

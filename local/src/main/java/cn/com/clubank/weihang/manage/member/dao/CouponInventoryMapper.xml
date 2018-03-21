@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.clubank.weihang.manage.member.dao.CouponInventoryMapper">
+  <resultMap id="BaseResultMap" type="cn.com.clubank.weihang.manage.member.pojo.CouponInventory">
+    <id column="cr_id" jdbcType="VARCHAR" property="crId" />
+    <result column="coupon_name" jdbcType="VARCHAR" property="couponName" />
+    <result column="coupon_type" jdbcType="INTEGER" property="couponType" />
+    <result column="coupon_quantity" jdbcType="INTEGER" property="couponQuantity" />
+    <result column="coupon_quantity_get" jdbcType="INTEGER" property="couponQuantityGet" />
+    <result column="valid_time_start" jdbcType="TIMESTAMP" property="validTimeStart" />
+    <result column="valid_time_end" jdbcType="TIMESTAMP" property="validTimeEnd" />
+    <result column="face_value" jdbcType="DECIMAL" property="faceValue" />
+    <result column="change_grade" jdbcType="INTEGER" property="changeGrade" />
+    <result column="change_integral" jdbcType="INTEGER" property="changeIntegral" />
+    <result column="pic_small" jdbcType="VARCHAR" property="picSmall" />
+    <result column="pic_big" jdbcType="VARCHAR" property="picBig" />
+    <result column="product_id" jdbcType="VARCHAR" property="productId" />
+    <result column="delete_mark" jdbcType="INTEGER" property="deleteMark" />
+    <result column="enabled_mark" jdbcType="INTEGER" property="enabledMark" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="create_user_Id" jdbcType="VARCHAR" property="createUserId" />
+    <result column="create_user_name" jdbcType="VARCHAR" property="createUserName" />
+    <result column="modify_date" jdbcType="TIMESTAMP" property="modifyDate" />
+    <result column="modify_user_Id" jdbcType="VARCHAR" property="modifyUserId" />
+    <result column="modify_user_name" jdbcType="VARCHAR" property="modifyUserName" />
+    <result column="coupon_explain" jdbcType="LONGVARCHAR" property="couponExplain" />
+    <result column="service_coupon_type" jdbcType="INTEGER" property="serviceCouponType" />
+    <result column="sku_id" jdbcType="VARCHAR" property="skuId" />
+    <result column="discount" jdbcType="DECIMAL" property="discount" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from coupon_inventory
+    where cr_id = #{crId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.com.clubank.weihang.manage.member.pojo.CouponInventory">
+    insert into coupon_inventory (cr_id, coupon_name, coupon_type, 
+      coupon_quantity, coupon_quantity_get, valid_time_start, 
+      valid_time_end, face_value, change_grade, 
+      change_integral, pic_small, pic_big, 
+      product_id, delete_mark, enabled_mark, 
+      description, create_date, create_user_Id, 
+      create_user_name, modify_date, modify_user_Id, 
+      modify_user_name, coupon_explain, service_coupon_type, sku_id, discount)
+    values (#{crId,jdbcType=VARCHAR}, #{couponName,jdbcType=VARCHAR}, #{couponType,jdbcType=INTEGER}, 
+      #{couponQuantity,jdbcType=INTEGER}, #{couponQuantityGet,jdbcType=INTEGER}, #{validTimeStart,jdbcType=TIMESTAMP}, 
+      #{validTimeEnd,jdbcType=TIMESTAMP}, #{faceValue,jdbcType=DECIMAL}, #{changeGrade,jdbcType=INTEGER}, 
+      #{changeIntegral,jdbcType=INTEGER}, #{picSmall,jdbcType=VARCHAR}, #{picBig,jdbcType=VARCHAR}, 
+      #{productId,jdbcType=VARCHAR}, #{deleteMark,jdbcType=INTEGER}, #{enabledMark,jdbcType=INTEGER}, 
+      #{description,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{createUserId,jdbcType=VARCHAR}, 
+      #{createUserName,jdbcType=VARCHAR}, #{modifyDate,jdbcType=TIMESTAMP}, #{modifyUserId,jdbcType=VARCHAR}, 
+      #{modifyUserName,jdbcType=VARCHAR}, #{couponExplain,jdbcType=LONGVARCHAR}, #{serviceCouponType,jdbcType=INTEGER},
+      #{skuId,jdbcType=VARCHAR},#{discount,jdbcType=DECIMAL})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.com.clubank.weihang.manage.member.pojo.CouponInventory">
+    update coupon_inventory
+    set coupon_name = #{couponName,jdbcType=VARCHAR},
+      coupon_type = #{couponType,jdbcType=INTEGER},
+      coupon_quantity = #{couponQuantity,jdbcType=INTEGER},
+      coupon_quantity_get = #{couponQuantityGet,jdbcType=INTEGER},
+      valid_time_start = #{validTimeStart,jdbcType=TIMESTAMP},
+      valid_time_end = #{validTimeEnd,jdbcType=TIMESTAMP},
+      face_value = #{faceValue,jdbcType=DECIMAL},
+      change_grade = #{changeGrade,jdbcType=INTEGER},
+      change_integral = #{changeIntegral,jdbcType=INTEGER},
+      pic_small = #{picSmall,jdbcType=VARCHAR},
+      pic_big = #{picBig,jdbcType=VARCHAR},
+      product_id = #{productId,jdbcType=VARCHAR},
+      delete_mark = #{deleteMark,jdbcType=INTEGER},
+      enabled_mark = #{enabledMark,jdbcType=INTEGER},
+      description = #{description,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      create_user_Id = #{createUserId,jdbcType=VARCHAR},
+      create_user_name = #{createUserName,jdbcType=VARCHAR},
+      modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+      modify_user_Id = #{modifyUserId,jdbcType=VARCHAR},
+      modify_user_name = #{modifyUserName,jdbcType=VARCHAR},
+      coupon_explain = #{couponExplain,jdbcType=LONGVARCHAR},
+      service_coupon_type = #{serviceCouponType,jdbcType=INTEGER},
+      sku_id = #{skuId,jdbcType=VARCHAR},
+      discount = #{discount,jdbcType=DECIMAL}
+    where cr_id = #{crId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateSelectiveByPrimaryKey" parameterType="cn.com.clubank.weihang.manage.member.pojo.CouponInventory">
+    update coupon_inventory
+    <trim prefix="SET" suffixOverrides=",">
+		<if test="couponName != null">coupon_name = #{couponName,jdbcType=VARCHAR},</if>
+		<if test="couponType != null">coupon_type = #{couponType,jdbcType=INTEGER},</if>
+		<if test="couponQuantity != null">coupon_quantity = #{couponQuantity,jdbcType=INTEGER},</if>
+		<if test="couponQuantityGet != null">coupon_quantity_get = #{couponQuantityGet,jdbcType=INTEGER},</if>
+		<if test="validTimeStart != null">valid_time_start = #{validTimeStart,jdbcType=TIMESTAMP},</if>
+		<if test="validTimeEnd != null">valid_time_end = #{validTimeEnd,jdbcType=TIMESTAMP},</if>
+		<if test="faceValue != null">face_value = #{faceValue,jdbcType=DECIMAL},</if>
+		<if test="changeGrade != null">change_grade = #{changeGrade,jdbcType=INTEGER},</if>
+		<if test="changeIntegral != null">change_integral = #{changeIntegral,jdbcType=INTEGER},</if>
+		<if test="picSmall != null">pic_small = #{picSmall,jdbcType=VARCHAR},</if>
+		<if test="picBig != null">pic_big = #{picBig,jdbcType=VARCHAR},</if>
+		<if test="productId != null">product_id = #{productId,jdbcType=VARCHAR},</if>
+		<if test="deleteMark != null">delete_mark = #{deleteMark,jdbcType=INTEGER},</if>
+		<if test="enabledMark != null">enabled_mark = #{enabledMark,jdbcType=INTEGER},</if>
+		<if test="description != null">description = #{description,jdbcType=VARCHAR},</if>
+		<if test="createDate != null">create_date = #{createDate,jdbcType=TIMESTAMP},</if>
+		<if test="createUserId != null">create_user_Id = #{createUserId,jdbcType=VARCHAR},</if>
+		<if test="createUserName != null">create_user_name = #{createUserName,jdbcType=VARCHAR},</if>
+		<if test="modifyDate != null">modify_date = #{modifyDate,jdbcType=TIMESTAMP},</if>
+		<if test="modifyUserId != null">modify_user_Id = #{modifyUserId,jdbcType=VARCHAR},</if>
+		<if test="modifyUserName != null">modify_user_name = #{modifyUserName,jdbcType=VARCHAR},</if>
+		<if test="couponExplain != null">coupon_explain = #{couponExplain,jdbcType=LONGVARCHAR},</if>
+		<if test="serviceCouponType != null">service_coupon_type = #{serviceCouponType,jdbcType=INTEGER},</if>
+        <if test="skuId != null">sku_id = #{skuId,jdbcType=VARCHAR},</if>
+        <if test="discount != null">discount = #{discount,jdbcType=DECIMAL}</if>
+	</trim>
+    where cr_id = #{crId,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select cr_id, coupon_name, coupon_type, coupon_quantity, coupon_quantity_get, valid_time_start, 
+    valid_time_end, face_value, change_grade, change_integral, pic_small, pic_big, product_id, 
+    delete_mark, enabled_mark, description, create_date, create_user_Id, create_user_name, 
+    modify_date, modify_user_Id, modify_user_name, coupon_explain, service_coupon_type, sku_id, discount
+    from coupon_inventory
+    where cr_id = #{crId,jdbcType=VARCHAR}
+    and delete_mark = 0
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select cr_id, coupon_name, coupon_type, coupon_quantity, coupon_quantity_get, valid_time_start, 
+    valid_time_end, face_value, change_grade, change_integral, pic_small, pic_big, product_id, 
+    delete_mark, enabled_mark, description, create_date, create_user_Id, create_user_name, 
+    modify_date, modify_user_Id, modify_user_name, coupon_explain, service_coupon_type, sku_id, discount
+    from coupon_inventory
+    where delete_mark = 0
+  </select>
+  <select id="selectValidCouponList" resultMap="BaseResultMap">
+	SELECT
+		cp.cr_id AS crId,
+		cp.coupon_name AS couponName,
+		cp.coupon_type AS couponType,
+		cp.service_coupon_type AS serviceCouponType,
+		cp.coupon_quantity AS couponQuantity,
+		cp.coupon_quantity_get AS couponQuantityGet,
+		cp.valid_time_start AS validTimeStart,
+		cp.valid_time_end AS validTimeEnd,
+		cp.face_value AS faceValue,
+		cp.discount AS discount,
+		cp.change_grade AS changeGrade,
+		cp.change_integral AS changeIntegral,
+		cp.pic_small AS picSmall,
+		cp.pic_big AS picBig,
+		cp.sku_id AS skuId,
+		ps.sku_name AS skuName,
+		cp.product_id AS productId,
+		pi.product_name AS productName,
+		cp.coupon_explain AS couponExplain
+	FROM
+		coupon_inventory cp
+	LEFT JOIN product_sku ps ON cp.sku_id = ps.sku_id
+	LEFT JOIN product_info pi ON cp.product_id = pi.product_id
+    WHERE delete_mark = 0
+    AND valid_time_end <![CDATA[>=]]> NOW()
+  </select>
+  
+  <!-- 通过券名模糊查询，券类型、开始时间查询到的总条数 -->
+  <select id="selectSumByCouponNameOrTime" resultType="Integer">
+  	select count(0)
+  	from coupon_inventory
+  	where 1=1
+  	<if test="couponName != null">
+  		and coupon_name like concat('%',#{couponName,jdbcType=VARCHAR},'%')
+  	</if>
+  	<if test="couponType != null">
+  		and coupon_type = #{couponType}
+  	</if>
+  	<if test="startDateOne != null and startDateOne != ''">
+  		and valid_time_start > concat(#{startDateOne}, ' 0:0:0') 
+  	</if>
+  	<if test="startDateTwo != null and startDateTwo != ''">
+  		and valid_time_start <![CDATA[<]]> concat(#{startDateTwo}, ' 23:59:59')
+  	</if>
+  </select>
+  
+  <!-- 通过券名称模糊查询，开始时间查询获得券列表并分页 -->
+  <select id="selectCouponListPagedByNameOrTime" resultMap="BaseResultMap">
+  	select cr_id, coupon_name, coupon_type, coupon_quantity, coupon_quantity_get, valid_time_start, 
+    valid_time_end, face_value, change_grade, change_integral, pic_small, pic_big, product_id, 
+    delete_mark, enabled_mark, description, create_date, create_user_Id, create_user_name, 
+    modify_date, modify_user_Id, modify_user_name, coupon_explain, service_coupon_type, sku_id, discount
+    from coupon_inventory
+    where delete_mark = 0
+    <if test="couponName != null">
+    	and coupon_name like concat('%',#{couponName,jdbcType=VARCHAR},'%')
+    </if>
+    <if test="couponType != null">
+  		and coupon_type = #{couponType}
+  	</if>
+    <if test="startDateOne != null and startDateOne != ''">
+  		and valid_time_start >= concat(#{startDateOne}, ' 0:0:0') 
+  	</if>
+  	<if test="startDateTwo != null and startDateTwo != ''">
+  		and valid_time_start <![CDATA[<=]]> concat(#{startDateTwo}, ' 23:59:59')
+  	</if>
+  		order by create_date desc
+  	<if test="startIndex &gt;= 0">
+  		limit #{startIndex,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+  	</if>
+  </select>
+  
+  <!-- 根据类型查询未过期的优惠券 -->
+  <select id="selectValidByType" resultMap="BaseResultMap">
+	SELECT
+		cp.cr_id AS crId,
+		cp.coupon_name AS couponName,
+		cp.coupon_type AS couponType,
+		cp.service_coupon_type AS serviceCouponType,
+		cp.coupon_quantity AS couponQuantity,
+		cp.coupon_quantity_get AS couponQuantityGet,
+		cp.valid_time_start AS validTimeStart,
+		cp.valid_time_end AS validTimeEnd,
+		cp.face_value AS faceValue,
+		cp.discount AS discount,
+		cp.change_grade AS changeGrade,
+		cp.change_integral AS changeIntegral,
+		cp.pic_small AS picSmall,
+		cp.pic_big AS picBig,
+		cp.sku_id AS skuId,
+		ps.sku_name AS skuName,
+		cp.product_id AS productId,
+		pi.product_name AS productName,
+		cp.coupon_explain AS couponExplain
+	FROM
+		coupon_inventory cp
+	LEFT JOIN product_sku ps ON cp.sku_id = ps.sku_id
+	LEFT JOIN product_info pi ON cp.product_id = pi.product_id
+    WHERE cp.delete_mark = 0 and cp.coupon_type = #{type,jdbcType=INTEGER}
+    AND cp.valid_time_end <![CDATA[>=]]> NOW()
+    order by cp.modify_date desc
+    <if test="startIndex &gt;= 0">
+  		limit #{startIndex,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+  	</if>
+  </select>
+  
+  <!-- 查询优惠券详情 -->
+  <select id="selectCouponDetailByCrId" parameterType="java.lang.String" resultType="hashMap">
+  	SELECT
+		cp.cr_id AS crId,
+		cp.coupon_name AS couponName,
+		cp.coupon_type AS couponType,
+		cp.service_coupon_type AS serviceCouponType,
+		cp.coupon_quantity AS couponQuantity,
+		cp.coupon_quantity_get AS couponQuantityGet,
+		cp.valid_time_start AS validTimeStart,
+		cp.valid_time_end AS validTimeEnd,
+		cp.face_value AS faceValue,
+		cp.discount AS discount,
+		cp.change_grade AS changeGrade,
+		cp.change_integral AS changeIntegral,
+		cp.pic_small AS picSmall,
+		cp.pic_big AS picBig,
+		cp.sku_id AS skuId,
+		ps.sku_name AS skuName,
+		cp.product_id AS productId,
+		pi.product_name AS productName,
+		cp.coupon_explain AS couponExplain,
+		cp.description AS description
+	FROM
+		coupon_inventory cp
+	LEFT JOIN product_sku ps ON cp.sku_id = ps.sku_id
+	LEFT JOIN product_info pi ON cp.product_id = pi.product_id
+    WHERE cp.cr_id = #{crId}
+  </select>
+</mapper>

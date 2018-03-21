@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.clubank.weihang.manage.systemSettings.dao.BaseAreaMapper">
+  <resultMap id="BaseResultMap" type="cn.com.clubank.weihang.manage.systemSettings.pojo.BaseArea">
+    <id column="a_id" jdbcType="VARCHAR" property="aId" />
+    <result column="parent_id" jdbcType="VARCHAR" property="parentId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="quick_query" jdbcType="VARCHAR" property="quickQuery" />
+    <result column="simple_spelling" jdbcType="VARCHAR" property="simpleSpelling" />
+    <result column="layer" jdbcType="INTEGER" property="layer" />
+    <result column="sort" jdbcType="INTEGER" property="sort" />
+    <result column="delete_mark" jdbcType="INTEGER" property="deleteMark" />
+    <result column="enabled_mark" jdbcType="INTEGER" property="enabledMark" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="create_user_Id" jdbcType="VARCHAR" property="createUserId" />
+    <result column="create_user_name" jdbcType="VARCHAR" property="createUserName" />
+    <result column="modify_date" jdbcType="TIMESTAMP" property="modifyDate" />
+    <result column="modify_user_Id" jdbcType="VARCHAR" property="modifyUserId" />
+    <result column="modify_user_name" jdbcType="VARCHAR" property="modifyUserName" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from base_area
+    where a_id = #{aId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.com.clubank.weihang.manage.systemSettings.pojo.BaseArea">
+    insert into base_area (a_id, parent_id, name, 
+      quick_query, simple_spelling, layer, 
+      sort, delete_mark, enabled_mark, 
+      description, create_date, create_user_Id, 
+      create_user_name, modify_date, modify_user_Id, 
+      modify_user_name)
+    values (#{aId,jdbcType=VARCHAR}, #{parentId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{quickQuery,jdbcType=VARCHAR}, #{simpleSpelling,jdbcType=VARCHAR}, #{layer,jdbcType=INTEGER}, 
+      #{sort,jdbcType=INTEGER}, #{deleteMark,jdbcType=INTEGER}, #{enabledMark,jdbcType=INTEGER}, 
+      #{description,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{createUserId,jdbcType=VARCHAR}, 
+      #{createUserName,jdbcType=VARCHAR}, #{modifyDate,jdbcType=TIMESTAMP}, #{modifyUserId,jdbcType=VARCHAR}, 
+      #{modifyUserName,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.com.clubank.weihang.manage.systemSettings.pojo.BaseArea">
+    update base_area
+    set parent_id = #{parentId,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      quick_query = #{quickQuery,jdbcType=VARCHAR},
+      simple_spelling = #{simpleSpelling,jdbcType=VARCHAR},
+      layer = #{layer,jdbcType=INTEGER},
+      sort = #{sort,jdbcType=INTEGER},
+      delete_mark = #{deleteMark,jdbcType=INTEGER},
+      enabled_mark = #{enabledMark,jdbcType=INTEGER},
+      description = #{description,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      create_user_Id = #{createUserId,jdbcType=VARCHAR},
+      create_user_name = #{createUserName,jdbcType=VARCHAR},
+      modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+      modify_user_Id = #{modifyUserId,jdbcType=VARCHAR},
+      modify_user_name = #{modifyUserName,jdbcType=VARCHAR}
+    where a_id = #{aId,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select a_id, parent_id, name, quick_query, simple_spelling, layer, sort, delete_mark, 
+    enabled_mark, description, create_date, create_user_Id, create_user_name, modify_date, 
+    modify_user_Id, modify_user_name
+    from base_area
+    where a_id = #{aId,jdbcType=VARCHAR}
+    and delete_mark = 0
+  </select>
+  <select id="selectAreaListByParentId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select a_id, parent_id, name, quick_query, simple_spelling, layer, sort, delete_mark, 
+    enabled_mark, description, create_date, create_user_Id, create_user_name, modify_date, 
+    modify_user_Id, modify_user_name
+    from base_area
+    where parent_id = #{parentId} and delete_mark = 0
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select a_id, parent_id, name, quick_query, simple_spelling, layer, sort, delete_mark, 
+    enabled_mark, description, create_date, create_user_Id, create_user_name, modify_date, 
+    modify_user_Id, modify_user_name
+    from base_area
+    where delete_mark = 0
+  </select>
+</mapper>

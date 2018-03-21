@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.clubank.weihang.manage.systemSettings.dao.IntegralRuleMapper">
+  <resultMap id="BaseResultMap" type="cn.com.clubank.weihang.manage.systemSettings.pojo.IntegralRule">
+    <id column="integral_rule_id" jdbcType="VARCHAR" property="integralRuleId" />
+    <result column="rule_code" jdbcType="VARCHAR" property="ruleCode" />
+    <result column="rule_name" jdbcType="VARCHAR" property="ruleName" />
+    <result column="rule_value" jdbcType="INTEGER" property="ruleValue" />
+    <result column="base_value" jdbcType="INTEGER" property="baseValue" />
+    <result column="rule_status" jdbcType="INTEGER" property="ruleStatus" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="create_user_Id" jdbcType="VARCHAR" property="createUserId" />
+    <result column="create_user_name" jdbcType="VARCHAR" property="createUserName" />
+    <result column="modify_date" jdbcType="TIMESTAMP" property="modifyDate" />
+    <result column="modify_user_Id" jdbcType="VARCHAR" property="modifyUserId" />
+    <result column="modify_user_name" jdbcType="VARCHAR" property="modifyUserName" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from integral_rule
+    where integral_rule_id = #{integralRuleId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.com.clubank.weihang.manage.systemSettings.pojo.IntegralRule">
+    insert into integral_rule (integral_rule_id, rule_code, rule_name, 
+      rule_value, base_value, rule_status, description, create_date, 
+      create_user_Id, create_user_name, modify_date, 
+      modify_user_Id, modify_user_name)
+    values (#{integralRuleId,jdbcType=VARCHAR}, #{ruleCode,jdbcType=VARCHAR}, #{ruleName,jdbcType=VARCHAR}, 
+      #{ruleValue,jdbcType=INTEGER}, #{baseValue,jdbcType=INTEGER}, #{ruleStatus,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{createUserId,jdbcType=VARCHAR}, #{createUserName,jdbcType=VARCHAR}, #{modifyDate,jdbcType=TIMESTAMP}, 
+      #{modifyUserId,jdbcType=VARCHAR}, #{modifyUserName,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.com.clubank.weihang.manage.systemSettings.pojo.IntegralRule">
+    update integral_rule
+    set rule_code = #{ruleCode,jdbcType=VARCHAR},
+      rule_name = #{ruleName,jdbcType=VARCHAR},
+      rule_value = #{ruleValue,jdbcType=INTEGER},
+      base_value = #{baseValue,jdbcType=INTEGER},
+      rule_status = #{ruleStatus,jdbcType=INTEGER},
+      description = #{description,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      create_user_Id = #{createUserId,jdbcType=VARCHAR},
+      create_user_name = #{createUserName,jdbcType=VARCHAR},
+      modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+      modify_user_Id = #{modifyUserId,jdbcType=VARCHAR},
+      modify_user_name = #{modifyUserName,jdbcType=VARCHAR}
+    where integral_rule_id = #{integralRuleId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateSelectiveByPrimaryKey" parameterType="cn.com.clubank.weihang.manage.systemSettings.pojo.IntegralRule">
+    update integral_rule
+    <trim prefix="SET" suffixOverrides=",">
+	  <if test="ruleCode != null">rule_code = #{ruleCode,jdbcType=VARCHAR},</if>
+      <if test="ruleName != null">rule_name = #{ruleName,jdbcType=VARCHAR},</if>
+      <if test="ruleValue != null">rule_value = #{ruleValue,jdbcType=INTEGER},</if>
+      <if test="baseValue != null">base_value = #{baseValue,jdbcType=INTEGER},</if>
+      <if test="ruleStatus != null">rule_status = #{ruleStatus,jdbcType=INTEGER},</if>
+      <if test="description != null">description = #{description,jdbcType=VARCHAR},</if>
+      <if test="createDate != null">create_date = #{createDate,jdbcType=TIMESTAMP},</if>
+      <if test="createUserId != null">create_user_Id = #{createUserId,jdbcType=VARCHAR},</if>
+      <if test="createUserName != null">create_user_name = #{createUserName,jdbcType=VARCHAR},</if>
+      <if test="modifyDate != null">modify_date = #{modifyDate,jdbcType=TIMESTAMP},</if>
+      <if test="modifyUserId != null">modify_user_Id = #{modifyUserId,jdbcType=VARCHAR},</if>
+      <if test="modifyUserName != null">modify_user_name = #{modifyUserName,jdbcType=VARCHAR}</if>
+    </trim>
+    where integral_rule_id = #{integralRuleId,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select integral_rule_id, rule_code, rule_name, rule_value, base_value, rule_status, description, create_date, 
+    create_user_Id, create_user_name, modify_date, modify_user_Id, modify_user_name
+    from integral_rule
+    where integral_rule_id = #{integralRuleId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByRuleCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select integral_rule_id, rule_code, rule_name, rule_value, base_value, rule_status, description, create_date, 
+    create_user_Id, create_user_name, modify_date, modify_user_Id, modify_user_name
+    from integral_rule
+    where rule_code = #{ruleCode,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select integral_rule_id, rule_code, rule_name, rule_value, base_value, rule_status, description, create_date, 
+    create_user_Id, create_user_name, modify_date, modify_user_Id, modify_user_name
+    from integral_rule
+  </select>
+  
+  <!-- 后台 -->
+  <select id="selectIntegralRuleCount" resultType="int">
+    select count(0)
+    from integral_rule
+    where 1 = 1
+    <if test="ruleName != null and ruleName != ''">
+    	and rule_name like concat('%', #{ruleName}, '%')
+    </if>
+  </select>
+  <select id="selectIntegralRuleList" resultMap="BaseResultMap">
+    select integral_rule_id, rule_code, rule_name, rule_value, base_value, rule_status, description, create_date, 
+    create_user_Id, create_user_name, modify_date, modify_user_Id, modify_user_name
+    from integral_rule
+    where 1 = 1
+    <if test="ruleName != null and ruleName != ''">
+    	and rule_name like concat('%', #{ruleName}, '%')
+    </if>
+    order by create_date
+    <if test="start &gt;= 0">
+    	limit #{start,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+    </if>
+  </select>
+</mapper>

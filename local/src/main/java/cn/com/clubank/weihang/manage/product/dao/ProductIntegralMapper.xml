@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.clubank.weihang.manage.product.dao.ProductIntegralMapper">
+  <resultMap id="BaseResultMap" type="cn.com.clubank.weihang.manage.product.pojo.ProductIntegral">
+    <id column="product_integral_id" jdbcType="VARCHAR" property="productIntegralId" />
+    <result column="sku_id" jdbcType="VARCHAR" property="skuId" />
+    <result column="integral_value" jdbcType="INTEGER" property="integralValue" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="create_user_Id" jdbcType="VARCHAR" property="createUserId" />
+    <result column="create_user_name" jdbcType="VARCHAR" property="createUserName" />
+    <result column="modify_date" jdbcType="TIMESTAMP" property="modifyDate" />
+    <result column="modify_user_Id" jdbcType="VARCHAR" property="modifyUserId" />
+    <result column="modify_user_name" jdbcType="VARCHAR" property="modifyUserName" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from product_integral
+    where product_integral_id = #{productIntegralId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.com.clubank.weihang.manage.product.pojo.ProductIntegral">
+    insert into product_integral (product_integral_id, sku_id, integral_value, 
+      status, description, create_date, 
+      create_user_Id, create_user_name, modify_date, 
+      modify_user_Id, modify_user_name)
+    values (#{productIntegralId,jdbcType=VARCHAR}, #{skuId,jdbcType=VARCHAR}, #{integralValue,jdbcType=INTEGER}, 
+      #{status,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{createUserId,jdbcType=VARCHAR}, #{createUserName,jdbcType=VARCHAR}, #{modifyDate,jdbcType=TIMESTAMP}, 
+      #{modifyUserId,jdbcType=VARCHAR}, #{modifyUserName,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.com.clubank.weihang.manage.product.pojo.ProductIntegral">
+    update product_integral
+    set sku_id = #{skuId,jdbcType=VARCHAR},
+      integral_value = #{integralValue,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      description = #{description,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      create_user_Id = #{createUserId,jdbcType=VARCHAR},
+      create_user_name = #{createUserName,jdbcType=VARCHAR},
+      modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+      modify_user_Id = #{modifyUserId,jdbcType=VARCHAR},
+      modify_user_name = #{modifyUserName,jdbcType=VARCHAR}
+    where product_integral_id = #{productIntegralId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateSelectiveByPrimaryKey" parameterType="cn.com.clubank.weihang.manage.product.pojo.ProductIntegral">
+    update product_integral
+    <trim prefix="SET" suffixOverrides=",">
+	  <if test="skuId != null">sku_id = #{skuId,jdbcType=VARCHAR},</if>
+      <if test="integralValue != null">integral_value = #{integralValue,jdbcType=INTEGER},</if>
+      <if test="status != null">status = #{status,jdbcType=INTEGER},</if>
+      <if test="description != null">description = #{description,jdbcType=VARCHAR},</if>
+      <if test="createDate != null">create_date = #{createDate,jdbcType=TIMESTAMP},</if>
+      <if test="createUserId != null">create_user_Id = #{createUserId,jdbcType=VARCHAR},</if>
+      <if test="createUserName != null">create_user_name = #{createUserName,jdbcType=VARCHAR},</if>
+      <if test="modifyDate != null">modify_date = #{modifyDate,jdbcType=TIMESTAMP},</if>
+      <if test="modifyUserId != null">modify_user_Id = #{modifyUserId,jdbcType=VARCHAR},</if>
+      <if test="modifyUserName != null">modify_user_name = #{modifyUserName,jdbcType=VARCHAR}</if>
+     </trim>
+    where product_integral_id = #{productIntegralId,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select product_integral_id, sku_id, integral_value, status, description, create_date, 
+    create_user_Id, create_user_name, modify_date, modify_user_Id, modify_user_name
+    from product_integral
+    where product_integral_id = #{productIntegralId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectBySkuId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select product_integral_id, sku_id, integral_value, status, description, create_date, 
+    create_user_Id, create_user_name, modify_date, modify_user_Id, modify_user_name
+    from product_integral
+    where sku_id = #{skuId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select product_integral_id, sku_id, integral_value, status, description, create_date, 
+    create_user_Id, create_user_name, modify_date, modify_user_Id, modify_user_name
+    from product_integral
+  </select>
+  
+  <select id="selectProductIntegralCount" resultType="int">
+	SELECT
+		count(0)
+	FROM
+		product_integral pg
+	LEFT JOIN product_sku ps ON pg.sku_id = ps.sku_id
+  	where 1 = 1
+  	<if test="status != null">
+  		and pg.status = #{status}
+  	</if>
+  	<if test="skuName != null and skuName != ''">
+  		and ps.sku_name like concat('%', #{skuName}, '%')
+  	</if>
+  </select>
+  <select id="selectProductIntegralList" resultType="hashMap">
+	SELECT
+		pg.product_integral_id AS productIntegralId,
+		pg.sku_id AS skuId,
+		ps.sku_name AS skuName,
+		pg.integral_value AS integralValue,
+		pg.status AS status,
+		pg.description AS description,
+		pg.create_date AS createDate
+	FROM
+		product_integral pg
+	LEFT JOIN product_sku ps ON pg.sku_id = ps.sku_id
+  	where 1 = 1
+  	<if test="status != null">
+  		and pg.status = #{status}
+  	</if>
+  	<if test="skuName != null and skuName != ''">
+  		and ps.sku_name like concat('%', #{skuName}, '%')
+  	</if>
+  	order by pg.create_date desc
+    <if test="start &gt;= 0">
+    	limit #{start,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+    </if>
+  </select>
+</mapper>

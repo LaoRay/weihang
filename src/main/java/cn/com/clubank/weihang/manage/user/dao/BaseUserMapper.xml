@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.clubank.weihang.manage.user.dao.BaseUserMapper">
+  <resultMap id="BaseResultMap" type="cn.com.clubank.weihang.manage.user.pojo.BaseUser">
+    <id column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="account" jdbcType="VARCHAR" property="account" />
+    <result column="pwd" jdbcType="VARCHAR" property="pwd" />
+    <result column="realname" jdbcType="VARCHAR" property="realname" />
+    <result column="head_icon" jdbcType="VARCHAR" property="headIcon" />
+    <result column="simple_spelling" jdbcType="VARCHAR" property="simpleSpelling" />
+    <result column="gender" jdbcType="INTEGER" property="gender" />
+    <result column="birthday" jdbcType="TIMESTAMP" property="birthday" />
+    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+    <result column="telephone" jdbcType="VARCHAR" property="telephone" />
+    <result column="mail" jdbcType="VARCHAR" property="mail" />
+    <result column="qq" jdbcType="VARCHAR" property="qq" />
+    <result column="wechat" jdbcType="VARCHAR" property="wechat" />
+    <result column="manager_id" jdbcType="VARCHAR" property="managerId" />
+    <result column="department_id" jdbcType="VARCHAR" property="departmentId" />
+    <result column="post" jdbcType="INTEGER" property="post" />
+    <result column="duty" jdbcType="INTEGER" property="duty" />
+    <result column="work_group_Id" jdbcType="VARCHAR" property="workGroupId" />
+    <result column="user_status" jdbcType="INTEGER" property="userStatus" />
+    <result column="user_online" jdbcType="INTEGER" property="userOnline" />
+    <result column="check_online" jdbcType="INTEGER" property="checkOnline" />
+    <result column="first_visit" jdbcType="TIMESTAMP" property="firstVisit" />
+    <result column="previous_visit" jdbcType="TIMESTAMP" property="previousVisit" />
+    <result column="last_visit" jdbcType="TIMESTAMP" property="lastVisit" />
+    <result column="login_count" jdbcType="INTEGER" property="loginCount" />
+    <result column="today_star_date" jdbcType="TIMESTAMP" property="todayStarDate" />
+    <result column="today_star" jdbcType="INTEGER" property="todayStar" />
+    <result column="shop_id" jdbcType="VARCHAR" property="shopId" />
+    <result column="shop_name" jdbcType="VARCHAR" property="shopName" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="modify_date" jdbcType="TIMESTAMP" property="modifyDate" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from base_user
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.com.clubank.weihang.manage.user.pojo.BaseUser">
+    insert into base_user (user_id, account, pwd, 
+      realname, head_icon, simple_spelling, 
+      gender, birthday, mobile, 
+      telephone, mail, qq, 
+      wechat, manager_id, department_id, 
+      post, duty, work_group_Id, user_status,
+      user_online, check_online, first_visit, 
+      previous_visit, last_visit, login_count,
+      today_star_date, today_star, shop_id, shop_name,
+      create_date, modify_date
+      )
+    values (#{userId,jdbcType=VARCHAR}, #{account,jdbcType=VARCHAR}, #{pwd,jdbcType=VARCHAR}, 
+      #{realname,jdbcType=VARCHAR}, #{headIcon,jdbcType=VARCHAR}, #{simpleSpelling,jdbcType=VARCHAR}, 
+      #{gender,jdbcType=INTEGER}, #{birthday,jdbcType=TIMESTAMP}, #{mobile,jdbcType=VARCHAR}, 
+      #{telephone,jdbcType=VARCHAR}, #{mail,jdbcType=VARCHAR}, #{qq,jdbcType=VARCHAR}, 
+      #{wechat,jdbcType=VARCHAR}, #{managerId,jdbcType=VARCHAR}, #{departmentId,jdbcType=VARCHAR}, 
+      #{post,jdbcType=INTEGER}, #{duty,jdbcType=INTEGER}, #{workGroupId,jdbcType=VARCHAR}, #{userStatus,jdbcType=INTEGER},
+      #{userOnline,jdbcType=INTEGER}, #{checkOnline,jdbcType=INTEGER}, #{firstVisit,jdbcType=TIMESTAMP}, 
+      #{previousVisit,jdbcType=TIMESTAMP}, #{lastVisit,jdbcType=TIMESTAMP}, #{loginCount,jdbcType=INTEGER},
+      #{todayStarDate,jdbcType=TIMESTAMP}, #{todayStar,jdbcType=INTEGER}, #{shopId,jdbcType=VARCHAR}, #{shopName,jdbcType=VARCHAR},
+      #{createDate,jdbcType=TIMESTAMP},#{modifyDate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.com.clubank.weihang.manage.user.pojo.BaseUser">
+    update base_user
+    set account = #{account,jdbcType=VARCHAR},
+      pwd = #{pwd,jdbcType=VARCHAR},
+      realname = #{realname,jdbcType=VARCHAR},
+      head_icon = #{headIcon,jdbcType=VARCHAR},
+      simple_spelling = #{simpleSpelling,jdbcType=VARCHAR},
+      gender = #{gender,jdbcType=INTEGER},
+      birthday = #{birthday,jdbcType=TIMESTAMP},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      telephone = #{telephone,jdbcType=VARCHAR},
+      mail = #{mail,jdbcType=VARCHAR},
+      qq = #{qq,jdbcType=VARCHAR},
+      wechat = #{wechat,jdbcType=VARCHAR},
+      manager_id = #{managerId,jdbcType=VARCHAR},
+      department_id = #{departmentId,jdbcType=VARCHAR},
+      post = #{post,jdbcType=INTEGER},
+      duty = #{duty,jdbcType=INTEGER},
+      work_group_Id = #{workGroupId,jdbcType=VARCHAR},
+      user_online = #{userOnline,jdbcType=INTEGER},
+      user_status = #{userStatus,jdbcType=INTEGER},
+      check_online = #{checkOnline,jdbcType=INTEGER},
+      first_visit = #{firstVisit,jdbcType=TIMESTAMP},
+      previous_visit = #{previousVisit,jdbcType=TIMESTAMP},
+      last_visit = #{lastVisit,jdbcType=TIMESTAMP},
+      login_count = #{loginCount,jdbcType=INTEGER},
+      today_star_date = #{todayStarDate,jdbcType=TIMESTAMP},
+      today_star = #{todayStar,jdbcType=INTEGER},
+      shop_id = #{shopId,jdbcType=VARCHAR}, 
+      shop_name = #{shopName,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      modify_date = #{modifyDate,jdbcType=TIMESTAMP}
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateSelectiveByPrimaryKey" parameterType="cn.com.clubank.weihang.manage.user.pojo.BaseUser">
+    update base_user
+    <trim prefix="SET" suffixOverrides=",">
+	  <if test="account != null">account = #{account,jdbcType=VARCHAR},</if>
+      <if test="pwd != null">pwd = #{pwd,jdbcType=VARCHAR},</if>
+      <if test="realname != null">realname = #{realname,jdbcType=VARCHAR},</if>
+      <if test="headIcon != null">head_icon = #{headIcon,jdbcType=VARCHAR},</if>
+      <if test="simpleSpelling != null">simple_spelling = #{simpleSpelling,jdbcType=VARCHAR},</if>
+      <if test="gender != null">gender = #{gender,jdbcType=INTEGER},</if>
+      <if test="birthday != null">birthday = #{birthday,jdbcType=TIMESTAMP},</if>
+      <if test="mobile != null">mobile = #{mobile,jdbcType=VARCHAR},</if>
+      <if test="telephone != null">telephone = #{telephone,jdbcType=VARCHAR},</if>
+      <if test="mail != null">mail = #{mail,jdbcType=VARCHAR},</if>
+      <if test="qq != null">qq = #{qq,jdbcType=VARCHAR},</if>
+      <if test="wechat != null">wechat = #{wechat,jdbcType=VARCHAR},</if>
+      <if test="managerId != null">manager_id = #{managerId,jdbcType=VARCHAR},</if>
+      <if test="departmentId != null">department_id = #{departmentId,jdbcType=VARCHAR},</if>
+      <if test="post != null">post = #{post,jdbcType=INTEGER},</if>
+      <if test="duty != null">duty = #{duty,jdbcType=INTEGER},</if>
+      <if test="workGroupId != null">work_group_Id = #{workGroupId,jdbcType=VARCHAR},</if>
+      <if test="userStatus != null">user_status = #{userStatus,jdbcType=INTEGER},</if>
+      <if test="userOnline != null">user_online = #{userOnline,jdbcType=INTEGER},</if>
+      <if test="checkOnline != null">check_online = #{checkOnline,jdbcType=INTEGER},</if>
+      <if test="firstVisit != null">first_visit = #{firstVisit,jdbcType=TIMESTAMP},</if>
+      <if test="previousVisit != null">previous_visit = #{previousVisit,jdbcType=TIMESTAMP},</if>
+      <if test="lastVisit != null">last_visit = #{lastVisit,jdbcType=TIMESTAMP},</if>
+      <if test="loginCount != null">login_count = #{loginCount,jdbcType=INTEGER},</if>
+      <if test="todayStarDate != null">today_star_date = #{todayStarDate,jdbcType=TIMESTAMP},</if>
+      <if test="todayStar != null">today_star = #{todayStar,jdbcType=INTEGER},</if>
+      <if test="shopId != null">shop_id = #{shopId,jdbcType=VARCHAR},</if>
+      <if test="shopName != null">shop_name = #{shopName,jdbcType=VARCHAR},</if>
+      <if test="createDate != null">create_date = #{createDate,jdbcType=TIMESTAMP},</if>
+      <if test="modifyDate != null">modify_date = #{modifyDate,jdbcType=TIMESTAMP}</if>
+    </trim>
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select user_id, account, pwd, realname, head_icon, simple_spelling, gender, birthday, 
+    mobile, telephone, mail, qq, wechat, manager_id, department_id, post, duty, work_group_Id, 
+    user_online, check_online, first_visit, previous_visit, last_visit, login_count, user_status,
+    today_star_date, today_star, shop_id, shop_name, create_date, modify_date
+    from base_user
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select user_id, account, pwd, realname, head_icon, simple_spelling, gender, birthday, 
+    mobile, telephone, mail, qq, wechat, manager_id, department_id, post, duty, work_group_Id, 
+    user_online, check_online, first_visit, previous_visit, last_visit, login_count, user_status,
+    today_star_date, today_star, shop_id, shop_name, create_date, modify_date
+    from base_user
+  </select>
+  <!-- 通过职位查询用户名和头像 -->
+  <select id="selectByDuty" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  	select user_id, realname, head_icon
+  	from base_user
+  	where duty = #{duty,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectNameById" parameterType="java.lang.String" resultType="string">
+    select ifnull(realname, 'NULL') as realname
+    from base_user
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByAccount" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select user_id, account, pwd, realname, head_icon, simple_spelling, gender, birthday, 
+    mobile, telephone, mail, qq, wechat, manager_id, department_id, post, duty, work_group_Id, 
+    user_online, check_online, first_visit, previous_visit, last_visit, login_count, user_status,
+    today_star_date, today_star, shop_id, shop_name, create_date, modify_date
+    from base_user
+    where account = #{account,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectByMobile" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select user_id, account, pwd, realname, head_icon, simple_spelling, gender, birthday, 
+    mobile, telephone, mail, qq, wechat, manager_id, department_id, post, duty, work_group_Id, 
+    user_online, check_online, first_visit, previous_visit, last_visit, login_count, user_status,
+    today_star_date, today_star, shop_id, shop_name, create_date, modify_date
+    from base_user
+    where mobile = #{mobile,jdbcType=VARCHAR}
+  </select>
+  
+  <!-- 后台 -->
+  <select id="selectBaseUserCount" resultType="int">
+  	select count(0)
+  	from base_user
+  	where 1 = 1
+  	<if test="account != null and account != ''">
+  		and account = #{account}
+  	</if>
+  	<if test="realname != null and realname != ''">
+  		and realname = #{realname}
+  	</if>
+  	<if test="departmentId != null and departmentId != ''">
+  		and department_id = #{departmentId}
+  	</if>
+  	<if test="userStatus != null">
+  		and user_status = #{userStatus}
+  	</if>
+  </select>
+  <select id="selectBaseUserList" resultType="hashMap">
+  	SELECT
+		u.user_id AS userId,
+		u.account AS account,
+		u.realname AS realname,
+		u.head_icon AS headIcon,
+		u.simple_spelling AS simpleSpelling,
+		u.gender AS gender,
+		u.birthday AS birthday,
+		u.mobile AS mobile,
+		u.telephone AS telephone,
+		u.mail AS mail,
+		u.qq AS qq,
+		u.wechat AS wechat,
+		u.manager_id AS managerId,
+		bu.realname AS manager,
+		u.department_id AS departmentId,
+		d.d_name AS dName,
+		u.post AS post,
+		u.duty AS duty,
+		u.user_status AS userStatus,
+		u.user_online AS userOnline,
+		u.previous_visit AS previousVisit,
+		u.login_count AS loginCount,
+		u.today_star_date AS todayStarDate, 
+		u.today_star AS todayStar, 
+		u.shop_id AS shopId, 
+		u.shop_name AS shopName
+	FROM
+		base_user u
+	LEFT JOIN base_department d ON u.department_id = d.d_id
+	LEFT JOIN base_user bu ON u.manager_id = bu.user_id
+  	where 1 = 1
+  	<if test="account != null and account != ''">
+  		and u.account = #{account}
+  	</if>
+  	<if test="realname != null and realname != ''">
+  		and u.realname = #{realname}
+  	</if>
+  	<if test="departmentId != null and departmentId != ''">
+  		and u.department_id = #{departmentId}
+  	</if>
+  	<if test="userStatus != null">
+  		and u.user_status = #{userStatus}
+  	</if>
+  	order by u.create_date desc
+  	<if test="start &gt;= 0">
+    	limit #{start,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+    </if>
+  </select>
+  <select id="selectUserInfoByPrimaryKey" parameterType="java.lang.String" resultType="hashMap">
+	SELECT
+		u.user_id AS userId,
+		u.account AS account,
+		u.realname AS realname,
+		u.head_icon AS headIcon,
+		u.simple_spelling AS simpleSpelling,
+		u.gender AS gender,
+		u.birthday AS birthday,
+		u.mobile AS mobile,
+		u.telephone AS telephone,
+		u.mail AS mail,
+		u.qq AS qq,
+		u.wechat AS wechat,
+		u.manager_id AS managerId,
+		bu.realname AS manager,
+		u.department_id AS departmentId,
+		d.d_name AS dName,
+		u.post AS post,
+		u.duty AS duty,
+		u.work_group_Id AS workGroupId,
+		u.user_status AS userStatus,
+		u.user_online AS userOnline,
+		u.check_online AS checkOnline,
+		u.first_visit AS firstVisit,
+		u.previous_visit AS previousVisit,
+		u.last_visit AS lastVisit,
+		u.login_count AS loginCount,
+		u.today_star_date AS todayStarDate, 
+		u.today_star AS todayStar, 
+		u.shop_id AS shopId, 
+		u.shop_name AS shopName
+	FROM
+		base_user u
+	LEFT JOIN base_department d ON u.department_id = d.d_id
+	LEFT JOIN base_user bu ON u.manager_id = bu.user_id
+	WHERE u.user_id = #{userId}
+  </select>
+  <select id="selectUserRoleByUserId" parameterType="java.lang.String" resultType="hashMap">
+	SELECT
+		u.user_id AS userId,
+		r.role_id AS roleId,
+		r.role_name AS roleName,
+		r.description AS description
+	FROM
+		base_user u
+	LEFT JOIN base_user_role ur ON u.user_id = ur.user_id
+	LEFT JOIN base_role r ON ur.role_id = r.role_id
+	where u.user_id = #{userId}
+  </select>
+  
+  <!-- 统计当前门店的推荐人数 -->
+  <select id="selectCountSuggestedUsers" parameterType="String" resultType="Integer">
+  	select count(0)
+  	from base_user
+  	where shop_id = #{shopId,jdbcType=VARCHAR} and today_star = 1
+  </select>
+  
+  <!-- 设置推荐 -->
+  <update id="updateTodyStarSetting" parameterType="cn.com.clubank.weihang.manage.user.pojo.BaseUser">
+  	update base_user
+  	set today_star = #{todayStar,jdbcType=INTEGER},
+  	today_star_date = #{todayStarDate,jdbcType=TIMESTAMP}
+  	where user_id = #{userId,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 查询前十个推荐用户 -->
+  <select id="selectSuggestedUsers" resultMap="BaseResultMap">
+  	SELECT
+		 user_id, account, pwd, realname, head_icon, simple_spelling, gender, birthday, 
+    mobile, telephone, mail, qq, wechat, manager_id, department_id, post, duty, user_status,
+    today_star_date, today_star, shop_id, shop_name, create_date, modify_date
+	FROM
+		base_user
+	WHERE today_star = 1
+	order by today_star_date desc
+	limit 0,10
+  </select>
+  
+  <!-- 根据门店查询推荐用户 -->
+  <select id="selectSuggestedUsersByShopId" parameterType="java.lang.String" resultType="HashMap">
+  	SELECT
+		u.user_id AS userId,
+		u.account AS account,
+		u.realname AS realname,
+		u.head_icon AS headIcon,
+		u.simple_spelling AS simpleSpelling,
+		u.gender AS gender,
+		u.birthday AS birthday,
+		u.mobile AS mobile,
+		u.telephone AS telephone,
+		u.mail AS mail,
+		u.qq AS qq,
+		u.wechat AS wechat,
+		u.manager_id AS managerId,
+		bu.realname AS manager,
+		u.department_id AS departmentId,
+		d.d_name AS dName,
+		u.post AS post,
+		u.duty AS duty,
+		u.work_group_Id AS workGroupId,
+		u.user_status AS userStatus,
+		u.user_online AS userOnline,
+		u.check_online AS checkOnline,
+		u.first_visit AS firstVisit,
+		u.previous_visit AS previousVisit,
+		u.last_visit AS lastVisit,
+		u.login_count AS loginCount,
+		u.today_star_date AS todayStarDate, 
+		u.today_star AS todayStar, 
+		u.shop_id AS shopId, 
+		u.shop_name AS shopName
+	FROM
+		base_user u
+	LEFT JOIN base_department d ON u.department_id = d.d_id
+	LEFT JOIN base_user bu ON u.manager_id = bu.user_id
+	WHERE u.today_star = 1 and u.shop_id = #{shopId,jdbcType=VARCHAR}
+	order by u.today_star_date desc
+  </select>
+</mapper>

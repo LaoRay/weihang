@@ -1,0 +1,895 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.clubank.weihang.manage.repair.dao.WorkQueryMapper">
+  
+  <!-- 服务主管-查询所有接车单 -->
+  <select id="serveSupervisorQueryAllOrder" resultType="map">
+    select 
+    wpo.wpo_id as wpoId, 
+    wpo.wpo_no as wpoNo, 
+    wpo.status as wpoStatus,
+    wpo.car_no as carNo,
+    wpo.work_type as workType,
+    wpo.modify_date as completeDate,
+    
+    wr.work_repair_no as repairNo, 
+    wr.status as repairStatus,
+    wr.wr_id as wrId,
+    
+    wh.work_wash_no as washNo, 
+    wh.status as washStatus,
+    wh.ww_id as wwId,
+    
+    wp.receive_name as receiveName,
+    wp.allocation_date as assignDate,
+    ifnull(wp.receive_date, 'NULL') as receiveDate
+    
+    from work_pickup_order wpo left join work_repair wr on wpo.wpo_no = wr.wpo_no 
+    left join work_wash wh on wpo.wpo_no = wh.wpo_no 
+    left join work_operation wp on (wp.wpo_id = wpo.wpo_id and wp.receive_by = wpo.consultant_by) 
+    
+    where wpo.receive_by = #{0,jdbcType=VARCHAR} and wpo.car_no like CONCAT('%', #{1,jdbcType=VARCHAR}, '%') 
+    order by wpo.create_date desc
+    <if test="startIndex &gt; -1">
+    	LIMIT #{startIndex,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+    </if>
+  </select>
+  
+  <!-- 服务主管-查询未完成的接车单 -->
+  <select id="serveSupervisorQueryUndoneOrder" resultType="map">
+    select 
+    wpo.wpo_id as wpoId, 
+    wpo.wpo_no as wpoNo, 
+    wpo.status as wpoStatus,
+    wpo.car_no as carNo,
+    wpo.work_type as workType,
+    
+    wr.work_repair_no as repairNo, 
+    wr.status as repairStatus,
+    wr.wr_id as wrId,
+    
+    wh.work_wash_no as washNo, 
+    wh.status as washStatus,
+    wh.ww_id as wwId,
+    
+    wp.receive_name as receiveName,
+    wp.allocation_date as assignDate,
+    ifnull(wp.receive_date, 'NULL') as receiveDate
+    
+    from work_pickup_order wpo left join work_repair wr on wpo.wpo_no = wr.wpo_no 
+    left join work_wash wh on wpo.wpo_no = wh.wpo_no 
+    left join work_operation wp on (wp.wpo_id = wpo.wpo_id and wp.receive_by = wpo.consultant_by) 
+    
+    where wpo.status &lt; 3 and wpo.receive_by = #{0,jdbcType=VARCHAR} and wpo.car_no like CONCAT('%', #{1,jdbcType=VARCHAR}, '%') 
+    order by wpo.create_date desc
+    <if test="startIndex &gt; -1">
+    	LIMIT #{startIndex,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+    </if>
+  </select>
+  
+  <!-- 服务主管-查询已完成的接车单 -->
+  <select id="serveSupervisorQueryDoneOrder" resultType="map">
+    select 
+    wpo.wpo_id as wpoId, 
+    wpo.wpo_no as wpoNo, 
+    wpo.status as wpoStatus,
+    wpo.car_no as carNo,
+    wpo.work_type as workType,
+    wpo.modify_date as completeDate,
+    
+    wr.work_repair_no as repairNo, 
+    wr.status as repairStatus,
+    wr.wr_id as wrId,
+    
+    wh.work_wash_no as washNo, 
+    wh.status as washStatus,
+    wh.ww_id as wwId,
+    
+    wp.receive_name as receiveName,
+    wp.allocation_date as assignDate,
+    ifnull(wp.receive_date, 'NULL') as receiveDate
+    
+    from work_pickup_order wpo left join work_repair wr on wpo.wpo_no = wr.wpo_no 
+    left join work_wash wh on wpo.wpo_no = wh.wpo_no 
+    left join work_operation wp on (wp.wpo_id = wpo.wpo_id and wp.receive_by = wpo.consultant_by) 
+    
+    where wpo.status = 3 and wpo.receive_by = #{0,jdbcType=VARCHAR} and wpo.car_no like CONCAT('%', #{1,jdbcType=VARCHAR}, '%') 
+    order by wpo.create_date desc
+    <if test="startIndex &gt; -1">
+    	LIMIT #{startIndex,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+    </if>
+  </select>
+  
+  <!-- 服务顾问-查询所有维修单 -->
+  <select id="consultantQueryAllOrder" resultType="map">
+    select 
+    
+    wpo.wpo_no as wpoNo, 
+    wpo.car_no as carNo,
+    wpo.status as wpoStatus,
+    wpo.modify_date as completeDate,
+    wpo.wpo_id as wpoId,
+    
+    wr.work_repair_no as repairNo, 
+    wr.status as repairStatus,
+    wr.wr_id as wrId,
+    
+    wh.work_wash_no as washNo, 
+    wh.status as washStatus,
+    wh.ww_id as wwId,
+    
+    wp.receive_name as receiveName,
+    wp.allocation_date as assignDate,
+    wp.receive_date as receiveDate,
+    wp.work_type as workType
+    
+    from work_pickup_order wpo left join work_repair wr on wpo.wpo_no = wr.wpo_no 
+    left join work_wash wh on wpo.wpo_no = wh.wpo_no 
+    left join work_operation wp 
+    on ((wp.work_order_id = wr.wr_id and wp.receive_by = wr.repair_supervisor) || (wp .work_order_id = wh.ww_id and wp.receive_by = wh.group_leader))
+    
+    where wpo.consultant_by = #{0,jdbcType=VARCHAR} and wpo.car_no like CONCAT('%', #{1,jdbcType=VARCHAR}, '%')
+    order by wpo.create_date desc
+    <if test="startIndex &gt; -1">
+    	LIMIT #{startIndex,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+    </if>
+  </select>
+  
+  <!-- 服务顾问-查询未完成维修单 -->
+  <select id="consultantQueryUndoneOrder" resultType="map">
+    select 
+    
+    wpo.wpo_no as wpoNo, 
+    wpo.car_no as carNo,
+    wpo.status as wpoStatus,
+    wpo.wpo_id as wpoId,
+    
+    wr.work_repair_no as repairNo, 
+    wr.status as repairStatus,
+    wr.wr_id as wrId,
+    
+    wh.work_wash_no as washNo, 
+    wh.status as washStatus,
+    wh.ww_id as wwId,
+    
+    wp.receive_name as receiveName,
+    wp.allocation_date as assignDate,
+    wp.receive_date as receiveDate,
+    wp.work_type as workType
+    
+    from work_pickup_order wpo left join work_repair wr on wpo.wpo_no = wr.wpo_no 
+    left join work_wash wh on wpo.wpo_no = wh.wpo_no 
+    left join work_operation wp 
+    on ((wp.work_order_id = wr.wr_id and wp.receive_by = wr.repair_supervisor) || (wp.work_order_id = wh.ww_id and wp.receive_by = wh.group_leader))
+    
+    where wpo.status &lt; 3 and wpo.consultant_by = #{0,jdbcType=VARCHAR} and wpo.car_no like CONCAT('%', #{1,jdbcType=VARCHAR}, '%')
+    order by wpo.create_date desc
+    <if test="startIndex &gt; -1">
+    	LIMIT #{startIndex,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+    </if>
+  </select>
+  
+  <!-- 服务顾问-查询已完成维修单 -->
+  <select id="consultantQueryDoneOrder" resultType="map">
+    select 
+    
+    wpo.wpo_no as wpoNo, 
+    wpo.car_no as carNo,
+    wpo.status as wpoStatus,
+    wpo.modify_date as completeDate,
+    wpo.wpo_id as wpoId,
+    
+    wr.work_repair_no as repairNo, 
+    wr.status as repairStatus,
+    wr.wr_id as wrId,
+    
+    wh.work_wash_no as washNo, 
+    wh.status as washStatus,
+    wh.ww_id as wwId,
+    
+    wp.receive_name as receiveName,
+    wp.allocation_date as assignDate,
+    wp.receive_date as receiveDate,
+    wp.work_type as workType
+    
+    from work_pickup_order wpo left join work_repair wr on wpo.wpo_no = wr.wpo_no 
+    left join work_wash wh on wpo.wpo_no = wh.wpo_no 
+    left join work_operation wp 
+    on ((wp.work_order_id = wr.wr_id and wp.receive_by = wr.repair_supervisor) || (wp.work_order_id = wh.ww_id and wp.receive_by = wh.group_leader))
+    
+    where wpo.status = 3 and wpo.consultant_by = #{0,jdbcType=VARCHAR} and wpo.car_no like CONCAT('%', #{1,jdbcType=VARCHAR}, '%')
+    order by wpo.create_date desc
+    <if test="startIndex &gt; -1">
+    	LIMIT #{startIndex,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+    </if>
+  </select>
+  
+  <!-- 车间主管-查询所有 -->
+  <select id="shopSupervisorQueryAllOrder" resultType="map">
+    select 
+    
+    wr.work_repair_no as repairNo, 
+    wr.car_no as carNo,
+    wr.status as repairStatus,
+    wr.wr_id as wrId,
+    wpo.modify_date as completeDate,
+    wpo.wpo_no as wpoNo,
+    
+    user.realname as engineer,
+    
+    wp.receive_name as receiveName,
+    wp.allocation_date as assignDate,
+    wp.receive_date as receiveDate,
+    wp.work_type as workType
+    
+    from work_repair wr left join base_user user on user.user_id = wr.supervisor_by 
+    left join work_pickup_order wpo on wpo.wpo_no = wr.wpo_no 
+    left join work_operation wp 
+    on (wp.work_order_id = wr.wr_id and wp.receive_by = wr.repair_supervisor)
+    
+    where wr.status &gt; 0 and wr.repair_supervisor = #{0,jdbcType=VARCHAR} and wr.car_no like CONCAT('%', #{1,jdbcType=VARCHAR}, '%')
+    order by wr.modify_date desc
+    <if test="startIndex &gt; -1">
+    	LIMIT #{startIndex,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+    </if>
+  </select>
+  
+  <!-- 车间主管-查询未完成 -->
+  <select id="shopSupervisorQueryUndoneOrder" resultType="map">
+    select 
+    
+    wr.work_repair_no as repairNo, 
+    wr.car_no as carNo,
+    wr.status as repairStatus,
+    wr.wr_id as wrId,
+    wpo.wpo_no as wpoNo,
+    
+    user.realname as engineer,
+    
+    wp.receive_name as receiveName,
+    wp.allocation_date as assignDate,
+    wp.receive_date as receiveDate,
+    wp.work_type as workType
+    
+    from work_repair wr left join base_user user on user.user_id = wr.supervisor_by 
+    left join work_pickup_order wpo on wpo.wpo_no = wr.wpo_no 
+    left join work_operation wp 
+    on (wp.work_order_id = wr.wr_id and wp.receive_by = wr.repair_supervisor)
+    
+    where wr.status &gt; 0 and wr.repair_supervisor = #{0,jdbcType=VARCHAR} and wr.car_no like CONCAT('%', #{1,jdbcType=VARCHAR}, '%') and wr.status &lt; 10
+    order by wr.modify_date desc
+    <if test="startIndex &gt; -1">
+    	LIMIT #{startIndex,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+    </if>
+  </select>
+  
+  <!-- 车间主管-查询已完成 -->
+  <select id="shopSupervisorQueryDoneOrder" resultType="map">
+    select 
+    
+    wr.work_repair_no as repairNo, 
+    wr.car_no as carNo,
+    wr.status as repairStatus,
+    wr.wr_id as wrId,
+    wpo.modify_date as completeDate,
+    wpo.wpo_no as wpoNo,
+    
+    user.realname as engineer,
+    
+    wp.receive_name as receiveName,
+    wp.allocation_date as assignDate,
+    wp.receive_date as receiveDate,
+    wp.work_type as workType
+    
+    from work_repair wr left join base_user user on user.user_id = wr.supervisor_by 
+    left join work_pickup_order wpo on wpo.wpo_no = wr.wpo_no 
+    left join work_operation wp 
+    on (wp.work_order_id = wr.wr_id and wp.receive_by = wr.repair_supervisor)
+    
+    where wr.repair_supervisor = #{0,jdbcType=VARCHAR} and wr.car_no like CONCAT('%', #{1,jdbcType=VARCHAR}, '%') and wr.status &gt; 9
+    order by wr.modify_date desc
+    <if test="startIndex &gt; -1">
+    	LIMIT #{startIndex,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+    </if>
+  </select>
+  
+  <!-- 技师-查询未完成 -->
+  <select id="repairEngineerQueryUndoneOrder" resultType="map">
+    select 
+    
+    wr.work_repair_no as repairNo, 
+    wr.car_no as carNo,
+    wr.status as repairStatus,
+    wr.wr_id as wrId,
+    wpo.wpo_no as wpoNo,
+    
+    user.realname as engineer,
+    
+    wp.receive_name as receiveName,
+    wp.allocation_date as assignDate,
+    wp.receive_date as receiveDate,
+    wp.work_type as workType
+    
+    from work_repair wr left join base_user user on user.user_id = wr.supervisor_by 
+    left join work_pickup_order wpo on wpo.wpo_no = wr.wpo_no 
+    left join work_operation wp 
+    on (wp.work_order_id = wr.wr_id and wp.receive_by = wr.repair_supervisor)
+    
+    where wr.status &gt; 0 and wr.supervisor_by = #{0,jdbcType=VARCHAR} and wr.car_no like CONCAT('%', #{1,jdbcType=VARCHAR}, '%') and wr.status &lt; 10
+    order by wr.modify_date desc
+    <if test="startIndex &gt; -1">
+    	LIMIT #{startIndex,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+    </if>
+  </select>
+  
+  <!-- 技师-查询已完成 -->
+  <select id="repairEngineerQueryDoneOrder" resultType="map">
+    select 
+    
+    wr.work_repair_no as repairNo, 
+    wr.car_no as carNo,
+    wr.status as repairStatus,
+    wr.wr_id as wrId,
+    wpo.modify_date as completeDate,
+    wpo.wpo_no as wpoNo,
+    
+    user.realname as engineer,
+    
+    wp.receive_name as receiveName,
+    wp.allocation_date as assignDate,
+    wp.receive_date as receiveDate,
+    wp.work_type as workType
+    
+    from work_repair wr left join base_user user on user.user_id = wr.supervisor_by 
+    left join work_pickup_order wpo on wpo.wpo_no = wr.wpo_no 
+    left join work_operation wp 
+    on (wp.work_order_id = wr.wr_id and wp.receive_by = wr.repair_supervisor)
+    
+    where wr.supervisor_by = #{0,jdbcType=VARCHAR} and wr.car_no like CONCAT('%', #{1,jdbcType=VARCHAR}, '%') and wr.status &gt; 9
+    order by wr.modify_date desc
+    <if test="startIndex &gt; -1">
+    	LIMIT #{startIndex,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+    </if>
+  </select>
+  
+  <!-- 洗车组长-查询所有 -->
+  <select id="washLeaderQueryAllOrder" resultType="map">
+    select 
+    
+    ww.work_wash_no as washNo, 
+    ww.car_no as carNo,
+    ww.status as washStatus,
+    ww.ww_id as wwId,
+    wpo.modify_date as completeDate,
+    wpo.wpo_no as wpoNo,
+    
+    user.realname as engineer,
+    
+    wp.receive_name as receiveName,
+    wp.allocation_date as assignDate,
+    wp.receive_date as receiveDate,
+    wp.work_type as workType
+    
+    from work_wash ww left join base_user user on user.user_id = ww.supervisor_by
+    left join work_pickup_order wpo on wpo.wpo_no = ww.wpo_no
+    left join work_operation wp 
+    on (wp.work_order_id = ww.ww_id and wp.receive_by = ww.group_leader)
+    
+    where ww.group_leader = #{0,jdbcType=VARCHAR} and ww.car_no like CONCAT('%', #{1,jdbcType=VARCHAR}, '%')
+    order by ww.receive_date desc
+    <if test="startIndex &gt; -1">
+    	LIMIT #{startIndex,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+    </if>
+  </select>
+  
+  <!-- 洗车组长-查询未完成 -->
+  <select id="washLeaderQueryUndoneOrder" resultType="map">
+    select 
+    
+    ww.work_wash_no as washNo, 
+    ww.car_no as carNo,
+    ww.status as washStatus,
+    ww.ww_id as wwId,
+    wpo.wpo_no as wpoNo,
+    
+    user.realname as engineer,
+    
+    wp.receive_name as receiveName,
+    wp.allocation_date as assignDate,
+    wp.receive_date as receiveDate,
+    wp.work_type as workType
+    
+    from work_wash ww left join base_user user on user.user_id = ww.supervisor_by 
+    left join work_pickup_order wpo on wpo.wpo_no = ww.wpo_no 
+    left join work_operation wp 
+    on (wp.work_order_id = ww.ww_id and wp.receive_by = ww.group_leader)
+    
+    where ww.group_leader = #{0,jdbcType=VARCHAR} and ww.car_no like CONCAT('%', #{1,jdbcType=VARCHAR}, '%')
+    and ww.status != 7
+    order by ww.receive_date desc
+    <if test="startIndex &gt; -1">
+    	LIMIT #{startIndex,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+    </if>
+  </select>
+  
+  <!-- 洗车组长-查询已完成 -->
+  <select id="washLeaderQueryDoneOrder" resultType="map">
+    select 
+    
+    ww.work_wash_no as washNo, 
+    ww.car_no as carNo,
+    ww.status as washStatus,
+    ww.ww_id as wwId,
+    wpo.modify_date as completeDate,
+    wpo.wpo_no as wpoNo,
+    
+    user.realname as engineer,
+    
+    wp.receive_name as receiveName,
+    wp.allocation_date as assignDate,
+    wp.receive_date as receiveDate,
+    wp.work_type as workType
+    
+    from work_wash ww left join base_user user on user.user_id = ww.supervisor_by 
+    left join work_pickup_order wpo on wpo.wpo_no = ww.wpo_no 
+    left join work_operation wp 
+    on (wp.work_order_id = ww.ww_id and wp.receive_by = ww.group_leader)
+    
+    where ww.group_leader = #{0,jdbcType=VARCHAR} and ww.car_no like CONCAT('%', #{1,jdbcType=VARCHAR}, '%')
+    and ww.status = 7
+    order by ww.receive_date desc
+    <if test="startIndex &gt; -1">
+    	LIMIT #{startIndex,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+    </if>
+  </select>
+  
+  <!-- 洗车师-查询未完成 -->
+  <select id="washEngineerQueryUndoneOrder" resultType="map">
+    select 
+    
+    ww.work_wash_no as washNo, 
+    ww.car_no as carNo,
+    ww.status as washStatus,
+    ww.ww_id as wwId,
+    wpo.wpo_no as wpoNo,
+    
+    user.realname as engineer,
+    
+    wp.receive_name as receiveName,
+    wp.allocation_date as assignDate,
+    wp.receive_date as receiveDate,
+    wp.work_type as workType
+    
+    from work_wash ww left join base_user user on user.user_id = ww.supervisor_by 
+    left join work_pickup_order wpo on wpo.wpo_no = ww.wpo_no 
+    left join work_operation wp 
+    on (wp.work_order_id = ww.ww_id and wp.receive_by = ww.group_leader)
+    
+    where ww.supervisor_by = #{0,jdbcType=VARCHAR} and ww.car_no like CONCAT('%', #{1,jdbcType=VARCHAR}, '%')
+    and ww.status != 7
+    order by ww.receive_date desc
+    <if test="startIndex &gt; -1">
+    	LIMIT #{startIndex,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+    </if>
+  </select>
+  
+  <!-- 洗车师-查询已完成 -->
+  <select id="washEngineerQueryDoneOrder" resultType="map">
+    select 
+    
+    ww.work_wash_no as washNo, 
+    ww.car_no as carNo,
+    ww.status as washStatus,
+    ww.ww_id as wwId,
+    wpo.modify_date as completeDate,
+    wpo.wpo_no as wpoNo,
+    
+    user.realname as engineer,
+    
+    wp.receive_name as receiveName,
+    wp.allocation_date as assignDate,
+    wp.receive_date as receiveDate,
+    wp.work_type as workType
+    
+    from work_wash ww left join base_user user on user.user_id = ww.supervisor_by 
+    left join work_pickup_order wpo on wpo.wpo_no = ww.wpo_no 
+    left join work_operation wp 
+    on (wp.work_order_id = ww.ww_id and wp.receive_by = ww.group_leader)
+    
+    where ww.supervisor_by = #{0,jdbcType=VARCHAR} and ww.car_no like CONCAT('%', #{1,jdbcType=VARCHAR}, '%')
+    and ww.status = 7
+    order by ww.receive_date desc
+    <if test="startIndex &gt; -1">
+    	LIMIT #{startIndex,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+    </if>
+  </select>
+  
+  <!-- 客户端查询维修订单 -->
+  <select id="clientFindRepairServiceOrderPage" resultType="map">
+    SELECT
+		wr.wr_id AS wrId,
+		wr.work_repair_no AS repairNo,
+		wr.receive_date AS receiveDate,
+		wr.customer_id AS customerId,
+		ci.realname AS customerName,
+		ci.mobile AS mobile,
+		wr.car_no AS carNo,
+		b.realname AS consultantName,
+		bu.realname AS groupLeader,
+		buu.realname AS supervisorName,
+		wr.pay_total AS payTotal,
+		wr.pay_status AS payStatus,
+		wr.pay_way AS payWay,
+		wr.linkman AS linkman,
+		wr.linkman_mobile AS linkmanMobile,
+		wr.discounts_total AS discountsTotal,
+		wr.bill_material_total AS billMaterialTotal,
+		wr.man_haur_total AS manHaurTotal,
+		wr.total AS total,
+		wr.status AS status,
+		wr.description AS description
+	FROM
+		work_repair wr
+	LEFT JOIN customer_info ci ON wr.customer_id = ci.c_id
+	LEFT JOIN base_user b ON wr.consultant_by = b.user_id
+	LEFT JOIN base_user bu ON wr.repair_supervisor = bu.user_id
+	LEFT JOIN base_user buu ON wr.supervisor_by = buu.user_id
+    where 1 = 1
+    <if test="payStatus != null">
+    	and wr.pay_status = #{payStatus}
+    </if>
+    <if test="orderNo != null and orderNo != ''">
+    	and wr.work_repair_no like CONCAT('%', #{orderNo,jdbcType=VARCHAR}, '%')
+    </if>
+    <if test="status != null">
+    	and wr.status = #{status}
+    </if>
+    <if test="consultantName != null and consultantName != ''">
+    	and b.realname like CONCAT('%', #{consultantName}, '%')
+    </if>
+    <if test="supervisorName != null and supervisorName != ''">
+    	and buu.realname like CONCAT('%', #{supervisorName}, '%')
+    </if>
+    order by wr.receive_date desc
+    <if test="startIndex &gt; -1">
+    	LIMIT #{startIndex,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+    </if>
+  </select>
+  
+  <!-- 客户端查询所有维修单 -->
+  <select id="clientFindRepairServiceOrderTotal" resultType="INTEGER">
+    SELECT count(0) 
+    FROM (SELECT 
+    	wr.work_repair_no AS repairNo,
+		wr.receive_date AS receiveDate,
+    	b.realname AS consultantName,
+		bu.realname AS groupLeader,
+		buu.realname AS supervisorName,
+		wr.pay_status AS payStatus,
+		wr.status AS status
+    FROM 
+    	work_repair wr
+    LEFT JOIN customer_info ci ON wr.customer_id = ci.c_id
+	LEFT JOIN base_user b ON wr.consultant_by = b.user_id
+	LEFT JOIN base_user bu ON wr.repair_supervisor = bu.user_id
+	LEFT JOIN base_user buu ON wr.supervisor_by = buu.user_id) aa
+    where 1 = 1 
+    <if test="payStatus != null">
+    	and aa.payStatus = #{payStatus}
+    </if>
+    <if test="orderNo != null and orderNo != ''">
+    	and aa.repairNo like CONCAT('%', #{orderNo,jdbcType=VARCHAR}, '%')
+    </if>
+    <if test="status != null">
+    	and aa.status = #{status}
+    </if>
+    <if test="consultantName != null and consultantName != ''">
+    	and aa.consultantName like CONCAT('%', #{consultantName}, '%')
+    </if>
+    <if test="supervisorName != null and supervisorName != ''">
+    	and aa.supervisorName like CONCAT('%', #{supervisorName}, '%')
+    </if>
+  </select>
+  
+  <!-- 客户端查询洗车单 -->
+  <select id="clientFindWashServiceOrderPage" resultType="map">
+    SELECT
+		ww.ww_id AS wwId,
+		ww.work_wash_no AS washNo,
+		ww.receive_date AS receiveDate,
+		b.realname AS consultantName,
+		bu.realname AS groupLeader,
+		buu.realname AS supervisorName,
+		ww.wash_type AS washType,
+		ww.status AS status,
+		ww.pay_total AS payTotal,
+		ww.pay_way AS payWay,
+		ww.pay_status AS payStatus,
+		ww.tip_total AS tipTotal,
+		ww.linkman AS linkman,
+		ww.linkman_mobile AS linkmanMobile,
+		ww.description AS description,
+		ww.create_date AS createDate,
+		ww.wash_cost AS washCost,
+		ww.car_no AS carNo,
+		ww.customer_id AS customerId,
+		cu.realname AS customerName,
+		cu.mobile AS mobile
+	FROM
+		work_wash ww
+	LEFT JOIN customer_info cu ON ww.customer_id = cu.c_id
+	LEFT JOIN base_user b ON ww.consultant_by = b.user_id
+	LEFT JOIN base_user bu ON ww.group_leader = bu.user_id
+	LEFT JOIN base_user buu ON ww.supervisor_by = buu.user_id
+    where 1 = 1
+    <if test="payStatus != null">
+    	and ww.pay_status = #{payStatus}
+    </if>
+    <if test="orderNo != null and orderNo != ''">
+    	and ww.work_wash_no like CONCAT('%', #{orderNo,jdbcType=VARCHAR}, '%')
+    </if>
+    <if test="status != null">
+    	and ww.status = #{status}
+    </if>
+    <if test="consultantName != null and consultantName != ''">
+    	and b.realname like CONCAT('%', #{consultantName}, '%')
+    </if>
+    <if test="supervisorName != null and supervisorName != ''">
+    	and buu.realname like CONCAT('%', #{supervisorName}, '%')
+    </if>
+    order by ww.receive_date desc
+    <if test="startIndex &gt; -1">
+    	LIMIT #{startIndex,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+    </if>
+  </select>
+  
+  <!-- 客户端查询所有洗车单 -->
+  <select id="clientFindWashServiceOrderTotal" resultType="INTEGER">
+    SELECT COUNT(0)
+    FROM (SELECT 
+    	ww.work_wash_no AS washNo,
+		ww.receive_date AS receiveDate,
+		b.realname AS consultantName,
+		bu.realname AS groupLeader,
+		buu.realname AS supervisorName,
+		ww.pay_status AS payStatus,
+		ww.status AS status
+    FROM
+		work_wash ww
+	LEFT JOIN customer_info cu ON ww.customer_id = cu.c_id
+	LEFT JOIN base_user b ON ww.consultant_by = b.user_id
+	LEFT JOIN base_user bu ON ww.group_leader = bu.user_id
+	LEFT JOIN base_user buu ON ww.supervisor_by = buu.user_id) aa
+    where 1 = 1
+    <if test="payStatus != null">
+    	and aa.payStatus = #{payStatus}
+    </if>
+    <if test="orderNo != null and orderNo != ''">
+    	and aa.washNo like CONCAT('%', #{orderNo,jdbcType=VARCHAR}, '%')
+    </if>
+    <if test="status != null">
+    	and aa.status = #{status}
+    </if>
+    <if test="consultantName != null and consultantName != ''">
+    	and aa.consultantName like CONCAT('%', #{consultantName}, '%')
+    </if>
+    <if test="supervisorName != null and supervisorName != ''">
+    	and aa.supervisorName like CONCAT('%', #{supervisorName}, '%')
+    </if>
+  </select>
+  
+  <select id="selectRepairOrderCount" resultType="int">
+  	select count(0)
+  	from work_pickup_order wpo 
+    left join work_repair wr on wpo.wpo_no = wr.wpo_no 
+    left join base_user engineer on engineer.user_id = wr.supervisor_by 
+    left join base_user receive on receive.user_id = wpo.receive_by 
+    left join work_operation wp 
+    on (wp.work_order_id = wr.wr_id and wp.receive_by = wr.repair_supervisor)
+    where wpo.customer_id = #{customerId,jdbcType=VARCHAR} 
+    and wpo.work_type = 2
+    <if test="type == 1">
+    	and wr.status = 5
+    </if>
+    <if test="type == 2">
+    	and wr.status = 9
+    </if>
+    <if test="type == 3">
+    	and (wr.status = 10 or wr.status = 11)
+    </if>
+  </select>
+  
+  <!-- 客户查询维修单 -->
+  <select id="customerFindRepairOrderList" resultType="map">
+    select 
+    
+    wr.work_repair_no as repairNo, 
+    wr.status as repairStatus,
+    wr.wr_id as wrId,
+    ifnull(wr.total, 'NULL') as total,
+    wpo.car_no as carNo,
+    wpo.modify_date as completeDate,
+    wpo.wpo_no as wpoNo,
+    wpo.wpo_id as wpoId,
+    wpo.status as wpoStatus,
+    wpo.work_type as workType,
+    wpo.create_date as wpoAssignDate,
+    wp.receive_name as receiveName,
+    wp.allocation_date as assignDate,
+    wp.receive_date as receiveDate,
+    
+    engineer.realname as engineer,
+    receive.realname as receiveCar
+    
+    from work_pickup_order wpo 
+    left join work_repair wr on wpo.wpo_no = wr.wpo_no 
+    left join base_user engineer on engineer.user_id = wr.supervisor_by 
+    left join base_user receive on receive.user_id = wpo.receive_by 
+    left join work_operation wp 
+    on (wp.work_order_id = wr.wr_id and wp.receive_by = wr.repair_supervisor)
+    
+    where wpo.customer_id = #{customerId,jdbcType=VARCHAR} and wpo.work_type = 2
+    <if test="type == 1">
+    	and wr.status = 5
+    </if>
+    <if test="type == 2">
+    	and wr.status = 9
+    </if>
+    <if test="type == 3">
+    	and (wr.status = 10 or wr.status = 11)
+    </if>
+    order by wpo.create_date desc
+    <if test="startIndex &gt; -1">
+    	LIMIT #{startIndex,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+    </if>
+  </select>
+  
+  <select id="selectWashOrderCount" resultType="int">
+  	select count(0)
+    from work_pickup_order wpo 
+    left join work_wash ww on wpo.wpo_no = ww.wpo_no 
+    left join base_user engineer on engineer.user_id = ww.supervisor_by 
+    left join base_user receive on receive.user_id = wpo.receive_by 
+    left join work_operation wp 
+    on (wp.work_order_id = ww.ww_id and wp.receive_by = ww.group_leader)
+    where wpo.customer_id = #{customerId,jdbcType=VARCHAR} 
+    and wpo.work_type = 1
+    <if test="type == 1">
+    	and ww.status = 3
+    </if>
+    <if test="type == 2">
+    	and ww.status = 6
+    </if>
+    <if test="type == 3">
+    	and ww.status = 7
+    </if>
+  </select>
+  
+  <!-- 客户查询洗车单 -->
+  <select id="customerFindWashOrderList" resultType="map">
+    select 
+    
+    ww.work_wash_no as washNo, 
+    ww.status as washStatus,
+    ww.ww_id as wwId,
+    ifnull(ww.wash_cost, 'NULL') as total,
+    wpo.car_no as carNo,
+    wpo.modify_date as completeDate,
+    wpo.wpo_no as wpoNo,
+    wpo.wpo_id as wpoId,
+    wpo.status as wpoStatus,
+    wpo.work_type as workType,
+    wpo.create_date as wpoAssignDate,
+    wp.receive_name as receiveName,
+    wp.allocation_date as assignDate,
+    wp.receive_date as receiveDate,
+    
+    engineer.realname as engineer,
+    receive.realname as receiveCar
+    
+    from work_pickup_order wpo 
+    left join work_wash ww on wpo.wpo_no = ww.wpo_no 
+    left join base_user engineer on engineer.user_id = ww.supervisor_by 
+    left join base_user receive on receive.user_id = wpo.receive_by 
+    left join work_operation wp 
+    on (wp.work_order_id = ww.ww_id and wp.receive_by = ww.group_leader)
+    
+    where wpo.customer_id = #{customerId,jdbcType=VARCHAR} and wpo.work_type = 1
+    <if test="type == 1">
+    	and ww.status = 3
+    </if>
+    <if test="type == 2">
+    	and ww.status = 6
+    </if>
+    <if test="type == 3">
+    	and ww.status = 7
+    </if>
+    order by wpo.create_date desc
+    <if test="startIndex &gt; -1">
+    	LIMIT #{startIndex,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+    </if>
+  </select>
+  
+  <!-- 导出维修单数据 -->
+  <select id="exportRepairServiceOrder" resultType="Map">
+	SELECT 
+	  wr.work_repair_no AS repairNo,
+	  CAST(wr.receive_date AS CHAR) AS receiveDate,
+	  ci.realname,
+	  ci.mobile,
+	  wr.car_no AS carNo,
+	  b.realname AS consultantName,
+	  bu.realname AS groupLeader,
+	  buu.realname AS supervisorName,
+	  wr.pay_status AS payStatus,
+	  wr.total AS total,
+	  wr.status
+	FROM
+	  work_repair wr 
+	  LEFT JOIN customer_info ci 
+	    ON wr.customer_id = ci.c_id 
+	  LEFT JOIN base_user b 
+	    ON wr.consultant_by = b.user_id 
+	  LEFT JOIN base_user bu 
+	    ON wr.repair_supervisor = bu.user_id 
+	  LEFT JOIN base_user buu 
+	    ON wr.supervisor_by = buu.user_id 
+	WHERE 1 = 1
+    <if test="payStatus != null">
+    	and wr.pay_status = #{payStatus}
+    </if>
+    <if test="orderNo != null and orderNo != ''">
+    	and wr.work_repair_no like CONCAT('%', #{orderNo,jdbcType=VARCHAR}, '%')
+    </if>
+    <if test="status != null">
+    	and wr.status = #{status}
+    </if>
+    <if test="consultantName != null and consultantName != ''">
+    	and b.realname like CONCAT('%', #{consultantName}, '%')
+    </if>
+    <if test="supervisorName != null and supervisorName != ''">
+    	and buu.realname like CONCAT('%', #{supervisorName}, '%')
+    </if>
+    ORDER BY wr.receive_date DESC
+  </select>
+  
+  <!-- 导出洗车单数据 -->
+  <select id="exportWashServiceOrder" resultType="map">
+    SELECT
+		ww.work_wash_no AS washNo,
+		CAST(ww.receive_date AS CHAR) AS receiveDate,
+		b.realname AS consultantName,
+		bu.realname AS groupLeader,
+		buu.realname AS supervisorName,
+		CAST(ww.wash_type AS CHAR) AS washType,
+		ww.status,
+		ww.tip_total AS tipTotal,
+		ww.wash_cost AS washCost,
+		ww.car_no AS carNo,
+		cu.realname,
+		cu.mobile
+	FROM
+		work_wash ww
+	LEFT JOIN customer_info cu ON ww.customer_id = cu.c_id
+	LEFT JOIN base_user b ON ww.consultant_by = b.user_id
+	LEFT JOIN base_user bu ON ww.group_leader = bu.user_id
+	LEFT JOIN base_user buu ON ww.supervisor_by = buu.user_id
+    where 1 = 1
+    <if test="payStatus != null">
+    	and ww.pay_status = #{payStatus}
+    </if>
+    <if test="orderNo != null and orderNo != ''">
+    	and ww.work_wash_no like CONCAT('%', #{orderNo,jdbcType=VARCHAR}, '%')
+    </if>
+    <if test="status != null">
+    	and ww.status = #{status}
+    </if>
+    <if test="consultantName != null and consultantName != ''">
+    	and b.realname like CONCAT('%', #{consultantName}, '%')
+    </if>
+    <if test="supervisorName != null and supervisorName != ''">
+    	and buu.realname like CONCAT('%', #{supervisorName}, '%')
+    </if>
+    ORDER BY ww.receive_date DESC
+  </select>
+</mapper>

@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.clubank.weihang.manage.insurance.dao.InsuranceOrderMapper">
+  <resultMap id="BaseResultMap" type="cn.com.clubank.weihang.manage.insurance.pojo.InsuranceOrder">
+    <id column="insurance_id" jdbcType="VARCHAR" property="insuranceId" />
+    <result column="order_no" jdbcType="VARCHAR" property="orderNo" />
+    <result column="car_id" jdbcType="VARCHAR" property="carId" />
+    <result column="car_no" jdbcType="VARCHAR" property="carNo" />
+    <result column="sub_time" jdbcType="TIMESTAMP" property="subTime" />
+    <result column="sub_id" jdbcType="VARCHAR" property="subId" />
+    <result column="sub_name" jdbcType="VARCHAR" property="subName" />
+    <result column="sub_mobile" jdbcType="VARCHAR" property="subMobile" />
+    <result column="fixed_amount" jdbcType="VARCHAR" property="fixedAmount" />
+    <result column="change_amount1" jdbcType="VARCHAR" property="changeAmount1" />
+    <result column="change_amount2" jdbcType="VARCHAR" property="changeAmount2" />
+    <result column="change_amount3" jdbcType="VARCHAR" property="changeAmount3" />
+    <result column="change_amount4" jdbcType="VARCHAR" property="changeAmount4" />
+    <result column="change_amount5" jdbcType="VARCHAR" property="changeAmount5" />
+    <result column="company_name" jdbcType="VARCHAR" property="companyName" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="delivery_time" jdbcType="TIMESTAMP" property="deliveryTime" />
+    <result column="pay_time" jdbcType="TIMESTAMP" property="payTime" />
+    <result column="delivery_address" jdbcType="VARCHAR" property="deliveryAddress" />
+    <result column="delivery_type" jdbcType="INTEGER" property="deliveryType" />
+    <result column="delivery_status" jdbcType="INTEGER" property="deliveryStatus" />
+    <result column="order_pay_amount" jdbcType="DECIMAL" property="orderPayAmount" />
+    <result column="amount1" jdbcType="DECIMAL" property="amount1" />
+    <result column="amount2" jdbcType="DECIMAL" property="amount2" />
+    <result column="amount3" jdbcType="DECIMAL" property="amount3" />
+    <result column="pay_type" jdbcType="INTEGER" property="payType" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="create_user_Id" jdbcType="VARCHAR" property="createUserId" />
+    <result column="create_user_name" jdbcType="VARCHAR" property="createUserName" />
+    <result column="modify_date" jdbcType="TIMESTAMP" property="modifyDate" />
+    <result column="modify_user_Id" jdbcType="VARCHAR" property="modifyUserId" />
+    <result column="modify_user_name" jdbcType="VARCHAR" property="modifyUserName" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from insurance_order
+    where insurance_id = #{insuranceId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.com.clubank.weihang.manage.insurance.pojo.InsuranceOrder">
+    insert into insurance_order (insurance_id, order_no, car_id, 
+      car_no, sub_time, sub_id, sub_name,
+      sub_mobile, fixed_amount, change_amount1, 
+      change_amount2, change_amount3, change_amount4, 
+      change_amount5, company_name, status, 
+      delivery_time, pay_time, delivery_address, 
+      delivery_type, delivery_status, order_pay_amount, 
+      amount1, amount2, amount3, 
+      pay_type, description, create_date, 
+      create_user_Id, create_user_name, modify_date, 
+      modify_user_Id, modify_user_name)
+    values (#{insuranceId,jdbcType=VARCHAR}, #{orderNo,jdbcType=VARCHAR}, #{carId,jdbcType=VARCHAR}, 
+      #{carNo,jdbcType=VARCHAR}, #{subTime,jdbcType=TIMESTAMP}, #{subId,jdbcType=VARCHAR}, #{subName,jdbcType=VARCHAR},
+      #{subMobile,jdbcType=VARCHAR}, #{fixedAmount,jdbcType=VARCHAR}, #{changeAmount1,jdbcType=VARCHAR}, 
+      #{changeAmount2,jdbcType=VARCHAR}, #{changeAmount3,jdbcType=VARCHAR}, #{changeAmount4,jdbcType=VARCHAR}, 
+      #{changeAmount5,jdbcType=VARCHAR}, #{companyName,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+      #{deliveryTime,jdbcType=TIMESTAMP}, #{payTime,jdbcType=TIMESTAMP}, #{deliveryAddress,jdbcType=VARCHAR}, 
+      #{deliveryType,jdbcType=INTEGER}, #{deliveryStatus,jdbcType=INTEGER}, #{orderPayAmount,jdbcType=DECIMAL}, 
+      #{amount1,jdbcType=DECIMAL}, #{amount2,jdbcType=DECIMAL}, #{amount3,jdbcType=DECIMAL}, 
+      #{payType,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{createUserId,jdbcType=VARCHAR}, #{createUserName,jdbcType=VARCHAR}, #{modifyDate,jdbcType=TIMESTAMP}, 
+      #{modifyUserId,jdbcType=VARCHAR}, #{modifyUserName,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.com.clubank.weihang.manage.insurance.pojo.InsuranceOrder">
+    update insurance_order
+    set order_no = #{orderNo,jdbcType=VARCHAR},
+      car_id = #{carId,jdbcType=VARCHAR},
+      car_no = #{carNo,jdbcType=VARCHAR},
+      sub_time = #{subTime,jdbcType=TIMESTAMP},
+      sub_id = #{subId,jdbcType=VARCHAR},
+      sub_name = #{subName,jdbcType=VARCHAR},
+      sub_mobile = #{subMobile,jdbcType=VARCHAR},
+      fixed_amount = #{fixedAmount,jdbcType=VARCHAR},
+      change_amount1 = #{changeAmount1,jdbcType=VARCHAR},
+      change_amount2 = #{changeAmount2,jdbcType=VARCHAR},
+      change_amount3 = #{changeAmount3,jdbcType=VARCHAR},
+      change_amount4 = #{changeAmount4,jdbcType=VARCHAR},
+      change_amount5 = #{changeAmount5,jdbcType=VARCHAR},
+      company_name = #{companyName,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      delivery_time = #{deliveryTime,jdbcType=TIMESTAMP},
+      pay_time = #{payTime,jdbcType=TIMESTAMP},
+      delivery_address = #{deliveryAddress,jdbcType=VARCHAR},
+      delivery_type = #{deliveryType,jdbcType=INTEGER},
+      delivery_status = #{deliveryStatus,jdbcType=INTEGER},
+      order_pay_amount = #{orderPayAmount,jdbcType=DECIMAL},
+      amount1 = #{amount1,jdbcType=DECIMAL},
+      amount2 = #{amount2,jdbcType=DECIMAL},
+      amount3 = #{amount3,jdbcType=DECIMAL},
+      pay_type = #{payType,jdbcType=INTEGER},
+      description = #{description,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      create_user_Id = #{createUserId,jdbcType=VARCHAR},
+      create_user_name = #{createUserName,jdbcType=VARCHAR},
+      modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+      modify_user_Id = #{modifyUserId,jdbcType=VARCHAR},
+      modify_user_name = #{modifyUserName,jdbcType=VARCHAR}
+    where insurance_id = #{insuranceId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateSelectiveByPrimaryKey" parameterType="cn.com.clubank.weihang.manage.insurance.pojo.InsuranceOrder">
+    update insurance_order
+    <trim prefix="SET" suffixOverrides=",">
+      <if test="orderNo != null">order_no = #{orderNo,jdbcType=VARCHAR},</if>
+      <if test="carId != null">car_id = #{carId,jdbcType=VARCHAR},</if>
+      <if test="carNo != null">car_no = #{carNo,jdbcType=VARCHAR},</if>
+      <if test="subTime != null">sub_time = #{subTime,jdbcType=TIMESTAMP},</if>
+      <if test="subId != null">sub_id = #{subId,jdbcType=VARCHAR},</if>
+      <if test="subName != null">sub_name = #{subName,jdbcType=VARCHAR},</if>
+      <if test="subMobile != null">sub_mobile = #{subMobile,jdbcType=VARCHAR},</if>
+      <if test="fixedAmount != null">fixed_amount = #{fixedAmount,jdbcType=VARCHAR},</if>
+      <if test="changeAmount1 != null">change_amount1 = #{changeAmount1,jdbcType=VARCHAR},</if>
+      <if test="changeAmount2 != null">change_amount2 = #{changeAmount2,jdbcType=VARCHAR},</if>
+      <if test="changeAmount3 != null">change_amount3 = #{changeAmount3,jdbcType=VARCHAR},</if>
+      <if test="changeAmount4 != null">change_amount4 = #{changeAmount4,jdbcType=VARCHAR},</if>
+      <if test="changeAmount5 != null">change_amount5 = #{changeAmount5,jdbcType=VARCHAR},</if>
+      <if test="companyName != null">company_name = #{companyName,jdbcType=VARCHAR},</if>
+      <if test="status != null">status = #{status,jdbcType=INTEGER},</if>
+      <if test="deliveryTime != null">delivery_time = #{deliveryTime,jdbcType=TIMESTAMP},</if>
+      <if test="payTime != null">pay_time = #{payTime,jdbcType=TIMESTAMP},</if>
+      <if test="deliveryAddress != null">delivery_address = #{deliveryAddress,jdbcType=VARCHAR},</if>
+      <if test="deliveryType != null">delivery_type = #{deliveryType,jdbcType=INTEGER},</if>
+      <if test="deliveryStatus != null">delivery_status = #{deliveryStatus,jdbcType=INTEGER},</if>
+      <if test="orderPayAmount != null">order_pay_amount = #{orderPayAmount,jdbcType=DECIMAL},</if>
+      <if test="amount1 != null">amount1 = #{amount1,jdbcType=DECIMAL},</if>
+      <if test="amount2 != null">amount2 = #{amount2,jdbcType=DECIMAL},</if>
+      <if test="amount3 != null">amount3 = #{amount3,jdbcType=DECIMAL},</if>
+      <if test="payType != null">pay_type = #{payType,jdbcType=INTEGER},</if>
+      <if test="description != null">description = #{description,jdbcType=VARCHAR},</if>
+      <if test="createDate != null">create_date = #{createDate,jdbcType=TIMESTAMP},</if>
+      <if test="createUserId != null">create_user_Id = #{createUserId,jdbcType=VARCHAR},</if>
+      <if test="createUserName != null">create_user_name = #{createUserName,jdbcType=VARCHAR},</if>
+      <if test="modifyDate != null">modify_date = #{modifyDate,jdbcType=TIMESTAMP},</if>
+      <if test="modifyUserId != null">modify_user_Id = #{modifyUserId,jdbcType=VARCHAR},</if>
+      <if test="modifyUserName != null">modify_user_name = #{modifyUserName,jdbcType=VARCHAR}</if>
+    </trim>
+    where insurance_id = #{insuranceId,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select insurance_id, order_no, car_id, car_no, sub_time, sub_id, sub_name, sub_mobile, fixed_amount, 
+    change_amount1, change_amount2, change_amount3, change_amount4, change_amount5, company_name, 
+    status, delivery_time, pay_time, delivery_address, delivery_type, delivery_status, 
+    order_pay_amount, amount1, amount2, amount3, pay_type, description, create_date, 
+    create_user_Id, create_user_name, modify_date, modify_user_Id, modify_user_name
+    from insurance_order
+    where insurance_id = #{insuranceId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByNo" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select insurance_id, order_no, car_id, car_no, sub_time, sub_id, sub_name, sub_mobile, fixed_amount, 
+    change_amount1, change_amount2, change_amount3, change_amount4, change_amount5, company_name, 
+    status, delivery_time, pay_time, delivery_address, delivery_type, delivery_status, 
+    order_pay_amount, amount1, amount2, amount3, pay_type, description, create_date, 
+    create_user_Id, create_user_name, modify_date, modify_user_Id, modify_user_name
+    from insurance_order
+    where order_no = #{insuranceNo,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select insurance_id, order_no, car_id, car_no, sub_time, sub_id, sub_name, sub_mobile, fixed_amount, 
+    change_amount1, change_amount2, change_amount3, change_amount4, change_amount5, company_name, 
+    status, delivery_time, pay_time, delivery_address, delivery_type, delivery_status, 
+    order_pay_amount, amount1, amount2, amount3, pay_type, description, create_date, 
+    create_user_Id, create_user_name, modify_date, modify_user_Id, modify_user_name
+    from insurance_order
+  </select>
+  
+  <select id="selectInsuranceOrderCount" resultType="int">
+  	select count(0)
+  	from insurance_order
+  	where 1 = 1
+  	<if test="customerId != null and customerId != ''">
+  		and sub_id = #{customerId}
+  	</if>
+  	<if test="status != null">
+  		and status = #{status}
+  	</if>
+  </select>
+  
+  <select id="selectInsuranceOrderList" resultMap="BaseResultMap">
+  	select insurance_id, order_no, car_id, car_no, sub_time, sub_id, sub_name, sub_mobile, fixed_amount, 
+    change_amount1, change_amount2, change_amount3, change_amount4, change_amount5, company_name, 
+    status, delivery_time, pay_time, delivery_address, delivery_type, delivery_status, 
+    order_pay_amount, amount1, amount2, amount3, pay_type, description, create_date, 
+    create_user_Id, create_user_name, modify_date, modify_user_Id, modify_user_name
+    from insurance_order
+    where 1 = 1
+    <if test="customerId != null and customerId != ''">
+  		and sub_id = #{customerId}
+  	</if>
+  	<if test="status != null">
+  		and status = #{status}
+  	</if>
+  	order by sub_time DESC
+    <if test="start &gt;= 0">
+    	limit #{start,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+    </if>
+  </select>
+  
+  <!-- 后台 -->
+  <select id="clientSelectInsuranceOrderCount" resultType="int">
+  	select count(0)
+  	from insurance_order
+  	where 1 = 1
+  	<if test="subTimeStart != null and subTimeStart != ''">
+  		and sub_time <![CDATA[>=]]> concat(#{subTimeStart}, ' 0:0:0')
+  	</if>
+  	<if test="subTimeEnd != null and subTimeEnd != ''">
+  		and sub_time <![CDATA[<=]]> concat(#{subTimeEnd}, ' 23:59:59')
+  	</if>
+  	<if test="companyName != null and companyName != ''">
+  		and company_name = #{companyName}
+  	</if>
+  	<if test="status != null">
+  		and status = #{status}
+  	</if>
+  	<if test="subName != null and subName != ''">
+  		and sub_name like CONCAT('%', #{subName}, '%')
+  	</if>
+  	<if test="carNo != null and carNo != ''">
+  		and car_no like CONCAT('%', #{carNo}, '%')
+  	</if>
+  </select>
+  <select id="clientSelectInsuranceOrderList" resultMap="BaseResultMap">
+  	select insurance_id, order_no, car_id, car_no, sub_time, sub_id, sub_name, sub_mobile, fixed_amount, 
+    change_amount1, change_amount2, change_amount3, change_amount4, change_amount5, company_name, 
+    status, delivery_time, pay_time, delivery_address, delivery_type, delivery_status, 
+    order_pay_amount, amount1, amount2, amount3, pay_type, description, create_date, 
+    create_user_Id, create_user_name, modify_date, modify_user_Id, modify_user_name
+    from insurance_order
+    where 1 = 1
+    <if test="subTimeStart != null and subTimeStart != ''">
+  		and sub_time <![CDATA[>=]]> concat(#{subTimeStart}, ' 0:0:0')
+  	</if>
+  	<if test="subTimeEnd != null and subTimeEnd != ''">
+  		and sub_time <![CDATA[<=]]> concat(#{subTimeEnd}, ' 23:59:59')
+  	</if>
+  	<if test="companyName != null and companyName != ''">
+  		and company_name = #{companyName}
+  	</if>
+  	<if test="status != null">
+  		and status = #{status}
+  	</if>
+  	<if test="subName != null and subName != ''">
+  		and sub_name like CONCAT('%', #{subName}, '%')
+  	</if>
+  	<if test="carNo != null and carNo != ''">
+  		and car_no like CONCAT('%', #{carNo}, '%')
+  	</if>
+  	order by sub_time DESC
+    <if test="start &gt;= 0">
+    	limit #{start,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+    </if>
+  </select>
+  
+  <!-- 待付款状态三天内未支付，订单状态修改为已取消 -->
+  <update id="handleDelayedPayOrderStatus">
+  	update insurance_order
+  	set status = 8
+  	where status = 4
+  	and TIMESTAMPDIFF(HOUR, modify_date, NOW()) > 72
+  </update>
+  <!-- 已发货保单十天内未确认收货，订单状态变更为已完成 -->
+  <update id="handleUnconfirmedReceiptOrderStatus">
+  	update insurance_order
+  	set status = 6
+  	where delivery_status = 2
+  	and status = 5
+  	and TIMESTAMPDIFF(HOUR, delivery_time, NOW()) > 240
+  </update>
+</mapper>
